@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VLAN Trunking Explained: IEEE 802.1Q</title>
+
+    <meta name="description" content="Learn VLAN trunking, access ports, IEEE 802.1Q tagging, native VLANs, Cisco switch configuration and troubleshooting.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="../index.html#networking">Networking</a>
+        <a href="../index.html#linux">Linux</a>
+        <a href="../index.html#labs">Practical Labs</a>
+        <a href="../index.html#about">About</a>
+    </nav>
+</header>
+
+<main class="trunk-article">
+
+    <p>Networking / VLANs</p>
+
+    <h1>VLAN Trunking Explained: Understanding IEEE 802.1Q</h1>
+
+    <p>
+        VLANs divide a physical switch network into separate
+        logical broadcast domains. But what happens when multiple
+        VLANs need to communicate across different switches?
+        This is where VLAN trunking becomes important.
+    </p>
+
+    <h2>1. What Is VLAN Trunking?</h2>
+
+    <p>
+        VLAN trunking is a method of carrying traffic from
+        multiple VLANs over a single network link between
+        networking devices.
+    </p>
+
+    <p>
+        Instead of using a separate physical connection for
+        every VLAN, a trunk link can carry traffic belonging
+        to several VLANs.
+    </p>
+
+    <h2>2. Access Port vs Trunk Port</h2>
+
+    <h3>Access Port</h3>
+
+    <p>
+        An access port normally belongs to one VLAN.
+        It is commonly used to connect end devices such as
+        computers, printers and ordinary servers.
+    </p>
+
+    <h3>Trunk Port</h3>
+
+    <p>
+        A trunk port carries traffic for multiple VLANs.
+        It is commonly used between switches and between
+        switches and other VLAN-aware devices.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Access Port</th>
+                <th>Trunk Port</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>VLANs carried</td>
+                <td>Normally one data VLAN</td>
+                <td>Multiple VLANs</td>
+            </tr>
+            <tr>
+                <td>Common connection</td>
+                <td>End devices</td>
+                <td>Switch-to-switch links</td>
+            </tr>
+            <tr>
+                <td>802.1Q tagging</td>
+                <td>Usually untagged on the access link</td>
+                <td>Tags identify VLANs on the trunk, except native VLAN traffic in traditional Cisco configurations</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. What Is IEEE 802.1Q?</h2>
+
+    <p>
+        IEEE 802.1Q is the standard used to identify VLAN
+        membership in Ethernet frames when they travel across
+        a VLAN-aware network.
+    </p>
+
+    <p>
+        It inserts a four-byte VLAN tag into the Ethernet
+        frame. This tag contains information used by network
+        devices to identify the VLAN.
+    </p>
+
+    <h3>The 802.1Q Tag Contains</h3>
+
+    <ul>
+        <li><strong>TPID:</strong> Tag Protocol Identifier, commonly 0x8100.</li>
+        <li><strong>PCP:</strong> Priority Code Point, used for traffic priority.</li>
+        <li><strong>DEI:</strong> Drop Eligible Indicator.</li>
+        <li><strong>VID:</strong> VLAN Identifier, identifying the VLAN.</li>
+    </ul>
+
+    <h2>4. Understanding the Native VLAN</h2>
+
+    <p>
+        In traditional Cisco 802.1Q trunk configurations,
+        the native VLAN carries untagged frames over the
+        trunk link.
+    </p>
+
+    <p>
+        By default, many Cisco switch configurations use
+        VLAN 1 as the native VLAN, but administrators can
+        configure a different VLAN.
+    </p>
+
+    <p>
+        For security and consistency, both ends of a trunk
+        should use the same native VLAN.
+    </p>
+
+    <h2>5. Allowed VLANs</h2>
+
+    <p>
+        A trunk does not have to carry every VLAN in the
+        network. Administrators can restrict which VLANs
+        are permitted across a trunk.
+    </p>
+
+    <p>
+        This reduces unnecessary traffic and helps control
+        which VLANs can cross a particular link.
+    </p>
+
+    <h2>6. Cisco Switch Configuration</h2>
+
+    <p>
+        Consider two switches connected through GigabitEthernet
+        0/1. We want VLANs 10, 20 and 30 to travel across
+        the connection.
+    </p>
+
+    <h3>Configure Switch 1</h3>
+
+    <pre><code>enable
+configure terminal
+
+vlan 10
+ name SALES
+
+vlan 20
+ name HR
+
+vlan 30
+ name IT
+
+interface gigabitEthernet 0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+
+end
+write memory</code></pre>
+
+    <h3>Configure Switch 2</h3>
+
+    <pre><code>enable
+configure terminal
+
+vlan 10
+ name SALES
+
+vlan 20
+ name HR
+
+vlan 30
+ name IT
+
+interface gigabitEthernet 0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+
+end
+write memory</code></pre>
+
+    <p>
+        The VLANs must exist on the switches where they are
+        needed. The physical interfaces must also be connected
+        and configured compatibly.
+    </p>
+
+    <h2>7. Changing the Native VLAN</h2>
+
+    <p>
+        Example: change the native VLAN to VLAN 99 on both
+        ends of the trunk.
+    </p>
+
+    <pre><code>configure terminal
+
+vlan 99
+ name NATIVE
+
+interface gigabitEthernet 0/1
+ switchport trunk native vlan 99
+
+end</code></pre>
+
+    <p>
+        Configure the same native VLAN on the connected
+        switch port to avoid a native VLAN mismatch.
+    </p>
+
+    <h2>8. Verification Commands</h2>
+
+    <pre><code>show vlan brief
+
+show interfaces trunk
+
+show interfaces gigabitEthernet 0/1 switchport
+
+show running-config interface gigabitEthernet 0/1</code></pre>
+
+    <h2>9. Common Trunking Problems</h2>
+
+    <ul>
+        <li>One switch port is configured as access while the other is expected to trunk.</li>
+        <li>VLANs are missing from one of the switches.</li>
+        <li>The required VLAN is not included in the allowed VLAN list.</li>
+        <li>Native VLAN mismatch between trunk endpoints.</li>
+        <li>Physical cable or interface problems.</li>
+        <li>Platform-specific trunk encapsulation or configuration differences.</li>
+    </ul>
+
+    <h2>10. Practical Packet Tracer Lab</h2>
+
+    <p>
+        Build a small network using two Cisco switches and
+        four PCs.
+    </p>
+
+    <ol>
+        <li>Create VLAN 10 and VLAN 20 on both switches.</li>
+        <li>Connect two PCs to each switch.</li>
+        <li>Assign the PCs to the appropriate VLANs.</li>
+        <li>Connect the two switches using a trunk link.</li>
+        <li>Allow VLANs 10 and 20 on the trunk.</li>
+        <li>Test connectivity between PCs in the same VLAN.</li>
+        <li>Test connectivity between different VLANs.</li>
+    </ol>
+
+    <p>
+        Expected result: PCs in the same VLAN can communicate
+        across the trunk when their IP configuration is correct.
+        Different VLANs need a Layer 3 routing function to
+        communicate with one another.
+    </p>
+
+    <h2>11. Frequently Asked Questions</h2>
+
+    <h3>Can a trunk carry multiple VLANs?</h3>
+    <p>
+        Yes. That is the primary purpose of VLAN trunking.
+    </p>
+
+    <h3>Does a trunk port have an IP address?</h3>
+    <p>
+        A normal Layer 2 switch trunk port does not require
+        an IP address. Layer 3 interfaces are used for routing.
+    </p>
+
+    <h3>What happens if the native VLANs do not match?</h3>
+    <p>
+        Untagged traffic may be assigned to different VLANs
+        at opposite ends, potentially causing connectivity
+        and security problems.
+    </p>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        VLAN trunking allows multiple VLANs to share a
+        physical connection. Understanding access ports,
+        trunk ports, 802.1Q tags, native VLANs and allowed
+        VLANs is essential for configuring switched networks.
+    </p>
+
+    <h2>Related Articles</h2>
+
+    <ul>
+        <li><a href="vlan-explained.html">VLAN Explained</a></li>
+        <li><a href="subnetting-for-beginners.html">Subnetting for Beginners</a></li>
+        <li><a href="dhcp-explained.html">DHCP Explained</a></li>
+        <li><a href="dns-explained.html">DNS Explained</a></li>
+    </ul>
+
+    <h2>References</h2>
+
+    <ul>
+        <li><a href="https://standards.ieee.org/ieee/802.1Q/10323/" target="_blank" rel="noopener noreferrer">IEEE 802.1Q Standard</a></li>
+        <li><a href="https://www.cisco.com/c/en/us/support/docs/lan-switching/8021q/17056-741-4.html" target="_blank" rel="noopener noreferrer">Cisco - Understanding 802.1Q VLANs</a></li>
+    </ul>
+
+</main>
+
+<footer>
+    <p>Network & Linux Academy</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
