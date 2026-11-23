@@ -1,0 +1,794 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn what VLANs are, how VLANs work, access and trunk ports, IEEE 802.1Q tagging, inter-VLAN routing, and Cisco Packet Tracer configuration.">
+    <meta name="keywords" content="VLAN, virtual LAN, VLAN configuration, access port, trunk port, 802.1Q, inter-VLAN routing, Packet Tracer, CCNA">
+    <title>What Is a VLAN? Complete Beginner's Guide | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="navigation" id="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="vlan-article">
+
+    <section class="vlan-hero">
+        <p class="vlan-category">NETWORKING FUNDAMENTALS</p>
+        <h1>What Is a VLAN? A Complete Beginner's Guide</h1>
+        <p>
+            Learn how Virtual LANs organize networks, separate broadcast
+            domains, use access and trunk ports, and communicate through
+            inter-VLAN routing.
+        </p>
+        <div class="vlan-meta">
+            <span>Beginner Friendly</span>
+            <span>Switching</span>
+            <span>CCNA Foundation</span>
+        </div>
+    </section>
+
+    <div class="vlan-layout">
+
+        <aside class="vlan-toc">
+            <h2>On this page</h2>
+            <ol>
+                <li><a href="#introduction">What is a VLAN?</a></li>
+                <li><a href="#why-vlans">Why use VLANs?</a></li>
+                <li><a href="#broadcast">Broadcast domains</a></li>
+                <li><a href="#how-it-works">How VLANs work</a></li>
+                <li><a href="#types">Types of VLANs</a></li>
+                <li><a href="#access-trunk">Access vs trunk ports</a></li>
+                <li><a href="#tagging">802.1Q tagging</a></li>
+                <li><a href="#communication">Inter-VLAN communication</a></li>
+                <li><a href="#packet-tracer">Packet Tracer lab</a></li>
+                <li><a href="#verification">Verification commands</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#security">VLAN security</a></li>
+                <li><a href="#faq">FAQs</a></li>
+            </ol>
+        </aside>
+
+        <article class="vlan-content">
+
+            <section id="introduction">
+                <h2>1. What Is a VLAN?</h2>
+
+                <p>
+                    VLAN stands for <strong>Virtual Local Area Network</strong>.
+                    It is a logical method of dividing a physical switched
+                    network into separate Layer 2 networks.
+                </p>
+
+                <p>
+                    Without VLANs, devices connected to the same Layer 2
+                    broadcast domain generally belong to one logical network.
+                    VLANs allow administrators to create separate broadcast
+                    domains using the same physical switching infrastructure.
+                </p>
+
+                <div class="vlan-callout">
+                    <strong>Simple definition:</strong> A VLAN allows a network
+                    administrator to logically separate devices into different
+                    Layer 2 networks, even when those devices connect to the
+                    same physical switch.
+                </div>
+
+                <h3>Real-world example</h3>
+
+                <p>
+                    Imagine an organization with three departments:
+                </p>
+
+                <div class="vlan-departments">
+                    <div class="vlan-department vlan-blue">
+                        <h3>VLAN 10</h3>
+                        <strong>Administration</strong>
+                        <p>192.168.10.0/24</p>
+                    </div>
+
+                    <div class="vlan-department vlan-green">
+                        <h3>VLAN 20</h3>
+                        <strong>Engineering</strong>
+                        <p>192.168.20.0/24</p>
+                    </div>
+
+                    <div class="vlan-department vlan-orange">
+                        <h3>VLAN 30</h3>
+                        <strong>Guest Network</strong>
+                        <p>192.168.30.0/24</p>
+                    </div>
+                </div>
+
+                <p>
+                    All three departments may use the same physical switches,
+                    but their Layer 2 traffic is logically separated.
+                </p>
+            </section>
+
+            <section id="why-vlans">
+                <h2>2. Why Do We Use VLANs?</h2>
+
+                <h3>Network segmentation</h3>
+                <p>
+                    VLANs allow administrators to separate departments,
+                    devices, and services without requiring a completely
+                    separate physical switching network for every group.
+                </p>
+
+                <h3>Smaller broadcast domains</h3>
+                <p>
+                    Broadcast traffic within one VLAN is not normally forwarded
+                    into another VLAN by a Layer 2 switch. This limits the
+                    scope of broadcast traffic.
+                </p>
+
+                <h3>Improved administration</h3>
+                <p>
+                    Devices can be grouped according to their purpose rather
+                    than their physical location.
+                </p>
+
+                <h3>Security policy separation</h3>
+                <p>
+                    VLANs create logical separation. Administrators can then
+                    use Layer 3 access-control policies and firewalls to
+                    control communication between VLANs.
+                </p>
+
+                <div class="vlan-callout">
+                    VLANs provide segmentation, but they are not a complete
+                    security solution. Traffic between VLANs must be controlled
+                    using appropriate Layer 3 policies and security controls.
+                </div>
+            </section>
+
+            <section id="broadcast">
+                <h2>3. Understanding Broadcast Domains</h2>
+
+                <p>
+                    A broadcast is a frame sent to all devices within the
+                    relevant Layer 2 broadcast domain.
+                </p>
+
+                <p>
+                    For example, when a device sends an Ethernet broadcast,
+                    a switch forwards it through eligible ports belonging
+                    to the same VLAN, except the port on which it arrived.
+                </p>
+
+                <div class="vlan-diagram">
+                    <h3>One broadcast domain without VLAN separation</h3>
+                    <div class="vlan-switch">Layer 2 Switch</div>
+                    <div class="vlan-lines">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="vlan-devices">
+                        <div>PC 1</div>
+                        <div>PC 2</div>
+                        <div>PC 3</div>
+                    </div>
+                    <p class="vlan-diagram-note">All three devices belong to the same broadcast domain in this simplified example.</p>
+                </div>
+
+                <div class="vlan-diagram">
+                    <h3>Separate broadcast domains using VLANs</h3>
+                    <div class="vlan-switch">Layer 2 Switch</div>
+                    <div class="vlan-separate">
+                        <div class="vlan-segment vlan-blue">
+                            <strong>VLAN 10</strong>
+                            <span>PC 1</span>
+                        </div>
+                        <div class="vlan-segment vlan-green">
+                            <strong>VLAN 20</strong>
+                            <span>PC 2</span>
+                        </div>
+                        <div class="vlan-segment vlan-orange">
+                            <strong>VLAN 30</strong>
+                            <span>PC 3</span>
+                        </div>
+                    </div>
+                    <p class="vlan-diagram-note">Each VLAN represents a separate Layer 2 broadcast domain.</p>
+                </div>
+            </section>
+
+            <section id="how-it-works">
+                <h2>4. How Do VLANs Work?</h2>
+
+                <p>
+                    A managed Ethernet switch maintains VLAN membership
+                    information. When an administrator assigns a switch
+                    interface to a VLAN, the switch handles frames according
+                    to that interface's VLAN membership and switching rules.
+                </p>
+
+                <ol>
+                    <li>An administrator creates VLANs on the switch.</li>
+                    <li>Switch ports are assigned to the appropriate VLANs.</li>
+                    <li>Devices connect to those ports.</li>
+                    <li>The switch forwards frames within the appropriate VLAN.</li>
+                    <li>Communication between different VLANs requires Layer 3 routing.</li>
+                </ol>
+
+                <h3>Example IP addressing plan</h3>
+
+                <div class="vlan-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>VLAN ID</th>
+                                <th>Department</th>
+                                <th>Network</th>
+                                <th>Example Gateway</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>10</td><td>Administration</td><td>192.168.10.0/24</td><td>192.168.10.1</td></tr>
+                            <tr><td>20</td><td>Engineering</td><td>192.168.20.0/24</td><td>192.168.20.1</td></tr>
+                            <tr><td>30</td><td>Guest</td><td>192.168.30.0/24</td><td>192.168.30.1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    These IP networks are an example addressing plan. VLAN IDs
+                    and IP subnets are different concepts, although network
+                    administrators commonly associate one IP subnet with each
+                    VLAN.
+                </p>
+            </section>
+
+            <section id="types">
+                <h2>5. Common Types of VLANs</h2>
+
+                <div class="vlan-type">
+                    <h3>Data VLAN</h3>
+                    <p>
+                        Carries ordinary user traffic such as web browsing,
+                        file transfers, and application communication.
+                    </p>
+                </div>
+
+                <div class="vlan-type">
+                    <h3>Voice VLAN</h3>
+                    <p>
+                        Used for IP phone traffic. Voice VLANs can be combined
+                        with Quality of Service policies to help prioritize
+                        voice traffic.
+                    </p>
+                </div>
+
+                <div class="vlan-type">
+                    <h3>Management VLAN</h3>
+                    <p>
+                        Used to access and manage network devices through
+                        protocols such as SSH, SNMP, or a management interface.
+                    </p>
+                </div>
+
+                <div class="vlan-type">
+                    <h3>Native VLAN</h3>
+                    <p>
+                        On an IEEE 802.1Q trunk, the native VLAN identifies
+                        traffic that is sent untagged by default. Both ends
+                        of a trunk should have matching native VLAN settings.
+                    </p>
+                </div>
+            </section>
+
+            <section id="access-trunk">
+                <h2>6. Access Ports vs Trunk Ports</h2>
+
+                <h3>Access port</h3>
+                <p>
+                    An access port normally belongs to one data VLAN and is
+                    commonly used to connect end devices such as computers
+                    and printers.
+                </p>
+
+                <pre class="vlan-code"><code>Switch(config)# interface fastEthernet 0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10</code></pre>
+
+                <h3>Trunk port</h3>
+                <p>
+                    A trunk port carries traffic for multiple VLANs over
+                    a single physical connection. It is commonly used between
+                    switches or between a switch and a router or Layer 3 device.
+                </p>
+
+                <pre class="vlan-code"><code>Switch(config)# interface gigabitEthernet 0/1
+Switch(config-if)# switchport mode trunk</code></pre>
+
+                <div class="vlan-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Access Port</th>
+                                <th>Trunk Port</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Typical purpose</td><td>End-device connection</td><td>Network-device connection</td></tr>
+                            <tr><td>VLAN membership</td><td>One data VLAN</td><td>Multiple VLANs</td></tr>
+                            <tr><td>802.1Q tagging</td><td>Usually untagged at the endpoint</td><td>Tags VLAN traffic, except native VLAN traffic by default</td></tr>
+                            <tr><td>Common example</td><td>PC to switch</td><td>Switch to switch</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tagging">
+                <h2>7. What Is IEEE 802.1Q Tagging?</h2>
+
+                <p>
+                    IEEE 802.1Q is the standard used to identify VLAN
+                    membership in Ethernet frames carried over VLAN-aware
+                    bridged networks.
+                </p>
+
+                <p>
+                    When a frame is carried across a trunk, an 802.1Q tag
+                    identifies the VLAN associated with that frame. The tag
+                    includes a VLAN Identifier (VID).
+                </p>
+
+                <div class="vlan-frame">
+                    <h3>Simplified tagged Ethernet frame</h3>
+                    <div class="vlan-frame-fields">
+                        <span>Destination MAC</span>
+                        <span>Source MAC</span>
+                        <span class="vlan-tag">802.1Q Tag</span>
+                        <span>EtherType / Length</span>
+                        <span>Payload</span>
+                        <span>FCS</span>
+                    </div>
+                    <p class="vlan-diagram-note">
+                        The VLAN tag contains information used to identify
+                        the frame's VLAN.
+                    </p>
+                </div>
+
+                <p>
+                    The VLAN Identifier field is 12 bits long. Values 1
+                    through 4094 are available for ordinary VLAN identification;
+                    VLAN ID 0 and 4095 have special meanings.
+                </p>
+
+                <p>
+                    The native VLAN on a typical Cisco 802.1Q trunk carries
+                    untagged traffic by default. Other VLAN traffic is
+                    normally tagged.
+                </p>
+            </section>
+
+            <section id="communication">
+                <h2>8. How Do Different VLANs Communicate?</h2>
+
+                <p>
+                    Devices in different VLANs belong to different Layer 2
+                    broadcast domains. A Layer 2 switch does not route frames
+                    directly between those VLANs.
+                </p>
+
+                <p>
+                    To communicate, traffic must pass through a Layer 3
+                    routing device. This process is called
+                    <strong>inter-VLAN routing</strong>.
+                </p>
+
+                <h3>Common inter-VLAN routing methods</h3>
+
+                <div class="vlan-type">
+                    <h3>Router-on-a-stick</h3>
+                    <p>
+                        A router uses one physical Ethernet interface with
+                        multiple logical subinterfaces. Each subinterface
+                        is associated with a VLAN using 802.1Q encapsulation.
+                    </p>
+                </div>
+
+                <div class="vlan-type">
+                    <h3>Layer 3 switch</h3>
+                    <p>
+                        A multilayer switch uses switched virtual interfaces
+                        (SVIs) to provide gateways and route traffic between
+                        VLANs.
+                    </p>
+                </div>
+
+                <div class="vlan-callout">
+                    A VLAN creates Layer 2 separation. A router or Layer 3
+                    switch provides the routing required for communication
+                    between different VLANs.
+                </div>
+            </section>
+
+            <section id="packet-tracer">
+                <h2>9. Practical Lab: Configure VLANs in Cisco Packet Tracer</h2>
+
+                <p>
+                    Now let's create a small network and configure VLANs
+                    ourselves.
+                </p>
+
+                <h3>Lab objective</h3>
+                <p>
+                    Create two VLANs, assign computers to them, configure
+                    a trunk between two switches, and verify connectivity.
+                </p>
+
+                <h3>Required devices</h3>
+                <ul>
+                    <li>2 Cisco 2960 switches</li>
+                    <li>4 PCs</li>
+                    <li>Ethernet connections</li>
+                    <li>Cisco Packet Tracer</li>
+                </ul>
+
+                <h3>Topology and connections</h3>
+
+                <div class="vlan-lab-topology">
+                    <div class="vlan-lab-switch">
+                        <strong>Switch 1</strong>
+                        <span>Fa0/24 — Trunk</span>
+                    </div>
+
+                    <div class="vlan-lab-link">
+                        <span>Trunk link</span>
+                        <span>Fa0/24 ↔ Fa0/24</span>
+                    </div>
+
+                    <div class="vlan-lab-switch">
+                        <strong>Switch 2</strong>
+                        <span>Fa0/24 — Trunk</span>
+                    </div>
+                </div>
+
+                <div class="vlan-lab-devices">
+                    <div>
+                        <strong>Switch 1</strong>
+                        <span>Fa0/1 — PC1 — VLAN 10</span>
+                        <span>Fa0/2 — PC2 — VLAN 20</span>
+                    </div>
+                    <div>
+                        <strong>Switch 2</strong>
+                        <span>Fa0/1 — PC3 — VLAN 10</span>
+                        <span>Fa0/2 — PC4 — VLAN 20</span>
+                    </div>
+                </div>
+
+                <h3>IP addressing</h3>
+                <div class="vlan-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>PC</th>
+                                <th>VLAN</th>
+                                <th>IP Address</th>
+                                <th>Subnet Mask</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>PC1</td><td>10</td><td>192.168.10.11</td><td>255.255.255.0</td></tr>
+                            <tr><td>PC3</td><td>10</td><td>192.168.10.13</td><td>255.255.255.0</td></tr>
+                            <tr><td>PC2</td><td>20</td><td>192.168.20.12</td><td>255.255.255.0</td></tr>
+                            <tr><td>PC4</td><td>20</td><td>192.168.20.14</td><td>255.255.255.0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    No default gateway is required for this particular
+                    same-VLAN connectivity test because we are not routing
+                    between different IP networks.
+                </p>
+
+                <h3>Step 1: Create VLANs on Switch 1</h3>
+                <pre class="vlan-code"><code>enable
+configure terminal
+
+vlan 10
+name ADMINISTRATION
+exit
+
+vlan 20
+name ENGINEERING
+exit</code></pre>
+
+                <h3>Step 2: Assign access ports on Switch 1</h3>
+                <pre class="vlan-code"><code>interface fastEthernet 0/1
+switchport mode access
+switchport access vlan 10
+exit
+
+interface fastEthernet 0/2
+switchport mode access
+switchport access vlan 20
+exit</code></pre>
+
+                <h3>Step 3: Configure the trunk on Switch 1</h3>
+                <pre class="vlan-code"><code>interface fastEthernet 0/24
+switchport mode trunk
+exit</code></pre>
+
+                <h3>Step 4: Create the same VLANs on Switch 2</h3>
+                <pre class="vlan-code"><code>enable
+configure terminal
+
+vlan 10
+name ADMINISTRATION
+exit
+
+vlan 20
+name ENGINEERING
+exit</code></pre>
+
+                <h3>Step 5: Assign access ports on Switch 2</h3>
+                <pre class="vlan-code"><code>interface fastEthernet 0/1
+switchport mode access
+switchport access vlan 10
+exit
+
+interface fastEthernet 0/2
+switchport mode access
+switchport access vlan 20
+exit</code></pre>
+
+                <h3>Step 6: Configure the trunk on Switch 2</h3>
+                <pre class="vlan-code"><code>interface fastEthernet 0/24
+switchport mode trunk
+exit</code></pre>
+
+                <h3>Step 7: Configure PC IP addresses</h3>
+                <p>
+                    Open each PC in Packet Tracer, select Desktop, then
+                    IP Configuration. Enter the IP address and subnet mask
+                    from the addressing table.
+                </p>
+
+                <h3>Step 8: Test connectivity</h3>
+                <p>
+                    From PC1, open Command Prompt and test:
+                </p>
+                <pre class="vlan-code"><code>ping 192.168.10.13</code></pre>
+
+                <p>
+                    PC1 and PC3 are in VLAN 10. The ping should succeed after
+                    the network has converged and the links are operational.
+                </p>
+
+                <p>
+                    Now try:
+                </p>
+                <pre class="vlan-code"><code>ping 192.168.20.12</code></pre>
+
+                <p>
+                    This ping should fail because PC1 and PC2 are in different
+                    VLANs and no inter-VLAN routing has been configured.
+                </p>
+
+                <div class="vlan-callout">
+                    <strong>Lab result:</strong> PCs in the same VLAN can
+                    communicate across the trunk. PCs in different VLANs
+                    cannot communicate until a Layer 3 routing solution
+                    is configured.
+                </div>
+
+                <h3>Challenge: Extend the lab</h3>
+                <p>
+                    Add a router or a multilayer switch and configure
+                    inter-VLAN routing. Then test communication between
+                    VLAN 10 and VLAN 20.
+                </p>
+            </section>
+
+            <section id="verification">
+                <h2>10. Useful VLAN Verification Commands</h2>
+
+                <p>Use these commands on Cisco switches to inspect VLANs and trunks.</p>
+
+                <div class="vlan-command">
+                    <code>show vlan brief</code>
+                    <p>Displays VLAN IDs, names, status, and access-port membership.</p>
+                </div>
+
+                <div class="vlan-command">
+                    <code>show interfaces trunk</code>
+                    <p>Displays operational trunk ports and VLAN information.</p>
+                </div>
+
+                <div class="vlan-command">
+                    <code>show interfaces fa0/24 switchport</code>
+                    <p>Displays the switchport mode and VLAN-related configuration of an interface.</p>
+                </div>
+
+                <div class="vlan-command">
+                    <code>show running-config</code>
+                    <p>Displays the active configuration, including VLAN and interface settings.</p>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>11. Common VLAN Problems and Troubleshooting</h2>
+
+                <h3>Incorrect VLAN assignment</h3>
+                <p>
+                    A PC may be connected to a switch port assigned to the
+                    wrong VLAN. Check the port membership with
+                    <code>show vlan brief</code>.
+                </p>
+
+                <h3>Trunk not configured</h3>
+                <p>
+                    If VLAN traffic needs to travel between switches,
+                    verify that the connecting interfaces are operational
+                    trunks.
+                </p>
+
+                <h3>VLAN missing on the other switch</h3>
+                <p>
+                    Ensure that the required VLAN exists and is active on
+                    the relevant switches.
+                </p>
+
+                <h3>VLAN not allowed on trunk</h3>
+                <p>
+                    Check the trunk's allowed VLAN list. A VLAN excluded
+                    from that list cannot use that trunk.
+                </p>
+
+                <h3>Native VLAN mismatch</h3>
+                <p>
+                    Ensure both ends of an 802.1Q trunk use the intended
+                    matching native VLAN.
+                </p>
+
+                <h3>Incorrect IP addressing</h3>
+                <p>
+                    Devices in the same VLAN should have compatible IP
+                    addressing for their intended subnet. Check their
+                    addresses and subnet masks.
+                </p>
+            </section>
+
+            <section id="security">
+                <h2>12. VLAN Security Best Practices</h2>
+
+                <ul>
+                    <li>Do not treat VLAN separation as a replacement for firewall rules or access-control policies.</li>
+                    <li>Disable unused switch ports or place them in an appropriately isolated unused VLAN.</li>
+                    <li>Use dedicated management access and restrict who can reach network-device management interfaces.</li>
+                    <li>Restrict trunk links to the VLANs that actually need to cross them.</li>
+                    <li>Configure trunking explicitly where appropriate and disable unnecessary negotiation.</li>
+                    <li>Use consistent native VLAN settings on both ends of trunk links.</li>
+                    <li>Monitor VLAN and switch configuration changes.</li>
+                </ul>
+
+                <p>
+                    VLAN hopping and trunk misconfiguration are examples of
+                    risks that network administrators should understand
+                    when designing switched networks.
+                </p>
+            </section>
+
+            <section id="faq">
+                <h2>13. Frequently Asked Questions</h2>
+
+                <div class="vlan-faq">
+                    <h3>Can multiple VLANs exist on one physical switch?</h3>
+                    <p>
+                        Yes. A managed switch can support multiple VLANs,
+                        subject to its hardware and software capabilities.
+                    </p>
+                </div>
+
+                <div class="vlan-faq">
+                    <h3>Can two devices in different VLANs communicate?</h3>
+                    <p>
+                        Yes, but communication requires routing through
+                        a Layer 3 device, subject to the applicable
+                        routing and security policies.
+                    </p>
+                </div>
+
+                <div class="vlan-faq">
+                    <h3>What is the difference between a VLAN and a subnet?</h3>
+                    <p>
+                        A VLAN is a Layer 2 logical broadcast domain.
+                        An IP subnet is a Layer 3 addressing concept.
+                        Networks commonly map one IP subnet to one VLAN,
+                        but they are not the same thing.
+                    </p>
+                </div>
+
+                <div class="vlan-faq">
+                    <h3>What is VLAN 1?</h3>
+                    <p>
+                        VLAN 1 is the default VLAN on many Cisco switches.
+                        Administrators should plan VLAN usage carefully
+                        rather than automatically using the default VLAN
+                        for ordinary user and management traffic.
+                    </p>
+                </div>
+
+                <div class="vlan-faq">
+                    <h3>What is the difference between an access port and a trunk port?</h3>
+                    <p>
+                        An access port normally carries one data VLAN,
+                        while a trunk port carries traffic for multiple
+                        VLANs across a shared link.
+                    </p>
+                </div>
+            </section>
+
+            <section class="vlan-conclusion">
+                <h2>Conclusion</h2>
+                <p>
+                    VLANs are an essential part of modern switched networks.
+                    They allow network administrators to logically segment
+                    devices, manage broadcast domains, and organize network
+                    infrastructure.
+                </p>
+                <p>
+                    Understanding access ports, trunk ports, 802.1Q tagging,
+                    and inter-VLAN routing provides a strong foundation
+                    for more advanced switching and enterprise networking.
+                </p>
+                <p>
+                    The best way to master VLANs is to configure them,
+                    test connectivity, and troubleshoot mistakes in a
+                    network simulator.
+                </p>
+            </section>
+
+            <section class="vlan-related">
+                <h2>Related Networking Guides</h2>
+                <ul>
+                    <li><a href="osi-model.html">Understanding the OSI Model</a></li>
+                    <li><a href="ipv4-addressing.html">IPv4 Addressing Explained</a></li>
+                    <li><a href="subnetting-for-beginners.html">IPv4 Subnetting for Beginners</a></li>
+                    <li><a href="ospf-introduction.html">Introduction to OSPF</a></li>
+                    <li><a href="tcp-vs-udp.html">TCP vs UDP Explained</a></li>
+                </ul>
+            </section>
+
+            <section class="vlan-references">
+                <h2>References and Further Reading</h2>
+                <ul>
+                    <li><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/vlan/vlan-configuration-guide/configure-vlan.html" target="_blank" rel="noopener noreferrer">Cisco — Configure VLANs</a></li>
+                    <li><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/vlan/vlan-configuration-guide/configure-vlan-trunks.html" target="_blank" rel="noopener noreferrer">Cisco — Configure VLAN Trunking</a></li>
+                    <li><a href="https://standards.ieee.org/ieee/802.1q/10323/" target="_blank" rel="noopener noreferrer">IEEE 802.1Q — Bridges and Bridged Networks</a></li>
+                </ul>
+            </section>
+
+            <div class="vlan-back">
+                <a href="../index.html">← Back to Home</a>
+            </div>
+
+        </article>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
