@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn computer networking and Linux through practical tutorials, configuration guides and hands-on labs.">
+  <title>Network & Linux Academy | Learn. Configure. Understand.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">N<span>&</span>L Academy</a>
+
+    <nav class="navigation" id="navigation">
+      <a href="#home">Home</a>
+      <a href="#networking">Networking</a>
+      <a href="#linux">Linux</a>
+      <a href="#labs">Practical Labs</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+      ☰
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+
+<div class="search-container">
+  <form id="search-form" class="search-box">
+    <input
+      type="search"
+      id="site-search"
+      placeholder="Search networking, Linux, tutorials..."
+      aria-label="Search tutorials"
+      autocomplete="off"
+    >
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="search-results" class="search-results" aria-live="polite"></div>
+</div>
+
+      <p class="eyebrow">INDEPENDENT TECHNOLOGY LEARNING PLATFORM</p>
+      <h1>Understand Technology.<br><span>Build Real Skills.</span></h1>
+      <p class="hero-description">
+        Explore computer networking, Linux administration and practical
+        technology guides designed to make complex concepts easier to understand.
+      </p>
+      <div class="hero-actions">
+        <a href="#networking" class="button primary">Explore Tutorials</a>
+        <a href="#labs" class="button secondary">Explore Practical Labs</a>
+      </div>
+    </section>
+
+    <section class="section" id="networking">
+      <div class="section-heading">
+        <p class="eyebrow">01 / NETWORKING</p>
+        <h2>Computer Networking</h2>
+        <p>Understand how devices communicate and how networks operate.</p>
+      </div>
+
+      <div class="article-grid">
+        <article class="article-card">
+          <span class="category">FUNDAMENTALS</span>
+          <h3>Understanding the OSI Model</h3>
+          <p>Explore the seven layers of the OSI model and understand their roles in network communication.</p>
+          <a href="articles/osi-model.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">IP ADDRESSING</span>
+          <h3>IPv4 Addressing Explained</h3>
+          <p>Learn IP addresses, subnet masks, network IDs and host IDs.</p>
+          <a href="articles/ipv4-addressing.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>Introduction to OSPF</h3>
+          <p>Discover how OSPF dynamically finds routes between networks.</p>
+          <a href="articles/ospf-introduction.html">Read article →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alternate" id="linux">
+      <div class="section-heading">
+        <p class="eyebrow">02 / LINUX</p>
+        <h2>Linux Administration</h2>
+        <p>Learn the Linux operating system through commands and practical examples.</p>
+      </div>
+
+      <div class="article-grid">
+        <article class="article-card">
+          <span class="category">COMMAND LINE</span>
+          <h3>Essential Linux Commands</h3>
+          <p>Get comfortable navigating the Linux terminal.</p>
+          <a href="articles/linux-commands.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">PERMISSIONS</span>
+          <h3>Linux File Permissions</h3>
+          <p>Understand users, groups, chmod and chown.</p>
+          <a href="articles/linux-permissions.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ADMINISTRATION</span>
+          <h3>Understanding Linux Services</h3>
+          <p>Learn how system services operate and how to manage them.</p>
+          <a href="articles/linux-services.html">Read article →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="labs">
+      <div class="section-heading">
+        <p class="eyebrow">03 / PRACTICAL LEARNING</p>
+        <h2>Learn by Doing</h2>
+        <p>Move beyond theory with configuration examples and practical exercises.</p>
+      </div>
+      <div class="lab-panel">
+        <h3>Hands-on networking and Linux labs</h3>
+        <p>Our upcoming lab library will cover routing, switching, DHCP, OSPF, Linux administration and troubleshooting.</p>
+        <span class="coming-soon">LAB LIBRARY — COMING SOON</span>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <p class="eyebrow">04 / ABOUT THE PLATFORM</p>
+      <h2>Knowledge should be practical and accessible.</h2>
+      <p>
+        Network & Linux Academy is an independent educational platform
+        focused on simplifying technology through structured explanations,
+        practical examples and technical documentation.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Network & Linux Academy.</p>
+    <p>Learn. Configure. Understand.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
