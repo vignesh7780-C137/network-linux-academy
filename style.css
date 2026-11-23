@@ -1,0 +1,4140 @@
+
+:root {
+  --background: #f7f8fa;
+  --surface: #ffffff;
+  --text: #182230;
+  --muted: #667085;
+  --accent: #167d91;
+  --accent-dark: #105e70;
+  --border: #e4e7ec;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.header {
+  min-height: 76px;
+  padding: 0 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.navigation {
+  display: flex;
+  gap: 28px;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.navigation a:hover {
+  color: var(--accent);
+}
+
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.hero {
+  padding: 110px 10%;
+  text-align: center;
+  background: #102638;
+  color: white;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.hero .eyebrow {
+  color: #77cbd5;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+
+.hero h1 span {
+  color: #77cbd5;
+}
+
+.hero-description {
+  max-width: 680px;
+  margin: 0 auto;
+  color: #c6d2dc;
+  font-size: 16px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 23px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary {
+  background: var(--accent);
+  color: white;
+}
+
+.primary:hover {
+  background: var(--accent-dark);
+}
+
+.secondary {
+  color: white;
+  border: 1px solid #78909f;
+}
+
+.section {
+  padding: 80px 9%;
+}
+
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-heading h2,
+.about-section h2 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.section-heading p:not(.eyebrow),
+.about-section > p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.article-card {
+  padding: 27px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.category {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+
+.article-card h3 {
+  margin: 13px 0;
+  font-size: 19px;
+}
+
+.article-card p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.article-card a {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.alternate {
+  background: #eef2f5;
+}
+
+.lab-panel {
+  background: #102638;
+  padding: 38px;
+  border-radius: 10px;
+  color: white;
+}
+
+.lab-panel p {
+  color: #c6d2dc;
+  margin: 12px 0 20px;
+}
+
+.coming-soon {
+  color: #77cbd5;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.about-section {
+  max-width: 1000px;
+}
+
+.about-section > p:not(.eyebrow) {
+  max-width: 750px;
+}
+
+.footer {
+  padding: 25px 9%;
+  background: #102638;
+  color: #c6d2dc;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 18px 6%;
+    flex-wrap: wrap;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .navigation {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+  }
+
+  .navigation.active {
+    display: flex;
+  }
+
+  .hero {
+    padding: 75px 7%;
+  }
+
+  .section {
+    padding: 55px 6%;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    padding: 25px 6%;
+  }
+}
+
+/* WEBSITE SEARCH */
+
+.search-container {
+  max-width: 650px;
+  margin: 32px auto 0;
+  position: relative;
+}
+
+.search-box {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: 14px;
+  font-size: 15px;
+  color: #182230;
+}
+
+.search-box button {
+  border: none;
+  border-radius: 5px;
+  padding: 0 22px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.search-box button:hover {
+  background: var(--accent-dark);
+}
+
+.search-results {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: white;
+  color: var(--text);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  text-align: left;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.search-results.visible {
+  display: block;
+}
+
+.search-result {
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  display: block;
+  color: var(--text);
+}
+
+.search-result:hover {
+  background: #edf7f8;
+}
+
+.search-result strong {
+  display: block;
+  font-size: 14px;
+}
+
+.search-result span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.no-results {
+  padding: 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 500px) {
+  .search-box input {
+    padding: 11px;
+    font-size: 13px;
+  }
+
+  .search-box button {
+    padding: 0 14px;
+  }
+}
+
+/* =========================================
+   IPv4 ADDRESSING ARTICLE
+========================================= */
+
+.ipv4-article {
+    width: min(900px, 92%);
+    margin: 0 auto;
+    padding: 35px 0 80px;
+    color: #253247;
+    line-height: 1.8;
+}
+
+.ipv4-breadcrumb {
+    margin-bottom: 28px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.ipv4-breadcrumb a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.ipv4-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.ipv4-header {
+    margin-bottom: 35px;
+}
+
+.ipv4-category {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #087f8c;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.ipv4-header h1 {
+    margin: 0 0 18px;
+    color: #14243a;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.2;
+}
+
+.ipv4-subtitle {
+    max-width: 760px;
+    color: #64748b;
+    font-size: 1.12rem;
+}
+
+.ipv4-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.ipv4-callout {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-left: 4px solid #0d9488;
+    border-radius: 8px;
+    background: #effaf8;
+}
+
+.ipv4-callout strong {
+    color: #11645f;
+}
+
+.ipv4-callout p {
+    margin: 8px 0 0;
+}
+
+.ipv4-toc {
+    margin: 35px 0 45px;
+    padding: 25px 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.ipv4-toc h2 {
+    margin-top: 0;
+    color: #14243a;
+    font-size: 1.35rem;
+}
+
+.ipv4-toc ol {
+    margin-bottom: 0;
+    padding-left: 23px;
+}
+
+.ipv4-toc li {
+    margin: 5px 0;
+}
+
+.ipv4-toc a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.ipv4-toc a:hover {
+    text-decoration: underline;
+}
+
+.ipv4-content section {
+    margin: 0 0 55px;
+    scroll-margin-top: 25px;
+}
+
+.ipv4-content h2 {
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #14243a;
+    font-size: 1.8rem;
+    line-height: 1.35;
+}
+
+.ipv4-content h3 {
+    margin: 28px 0 12px;
+    color: #20354f;
+    font-size: 1.25rem;
+}
+
+.ipv4-content p {
+    margin: 0 0 18px;
+}
+
+.ipv4-content ul,
+.ipv4-content ol {
+    padding-left: 25px;
+    margin-bottom: 22px;
+}
+
+.ipv4-content li {
+    margin-bottom: 9px;
+}
+
+.ipv4-example {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 22px 0;
+    padding: 20px;
+    border: 1px solid #dce7ef;
+    border-radius: 10px;
+    background: #f4f8fb;
+    text-align: center;
+}
+
+.ipv4-example-label {
+    color: #64748b;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ipv4-example strong {
+    color: #087f8c;
+    font-family: Consolas, monospace;
+    font-size: clamp(1.25rem, 4vw, 1.8rem);
+    overflow-wrap: anywhere;
+}
+
+.ipv4-visual {
+    margin: 25px 0;
+    padding: 24px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.ipv4-octets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.ipv4-octets div {
+    padding: 15px 8px;
+    border-radius: 8px;
+    background: #e0f2f1;
+}
+
+.ipv4-octets strong {
+    display: block;
+    color: #075e63;
+    font-family: Consolas, monospace;
+    font-size: 1.5rem;
+}
+
+.ipv4-octets small {
+    display: block;
+    color: #42636a;
+    font-size: 0.78rem;
+}
+
+.ipv4-visual-caption {
+    margin: 15px 0 0 !important;
+    color: #14243a;
+    font-family: Consolas, monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.ipv4-small-note {
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.ipv4-table-wrap {
+    width: 100%;
+    margin: 22px 0;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+}
+
+.ipv4-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.94rem;
+}
+
+.ipv4-table th,
+.ipv4-table td {
+    padding: 13px 15px;
+    border-bottom: 1px solid #e8edf2;
+    text-align: left;
+    vertical-align: top;
+}
+
+.ipv4-table thead th {
+    background: #14243a;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.ipv4-table tbody th {
+    background: #f1f5f9;
+    color: #26384e;
+}
+
+.ipv4-table tbody tr:last-child th,
+.ipv4-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ipv4-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.ipv4-table code {
+    color: #087f8c;
+    font-family: Consolas, monospace;
+}
+
+.ipv4-binary-table {
+    min-width: 650px;
+    text-align: center;
+}
+
+.ipv4-binary-table th,
+.ipv4-binary-table td {
+    padding: 12px 9px;
+    text-align: center;
+}
+
+.ipv4-formula {
+    margin: 20px 0;
+    padding: 18px;
+    border: 1px solid #cce9e6;
+    border-radius: 8px;
+    background: #effaf8;
+    color: #075e63;
+    font-family: Consolas, monospace;
+    font-size: 1.12rem;
+    font-weight: 700;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.ipv4-code-example {
+    margin: 18px 0;
+    padding: 18px;
+    border-radius: 9px;
+    background: #14243a;
+    color: #e2e8f0;
+    overflow-x: auto;
+}
+
+.ipv4-code-example p {
+    margin: 0 0 7px;
+    color: #a9c5d8;
+    font-size: 0.85rem;
+}
+
+.ipv4-code-example code {
+    display: block;
+    margin-bottom: 15px;
+    color: #8ee6d5;
+    font-family: Consolas, monospace;
+    white-space: nowrap;
+}
+
+.ipv4-code-example code:last-child {
+    margin-bottom: 0;
+}
+
+.ipv4-range {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+    margin: 20px 0;
+}
+
+.ipv4-range span {
+    padding: 12px 8px;
+    border: 1px solid #dce7ef;
+    border-radius: 7px;
+    background: #f4f8fb;
+    color: #087f8c;
+    font-family: Consolas, monospace;
+    font-weight: 700;
+    text-align: center;
+}
+
+.ipv4-faq {
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.ipv4-faq h3 {
+    margin: 0 0 8px;
+    font-size: 1.08rem;
+}
+
+.ipv4-faq p {
+    margin: 0;
+    color: #526176;
+}
+
+.ipv4-next-article {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 12px;
+    background: #14243a;
+    color: #ffffff;
+}
+
+.ipv4-next-article span {
+    color: #8ee6d5;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.ipv4-next-article h3 {
+    margin: 8px 0;
+    color: #ffffff;
+}
+
+.ipv4-next-article p {
+    color: #cbd5e1;
+}
+
+.ipv4-next-article a {
+    color: #8ee6d5;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ipv4-next-article a:hover {
+    text-decoration: underline;
+}
+
+.ipv4-references {
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ipv4-references h2 {
+    font-size: 1.4rem;
+}
+
+.ipv4-references a {
+    color: #087f8c;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .ipv4-article {
+        width: 91%;
+        padding-top: 22px;
+    }
+
+    .ipv4-toc {
+        padding: 20px;
+    }
+
+    .ipv4-octets {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ipv4-range {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ipv4-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .ipv4-table {
+        font-size: 0.86rem;
+    }
+
+    .ipv4-table th,
+    .ipv4-table td {
+        padding: 10px;
+    }
+}
+
+
+/* =========================================
+   OSPF ARTICLE
+========================================= */
+
+.ospf-article {
+    width: min(900px, 92%);
+    margin: 0 auto;
+    padding: 35px 0 80px;
+    color: #253247;
+    line-height: 1.8;
+}
+
+.ospf-breadcrumb {
+    margin-bottom: 28px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.ospf-breadcrumb a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.ospf-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.ospf-header {
+    margin-bottom: 35px;
+}
+
+.ospf-category {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #087f8c;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.ospf-header h1 {
+    margin: 0 0 18px;
+    color: #14243a;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.2;
+}
+
+.ospf-subtitle {
+    max-width: 760px;
+    color: #64748b;
+    font-size: 1.12rem;
+}
+
+.ospf-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.ospf-callout,
+.ospf-highlight {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-left: 4px solid #0d9488;
+    border-radius: 8px;
+    background: #effaf8;
+}
+
+.ospf-callout strong,
+.ospf-highlight strong {
+    color: #11645f;
+}
+
+.ospf-callout p,
+.ospf-highlight p {
+    margin: 8px 0 0;
+}
+
+.ospf-toc {
+    margin: 35px 0 45px;
+    padding: 25px 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.ospf-toc h2 {
+    margin-top: 0;
+    color: #14243a;
+    font-size: 1.35rem;
+}
+
+.ospf-toc ol {
+    margin-bottom: 0;
+    padding-left: 23px;
+}
+
+.ospf-toc li {
+    margin: 5px 0;
+}
+
+.ospf-toc a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.ospf-toc a:hover {
+    text-decoration: underline;
+}
+
+.ospf-content section {
+    margin: 0 0 55px;
+    scroll-margin-top: 25px;
+}
+
+.ospf-content h2 {
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #14243a;
+    font-size: 1.8rem;
+    line-height: 1.35;
+}
+
+.ospf-content h3 {
+    margin: 28px 0 12px;
+    color: #20354f;
+    font-size: 1.25rem;
+}
+
+.ospf-content p {
+    margin: 0 0 18px;
+}
+
+.ospf-content ul,
+.ospf-content ol {
+    padding-left: 25px;
+    margin-bottom: 22px;
+}
+
+.ospf-content li {
+    margin-bottom: 9px;
+}
+
+.ospf-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    margin: 25px 0;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.ospf-flow div {
+    width: min(100%, 420px);
+    padding: 12px 15px;
+    border: 1px solid #cce9e6;
+    border-radius: 8px;
+    background: #effaf8;
+    color: #075e63;
+    font-weight: 600;
+    text-align: center;
+}
+
+.ospf-flow > span {
+    color: #0d9488;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.ospf-table-wrap {
+    width: 100%;
+    margin: 22px 0;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+}
+
+.ospf-table {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.94rem;
+}
+
+.ospf-table th,
+.ospf-table td {
+    padding: 13px 15px;
+    border-bottom: 1px solid #e8edf2;
+    text-align: left;
+    vertical-align: top;
+}
+
+.ospf-table thead th {
+    background: #14243a;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.ospf-table tbody tr:last-child td,
+.ospf-table tbody tr:last-child th {
+    border-bottom: none;
+}
+
+.ospf-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.ospf-table code {
+    color: #087f8c;
+    font-family: Consolas, monospace;
+    white-space: nowrap;
+}
+
+.ospf-state-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.ospf-state-list > div {
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #f8fafc;
+}
+
+.ospf-state-list strong {
+    color: #087f8c;
+}
+
+.ospf-state-list p {
+    margin: 6px 0 0;
+    color: #526176;
+    font-size: 0.92rem;
+}
+
+.ospf-area-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0;
+    padding: 22px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.ospf-area-box,
+.ospf-area-center {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    min-height: 100px;
+    padding: 12px 8px;
+    border-radius: 9px;
+}
+
+.ospf-area-box {
+    border: 1px solid #cce9e6;
+    background: #effaf8;
+    color: #075e63;
+}
+
+.ospf-area-center {
+    border: 2px solid #0d9488;
+    background: #14243a;
+    color: #ffffff;
+}
+
+.ospf-area-diagram span {
+    font-size: 0.8rem;
+}
+
+.ospf-formula {
+    margin: 20px 0;
+    padding: 18px;
+    border: 1px solid #cce9e6;
+    border-radius: 8px;
+    background: #effaf8;
+    color: #075e63;
+    font-family: Consolas, monospace;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.ospf-example {
+    margin: 24px 0;
+    padding: 22px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.ospf-example strong {
+    color: #14243a;
+}
+
+.ospf-example p {
+    margin: 10px 0;
+}
+
+.ospf-example hr {
+    border: none;
+    border-top: 1px solid #dce5ed;
+    margin: 16px 0;
+}
+
+.ospf-result {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 7px;
+    background: #effaf8;
+    color: #075e63;
+    font-weight: 700;
+}
+
+.ospf-process-list li {
+    margin-bottom: 18px;
+}
+
+.ospf-process-list li p {
+    margin: 5px 0 0;
+    color: #526176;
+}
+
+.ospf-topology {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.1fr 1fr 1fr;
+    align-items: center;
+    gap: 7px;
+    margin: 28px 0;
+    padding: 20px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.ospf-lan,
+.ospf-router {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    min-height: 105px;
+    padding: 10px 5px;
+    border-radius: 8px;
+}
+
+.ospf-lan {
+    border: 1px solid #cce9e6;
+    background: #effaf8;
+    color: #075e63;
+}
+
+.ospf-router {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #14243a;
+}
+
+.ospf-lan span,
+.ospf-router span {
+    font-size: 0.76rem;
+    overflow-wrap: anywhere;
+}
+
+.ospf-link {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #087f8c;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.ospf-note {
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.ospf-code {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 18px 0;
+    padding: 18px 20px;
+    border-radius: 9px;
+    background: #14243a;
+    overflow-x: auto;
+}
+
+.ospf-code code {
+    display: block;
+    color: #8ee6d5;
+    font-family: Consolas, monospace;
+    font-size: 0.9rem;
+    white-space: pre;
+}
+
+.ospf-highlight ul {
+    margin: 12px 0 0;
+}
+
+.ospf-trouble {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.ospf-trouble h3 {
+    margin-top: 0;
+}
+
+.ospf-trouble > code {
+    display: block;
+    margin: 7px 0;
+    color: #087f8c;
+    font-family: Consolas, monospace;
+    overflow-wrap: anywhere;
+}
+
+.ospf-faq {
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.ospf-faq h3 {
+    margin: 0 0 8px;
+    font-size: 1.08rem;
+}
+
+.ospf-faq p {
+    margin: 0;
+    color: #526176;
+}
+
+.ospf-next-article {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 12px;
+    background: #14243a;
+    color: #ffffff;
+}
+
+.ospf-next-article span {
+    color: #8ee6d5;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.ospf-next-article h3 {
+    margin: 8px 0;
+    color: #ffffff;
+}
+
+.ospf-next-article p {
+    color: #cbd5e1;
+}
+
+.ospf-next-article a {
+    color: #8ee6d5;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ospf-next-article a:hover {
+    text-decoration: underline;
+}
+
+.ospf-references {
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.ospf-references h2 {
+    font-size: 1.4rem;
+}
+
+.ospf-references a {
+    color: #087f8c;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .ospf-topology {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .ospf-link {
+        padding: 4px;
+    }
+
+    .ospf-link span:last-child {
+        transform: rotate(90deg);
+    }
+
+    .ospf-area-diagram {
+        grid-template-columns: 1fr;
+    }
+
+    .ospf-state-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .ospf-article {
+        width: 91%;
+        padding-top: 22px;
+    }
+
+    .ospf-toc {
+        padding: 20px;
+    }
+
+    .ospf-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .ospf-table {
+        font-size: 0.86rem;
+    }
+
+    .ospf-table th,
+    .ospf-table td {
+        padding: 10px;
+    }
+}
+
+/* =========================================
+   TCP VS UDP ARTICLE
+========================================= */
+
+.transport-article {
+    width: min(900px, 92%);
+    margin: 0 auto;
+    padding: 35px 0 80px;
+    color: #253247;
+    line-height: 1.8;
+}
+
+.transport-breadcrumb {
+    margin-bottom: 28px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.transport-breadcrumb a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.transport-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.transport-header {
+    margin-bottom: 35px;
+}
+
+.transport-category {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #087f8c;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.transport-header h1 {
+    margin: 0 0 18px;
+    color: #14243a;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.2;
+}
+
+.transport-subtitle {
+    max-width: 760px;
+    color: #64748b;
+    font-size: 1.12rem;
+}
+
+.transport-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+    color: #718096;
+    font-size: 0.88rem;
+}
+
+.transport-callout,
+.transport-highlight {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-left: 4px solid #0d9488;
+    border-radius: 8px;
+    background: #effaf8;
+}
+
+.transport-callout strong,
+.transport-highlight strong {
+    color: #11645f;
+}
+
+.transport-callout p,
+.transport-highlight p {
+    margin: 8px 0 0;
+}
+
+.transport-toc {
+    margin: 35px 0 45px;
+    padding: 25px 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.transport-toc h2 {
+    margin-top: 0;
+    color: #14243a;
+    font-size: 1.35rem;
+}
+
+.transport-toc ol {
+    margin-bottom: 0;
+    padding-left: 23px;
+}
+
+.transport-toc li {
+    margin: 5px 0;
+}
+
+.transport-toc a {
+    color: #087f8c;
+    text-decoration: none;
+}
+
+.transport-toc a:hover {
+    text-decoration: underline;
+}
+
+.transport-content section {
+    margin: 0 0 55px;
+    scroll-margin-top: 25px;
+}
+
+.transport-content h2 {
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #14243a;
+    font-size: 1.8rem;
+    line-height: 1.35;
+}
+
+.transport-content h3 {
+    margin: 28px 0 12px;
+    color: #20354f;
+    font-size: 1.25rem;
+}
+
+.transport-content p {
+    margin: 0 0 18px;
+}
+
+.transport-content ul,
+.transport-content ol {
+    padding-left: 25px;
+    margin-bottom: 22px;
+}
+
+.transport-content li {
+    margin-bottom: 9px;
+}
+
+.transport-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    margin: 25px 0;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.transport-layer-box {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 430px);
+    padding: 12px 15px;
+    border: 1px solid #cce9e6;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #20354f;
+    text-align: center;
+}
+
+.transport-layer-box span {
+    color: #64748b;
+    font-size: 0.86rem;
+}
+
+.transport-layer-box.active {
+    border-color: #0d9488;
+    background: #effaf8;
+    color: #075e63;
+}
+
+.transport-flow > span {
+    color: #0d9488;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.transport-table-wrap {
+    width: 100%;
+    margin: 22px 0;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+}
+
+.transport-table {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 0.94rem;
+}
+
+.transport-table th,
+.transport-table td {
+    padding: 13px 15px;
+    border-bottom: 1px solid #e8edf2;
+    text-align: left;
+    vertical-align: top;
+}
+
+.transport-table thead th {
+    background: #14243a;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.transport-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.transport-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.transport-handshake {
+    margin: 28px 0;
+    padding: 25px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.handshake-endpoints {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px 20px;
+    color: #14243a;
+}
+
+.handshake-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    align-items: center;
+    min-height: 54px;
+    gap: 8px;
+    text-align: center;
+}
+
+.handshake-left,
+.handshake-right {
+    padding: 7px 10px;
+    border: 1px solid #cce9e6;
+    border-radius: 7px;
+    background: #effaf8;
+    color: #075e63;
+    font-weight: 700;
+}
+
+.handshake-arrow {
+    color: #087f8c;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.handshake-success {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 7px;
+    background: #14243a;
+    color: #8ee6d5;
+    font-weight: 700;
+    text-align: center;
+}
+
+.transport-port-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.transport-port-cards > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #f8fafc;
+}
+
+.transport-port-cards strong {
+    color: #087f8c;
+    font-size: 1.35rem;
+}
+
+.transport-port-cards span {
+    color: #20354f;
+    font-weight: 700;
+}
+
+.transport-port-cards p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.88rem;
+}
+
+.transport-packet {
+    margin: 20px 0 30px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.transport-packet > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 6px 0;
+    padding: 16px;
+    border-radius: 7px;
+    text-align: center;
+}
+
+.transport-packet strong {
+    font-size: 0.95rem;
+}
+
+.transport-packet span {
+    font-size: 0.85rem;
+}
+
+.packet-ip {
+    background: #e9eef7;
+    color: #263d60;
+}
+
+.packet-tcp {
+    background: #d9f3ed;
+    color: #075e63;
+}
+
+.packet-udp {
+    background: #e8e4fa;
+    color: #51408a;
+}
+
+.packet-data {
+    background: #fff0d9;
+    color: #865515;
+}
+
+.transport-code {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 18px 0;
+    padding: 18px 20px;
+    border-radius: 9px;
+    background: #14243a;
+    overflow-x: auto;
+}
+
+.transport-code code {
+    display: block;
+    color: #8ee6d5;
+    font-family: Consolas, monospace;
+    font-size: 0.9rem;
+    white-space: pre;
+}
+
+.transport-content code {
+    font-family: Consolas, monospace;
+}
+
+.transport-faq {
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.transport-faq h3 {
+    margin: 0 0 8px;
+    font-size: 1.08rem;
+}
+
+.transport-faq p {
+    margin: 0;
+    color: #526176;
+}
+
+.transport-next {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 12px;
+    background: #14243a;
+    color: #ffffff;
+}
+
+.transport-next > span {
+    color: #8ee6d5;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.transport-next h3 {
+    margin: 8px 0;
+    color: #ffffff;
+}
+
+.transport-next p {
+    color: #cbd5e1;
+}
+
+.transport-next a {
+    color: #8ee6d5;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.transport-next a:hover {
+    text-decoration: underline;
+}
+
+.transport-references {
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.transport-references h2 {
+    font-size: 1.4rem;
+}
+
+.transport-references a {
+    color: #087f8c;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .transport-port-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .handshake-row {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4px;
+    }
+
+    .handshake-arrow {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .transport-article {
+        width: 91%;
+        padding-top: 22px;
+    }
+
+    .transport-toc {
+        padding: 20px;
+    }
+
+    .transport-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .transport-table {
+        font-size: 0.86rem;
+    }
+
+    .transport-table th,
+    .transport-table td {
+        padding: 10px;
+    }
+
+    .transport-handshake {
+        padding: 18px 10px;
+    }
+}
+
+/* =========================================
+   SUBNETTING ARTICLE
+========================================= */
+
+.subnet-article {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 70px;
+}
+
+.subnet-hero {
+    background: linear-gradient(135deg, #102b46, #087e8b);
+    color: #ffffff;
+    padding: 55px 45px;
+    border-radius: 14px;
+    margin-bottom: 45px;
+}
+
+.subnet-category {
+    color: #a9e6e9;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.subnet-hero h1 {
+    max-width: 850px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    margin: 15px 0;
+}
+
+.subnet-hero > p:not(.subnet-category) {
+    max-width: 750px;
+    line-height: 1.8;
+    color: #e1f1f3;
+}
+
+.subnet-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.subnet-meta span {
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 7px 13px;
+    font-size: 0.85rem;
+}
+
+.subnet-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 45px;
+    align-items: start;
+}
+
+.subnet-toc {
+    position: sticky;
+    top: 25px;
+    background: #f5f8fa;
+    border: 1px solid #e0e7ec;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.subnet-toc h2 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.subnet-toc ol {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.subnet-toc li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.subnet-toc a {
+    color: #31536b;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.subnet-toc a:hover {
+    color: #087e8b;
+    text-decoration: underline;
+}
+
+.subnet-content {
+    min-width: 0;
+    line-height: 1.85;
+    color: #344454;
+}
+
+.subnet-content section {
+    margin-bottom: 55px;
+    scroll-margin-top: 25px;
+}
+
+.subnet-content h2 {
+    color: #15364f;
+    font-size: 1.8rem;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e4ecef;
+}
+
+.subnet-content h3 {
+    color: #164d66;
+    font-size: 1.2rem;
+    margin: 25px 0 12px;
+}
+
+.subnet-content p {
+    margin-bottom: 15px;
+}
+
+.subnet-content ul {
+    padding-left: 25px;
+    margin: 15px 0 25px;
+}
+
+.subnet-content li {
+    margin-bottom: 10px;
+}
+
+.subnet-content a {
+    color: #087e8b;
+}
+
+.subnet-content code {
+    background: #edf3f6;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: #17465e;
+}
+
+.subnet-callout {
+    background: #eaf6f7;
+    border-left: 4px solid #087e8b;
+    padding: 18px 22px;
+    margin: 25px 0;
+    border-radius: 5px;
+}
+
+.subnet-example {
+    background: #f5f8fa;
+    border: 1px solid #dce7ed;
+    border-radius: 10px;
+    padding: 22px;
+    margin: 25px 0;
+}
+
+.subnet-example h3 {
+    margin-top: 0;
+}
+
+.subnet-ip {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #087e8b;
+    letter-spacing: 1px;
+}
+
+.subnet-binary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.subnet-binary div {
+    background: #ffffff;
+    border: 1px solid #dce7ed;
+    border-radius: 7px;
+    padding: 12px 5px;
+    text-align: center;
+}
+
+.subnet-binary strong,
+.subnet-binary span {
+    display: block;
+}
+
+.subnet-binary strong {
+    color: #087e8b;
+    font-size: 1.2rem;
+}
+
+.subnet-binary span {
+    font-family: monospace;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.subnet-place-values {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.subnet-place-values span {
+    background: #15364f;
+    color: #ffffff;
+    text-align: center;
+    padding: 12px 2px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.subnet-code {
+    display: block;
+    background: #15364f !important;
+    color: #ffffff !important;
+    padding: 15px !important;
+    border-radius: 7px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.subnet-formula {
+    background: #15364f;
+    color: #ffffff;
+    padding: 17px 20px;
+    border-radius: 8px;
+    margin: 18px 0;
+    font-family: monospace;
+    font-size: 1.05rem;
+    overflow-x: auto;
+}
+
+.subnet-result {
+    background: #eaf6f7;
+    border: 1px solid #c6e4e7;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.subnet-result h3 {
+    margin-top: 0;
+    color: #087e8b;
+}
+
+.subnet-result p {
+    margin-bottom: 8px;
+}
+
+.subnet-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 25px 0;
+}
+
+.subnet-table-wrap table {
+    width: 100%;
+    min-width: 550px;
+    border-collapse: collapse;
+}
+
+.subnet-table-wrap th,
+.subnet-table-wrap td {
+    padding: 13px;
+    border: 1px solid #dce5eb;
+    text-align: left;
+}
+
+.subnet-table-wrap th {
+    background: #15364f;
+    color: #ffffff;
+}
+
+.subnet-table-wrap tr:nth-child(even) {
+    background: #f3f7f9;
+}
+
+.subnet-note {
+    color: #687b88;
+    font-size: 0.9rem;
+}
+
+.subnet-question,
+.subnet-faq {
+    border: 1px solid #dce7ed;
+    border-radius: 9px;
+    padding: 20px;
+    margin: 18px 0;
+    background: #ffffff;
+}
+
+.subnet-question h3,
+.subnet-faq h3 {
+    margin-top: 0;
+}
+
+.subnet-question details {
+    margin-top: 15px;
+    background: #f3f7f9;
+    padding: 12px 15px;
+    border-radius: 6px;
+}
+
+.subnet-question summary {
+    color: #087e8b;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.subnet-question details p {
+    margin: 12px 0 0;
+}
+
+.subnet-conclusion {
+    background: #f2f7f9;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.subnet-references {
+    border-top: 1px solid #dce5eb;
+    padding-top: 25px;
+}
+
+.subnet-references li {
+    overflow-wrap: anywhere;
+}
+
+.subnet-back {
+    margin-top: 35px;
+}
+
+.subnet-back a {
+    display: inline-block;
+    background: #15364f;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+}
+
+.subnet-back a:hover {
+    background: #087e8b;
+}
+
+/* Responsive layout */
+
+@media (max-width: 850px) {
+    .subnet-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .subnet-toc {
+        position: static;
+    }
+
+    .subnet-toc ol {
+        columns: 2;
+        column-gap: 25px;
+    }
+}
+
+@media (max-width: 550px) {
+    .subnet-article {
+        padding: 25px 15px 50px;
+    }
+
+    .subnet-hero {
+        padding: 35px 22px;
+    }
+
+    .subnet-binary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .subnet-place-values {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .subnet-toc ol {
+        columns: 1;
+    }
+
+    .subnet-content h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* =========================================
+   VLAN ARTICLE
+========================================= */
+
+.vlan-article {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 70px;
+}
+
+.vlan-hero {
+    background: linear-gradient(135deg, #102b46, #087e8b);
+    color: white;
+    padding: 55px 45px;
+    border-radius: 14px;
+    margin-bottom: 45px;
+}
+
+.vlan-category {
+    color: #a9e6e9;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.vlan-hero h1 {
+    max-width: 850px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    margin: 15px 0;
+}
+
+.vlan-hero > p:not(.vlan-category) {
+    max-width: 750px;
+    line-height: 1.8;
+    color: #e1f1f3;
+}
+
+.vlan-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.vlan-meta span {
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 7px 13px;
+    font-size: 0.85rem;
+}
+
+.vlan-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 45px;
+    align-items: start;
+}
+
+.vlan-toc {
+    position: sticky;
+    top: 25px;
+    background: #f5f8fa;
+    border: 1px solid #e0e7ec;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.vlan-toc h2 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.vlan-toc ol {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.vlan-toc li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.vlan-toc a {
+    color: #31536b;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.vlan-toc a:hover {
+    color: #087e8b;
+    text-decoration: underline;
+}
+
+.vlan-content {
+    min-width: 0;
+    line-height: 1.85;
+    color: #344454;
+}
+
+.vlan-content section {
+    margin-bottom: 55px;
+    scroll-margin-top: 25px;
+}
+
+.vlan-content h2 {
+    color: #15364f;
+    font-size: 1.8rem;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e4ecef;
+}
+
+.vlan-content h3 {
+    color: #164d66;
+    font-size: 1.2rem;
+    margin: 25px 0 12px;
+}
+
+.vlan-content p {
+    margin-bottom: 15px;
+}
+
+.vlan-content ul,
+.vlan-content ol {
+    padding-left: 25px;
+    margin: 15px 0 25px;
+}
+
+.vlan-content li {
+    margin-bottom: 10px;
+}
+
+.vlan-content a {
+    color: #087e8b;
+}
+
+.vlan-content code {
+    background: #edf3f6;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: #17465e;
+}
+
+.vlan-callout {
+    background: #eaf6f7;
+    border-left: 4px solid #087e8b;
+    padding: 18px 22px;
+    margin: 25px 0;
+    border-radius: 5px;
+}
+
+.vlan-departments {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.vlan-department {
+    padding: 20px 12px;
+    border-radius: 9px;
+    text-align: center;
+    border: 1px solid #dce5eb;
+}
+
+.vlan-department h3 {
+    margin: 0 0 10px;
+}
+
+.vlan-department p {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+}
+
+.vlan-blue {
+    background: #eaf2ff;
+    border-color: #c8daf5;
+}
+
+.vlan-blue h3 {
+    color: #225da1;
+}
+
+.vlan-green {
+    background: #eaf7ef;
+    border-color: #c5e7d0;
+}
+
+.vlan-green h3 {
+    color: #247343;
+}
+
+.vlan-orange {
+    background: #fff3e5;
+    border-color: #f2d6b4;
+}
+
+.vlan-orange h3 {
+    color: #a75c18;
+}
+
+.vlan-diagram {
+    background: #f5f8fa;
+    border: 1px solid #dce7ed;
+    padding: 22px;
+    margin: 25px 0;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.vlan-diagram h3 {
+    margin-top: 0;
+}
+
+.vlan-switch {
+    display: inline-block;
+    background: #15364f;
+    color: white;
+    padding: 13px 30px;
+    border-radius: 7px;
+    font-weight: 700;
+}
+
+.vlan-lines {
+    height: 35px;
+    display: flex;
+    justify-content: space-around;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.vlan-lines span {
+    border-left: 2px solid #087e8b;
+}
+
+.vlan-devices {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.vlan-devices div {
+    background: white;
+    border: 1px solid #dce5eb;
+    padding: 12px 20px;
+    border-radius: 7px;
+}
+
+.vlan-separate {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.vlan-segment {
+    padding: 15px 8px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.vlan-segment span {
+    background: white;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.vlan-diagram-note {
+    color: #647785;
+    font-size: 0.9rem;
+    margin: 18px 0 0;
+}
+
+.vlan-type {
+    border: 1px solid #dce7ed;
+    border-radius: 9px;
+    padding: 18px 22px;
+    margin: 18px 0;
+}
+
+.vlan-type h3 {
+    margin-top: 0;
+}
+
+.vlan-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 25px 0;
+}
+
+.vlan-table-wrap table {
+    width: 100%;
+    min-width: 550px;
+    border-collapse: collapse;
+}
+
+.vlan-table-wrap th,
+.vlan-table-wrap td {
+    padding: 13px;
+    border: 1px solid #dce5eb;
+    text-align: left;
+}
+
+.vlan-table-wrap th {
+    background: #15364f;
+    color: white;
+}
+
+.vlan-table-wrap tr:nth-child(even) {
+    background: #f3f7f9;
+}
+
+.vlan-code {
+    background: #15364f;
+    color: #f1f7fa;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 18px 0 25px;
+    line-height: 1.7;
+    font-size: 0.9rem;
+}
+
+.vlan-code code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    white-space: pre;
+}
+
+.vlan-frame {
+    background: #f5f8fa;
+    border: 1px solid #dce7ed;
+    padding: 22px;
+    margin: 25px 0;
+    border-radius: 10px;
+}
+
+.vlan-frame h3 {
+    margin-top: 0;
+}
+
+.vlan-frame-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+}
+
+.vlan-frame-fields span {
+    padding: 14px 8px;
+    background: #dce9f0;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.vlan-frame-fields .vlan-tag {
+    background: #bde6e8;
+    color: #155c65;
+}
+
+.vlan-lab-topology {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: #f5f8fa;
+    padding: 25px 15px;
+    border-radius: 10px;
+    margin: 25px 0 12px;
+}
+
+.vlan-lab-switch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #15364f;
+    color: white;
+    padding: 17px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 115px;
+}
+
+.vlan-lab-switch span {
+    font-size: 0.75rem;
+}
+
+.vlan-lab-link {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 7px;
+    color: #087e8b;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.vlan-lab-devices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.vlan-lab-devices div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f5f8fa;
+    border: 1px solid #dce7ed;
+    padding: 17px;
+    border-radius: 8px;
+}
+
+.vlan-lab-devices strong {
+    color: #15364f;
+}
+
+.vlan-lab-devices span {
+    font-size: 0.9rem;
+}
+
+.vlan-command {
+    background: #f5f8fa;
+    border: 1px solid #dce7ed;
+    border-radius: 8px;
+    padding: 17px;
+    margin: 14px 0;
+}
+
+.vlan-command code {
+    display: inline-block;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.vlan-command p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.vlan-faq {
+    border: 1px solid #dce7ed;
+    border-radius: 9px;
+    padding: 20px;
+    margin: 18px 0;
+}
+
+.vlan-faq h3 {
+    margin-top: 0;
+}
+
+.vlan-conclusion {
+    background: #f2f7f9;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.vlan-references {
+    border-top: 1px solid #dce5eb;
+    padding-top: 25px;
+}
+
+.vlan-references li {
+    overflow-wrap: anywhere;
+}
+
+.vlan-back {
+    margin-top: 35px;
+}
+
+.vlan-back a {
+    display: inline-block;
+    background: #15364f;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+}
+
+.vlan-back a:hover {
+    background: #087e8b;
+}
+
+@media (max-width: 850px) {
+    .vlan-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .vlan-toc {
+        position: static;
+    }
+
+    .vlan-toc ol {
+        columns: 2;
+        column-gap: 25px;
+    }
+}
+
+@media (max-width: 550px) {
+    .vlan-article {
+        padding: 25px 15px 50px;
+    }
+
+    .vlan-hero {
+        padding: 35px 22px;
+    }
+
+    .vlan-departments,
+    .vlan-separate {
+        grid-template-columns: 1fr;
+    }
+
+    .vlan-toc ol {
+        columns: 1;
+    }
+
+    .vlan-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .vlan-lab-topology {
+        flex-direction: column;
+    }
+
+    .vlan-lab-devices {
+        grid-template-columns: 1fr;
+    }
+
+    .vlan-frame-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .vlan-devices {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==============================
+   DHCP ARTICLE STYLES
+============================== */
+
+.dhcp-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+}
+
+.dhcp-article h1 {
+    font-size: 2.4rem;
+    line-height: 1.25;
+    margin-bottom: 15px;
+}
+
+.dhcp-article h2 {
+    font-size: 1.7rem;
+    margin-top: 45px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.dhcp-article h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.dhcp-article p {
+    margin-bottom: 16px;
+}
+
+.dhcp-article ul,
+.dhcp-article ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.dhcp-article li {
+    margin-bottom: 8px;
+}
+
+.dhcp-article code {
+    background: #f1f5f9;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.dhcp-article pre {
+    background: #111827;
+    color: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.dhcp-article pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.dhcp-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    display: block;
+    overflow-x: auto;
+}
+
+.dhcp-article th,
+.dhcp-article td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: left;
+}
+
+.dhcp-article th {
+    background: #f1f5f9;
+}
+
+.dhcp-article a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.dhcp-article a:hover {
+    text-decoration: underline;
+}
+
+.dhcp-article .dhcp-info,
+.dhcp-article .dhcp-warning,
+.dhcp-article .dhcp-example {
+    padding: 16px 20px;
+    margin: 22px 0;
+    border-radius: 8px;
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+}
+
+.dhcp-article .dhcp-warning {
+    background: #fff7ed;
+    border-left-color: #f97316;
+}
+
+.dhcp-article .dhcp-example {
+    background: #f0fdf4;
+    border-left-color: #16a34a;
+}
+
+.dhcp-article .dhcp-diagram {
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .dhcp-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .dhcp-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .dhcp-article h2 {
+        font-size: 1.4rem;
+    }
+
+    .dhcp-article pre {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ==============================
+   DNS ARTICLE STYLES
+============================== */
+
+.dns-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+}
+
+.dns-article h1 {
+    font-size: 2.4rem;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.dns-article h2 {
+    font-size: 1.7rem;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.dns-article h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.dns-article p {
+    margin-bottom: 16px;
+}
+
+.dns-article ul,
+.dns-article ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.dns-article li {
+    margin-bottom: 8px;
+}
+
+.dns-article code {
+    background: #f1f5f9;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.dns-article pre {
+    background: #111827;
+    color: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.dns-article pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.dns-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    display: block;
+    overflow-x: auto;
+}
+
+.dns-article th,
+.dns-article td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: left;
+}
+
+.dns-article th {
+    background: #f1f5f9;
+}
+
+.dns-article a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.dns-article a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .dns-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .dns-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .dns-article h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* VLAN TRUNKING ARTICLE */
+
+.trunk-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+}
+
+.trunk-article h1 {
+    font-size: 2.4rem;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.trunk-article h2 {
+    font-size: 1.7rem;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.trunk-article h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.trunk-article p {
+    margin-bottom: 16px;
+}
+
+.trunk-article ul,
+.trunk-article ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.trunk-article li {
+    margin-bottom: 8px;
+}
+
+.trunk-article pre {
+    background: #111827;
+    color: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.trunk-article pre code {
+    background: transparent;
+    color: inherit;
+}
+
+.trunk-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    display: block;
+    overflow-x: auto;
+}
+
+.trunk-article th,
+.trunk-article td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: left;
+}
+
+.trunk-article th {
+    background: #f1f5f9;
+}
+
+.trunk-article a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.trunk-article a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .trunk-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .trunk-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .trunk-article h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* STP ARTICLE STYLES */
+
+.stp-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+}
+
+.stp-article h1 {
+    font-size: 2.4rem;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.stp-article h2 {
+    font-size: 1.7rem;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.stp-article h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.stp-article p {
+    margin-bottom: 16px;
+}
+
+.stp-article ul,
+.stp-article ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.stp-article li {
+    margin-bottom: 8px;
+}
+
+.stp-article pre {
+    background: #111827;
+    color: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.stp-article pre code {
+    background: transparent;
+    color: inherit;
+}
+
+.stp-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    display: block;
+    overflow-x: auto;
+}
+
+.stp-article th,
+.stp-article td {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    text-align: left;
+}
+
+.stp-article th {
+    background: #f1f5f9;
+}
+
+.stp-article a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.stp-article a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .stp-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .stp-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .stp-article h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* EtherChannel Article */
+.ether-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.ether-article h1 {
+    font-size: 2.3rem;
+    margin-bottom: 15px;
+}
+
+.ether-article h2 {
+    margin-top: 35px;
+    margin-bottom: 12px;
+    color: #1565c0;
+}
+
+.ether-article h3 {
+    margin-top: 24px;
+    color: #37474f;
+}
+
+.ether-article p,
+.ether-article li {
+    font-size: 1rem;
+}
+
+.ether-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 18px 0;
+}
+
+.ether-article code {
+    font-family: Consolas, monospace;
+}
+
+.ether-article a {
+    color: #1565c0;
+}
+
+.ether-article .article-note {
+    background: #e3f2fd;
+    border-left: 4px solid #1976d2;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    .ether-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .ether-article h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* NAT Article Styling */
+
+.nat-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.nat-article h1 {
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    color: #172554;
+}
+
+.nat-article h2 {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: #1565c0;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+.nat-article h3 {
+    margin-top: 25px;
+    color: #37474f;
+}
+
+.nat-article p,
+.nat-article li {
+    font-size: 1rem;
+}
+
+.nat-article ul,
+.nat-article ol {
+    padding-left: 25px;
+}
+
+.nat-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.nat-article code {
+    font-family: Consolas, monospace;
+}
+
+.nat-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.nat-article th,
+.nat-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.nat-article th {
+    background: #e3f2fd;
+}
+
+.nat-article a {
+    color: #1565c0;
+    text-decoration: none;
+}
+
+.nat-article a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .nat-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .nat-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .nat-article pre {
+        padding: 14px;
+    }
+
+    .nat-article table {
+        font-size: 0.85rem;
+    }
+}
+
+/* =================================
+   INTER-VLAN ROUTING ARTICLE
+================================= */
+
+.intervlan-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.intervlan-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    margin-bottom: 20px;
+}
+
+.intervlan-article h2 {
+    color: #1565c0;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.intervlan-article h3 {
+    color: #37474f;
+    margin-top: 25px;
+}
+
+.intervlan-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.intervlan-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.intervlan-article th,
+.intervlan-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.intervlan-article th {
+    background: #e3f2fd;
+}
+
+.intervlan-article a {
+    color: #1565c0;
+}
+
+.intervlan-article p,
+.intervlan-article li {
+    font-size: 1rem;
+}
+
+
+/* =================================
+   ACCESS CONTROL LISTS ARTICLE
+================================= */
+
+.acl-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.acl-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    margin-bottom: 20px;
+}
+
+.acl-article h2 {
+    color: #1565c0;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.acl-article h3 {
+    color: #37474f;
+    margin-top: 25px;
+}
+
+.acl-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.acl-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.acl-article th,
+.acl-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.acl-article th {
+    background: #e3f2fd;
+}
+
+.acl-article a {
+    color: #1565c0;
+}
+
+.acl-article p,
+.acl-article li {
+    font-size: 1rem;
+}
+
+
+/* =================================
+   MOBILE RESPONSIVENESS
+================================= */
+
+@media (max-width: 600px) {
+    .intervlan-article,
+    .acl-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .intervlan-article h1,
+    .acl-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .intervlan-article pre,
+    .acl-article pre {
+        padding: 14px;
+    }
+
+    .intervlan-article table,
+    .acl-article table {
+        font-size: 0.85rem;
+    }
+}
+
+/* IPv6 Article Styling */
+
+.ipv6-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.ipv6-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    margin-bottom: 20px;
+}
+
+.ipv6-article h2 {
+    color: #1565c0;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+.ipv6-article h3 {
+    color: #37474f;
+    margin-top: 25px;
+}
+
+.ipv6-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.ipv6-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.ipv6-article th,
+.ipv6-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.ipv6-article th {
+    background: #e3f2fd;
+}
+
+.ipv6-article .ipv6-note {
+    background: #e3f2fd;
+    border-left: 4px solid #1976d2;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.ipv6-article a {
+    color: #1565c0;
+}
+
+@media (max-width: 600px) {
+    .ipv6-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .ipv6-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .ipv6-article pre {
+        padding: 14px;
+    }
+}
+
+/* =================================
+   EIGRP ARTICLE STYLING
+================================= */
+
+.eigrp-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.eigrp-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+.eigrp-article h2 {
+    color: #1565c0;
+    font-size: 1.6rem;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.eigrp-article h3 {
+    color: #37474f;
+    font-size: 1.2rem;
+    margin-top: 25px;
+}
+
+.eigrp-article p {
+    margin-bottom: 16px;
+}
+
+.eigrp-article ul,
+.eigrp-article ol {
+    padding-left: 28px;
+    margin-bottom: 20px;
+}
+
+.eigrp-article li {
+    margin-bottom: 8px;
+}
+
+.eigrp-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.eigrp-article code {
+    font-family: Consolas, Monaco, monospace;
+}
+
+.eigrp-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.eigrp-article th,
+.eigrp-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.eigrp-article th {
+    background: #e3f2fd;
+    color: #172554;
+}
+
+.eigrp-article tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+@media (max-width: 600px) {
+    .eigrp-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .eigrp-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .eigrp-article h2 {
+        font-size: 1.35rem;
+    }
+
+    .eigrp-article pre {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+
+    .eigrp-article table {
+        font-size: 0.85rem;
+    }
+
+    .eigrp-article th,
+    .eigrp-article td {
+        padding: 8px;
+    }
+}
+
+/* =================================
+   ADVANCED OSPF ARTICLE STYLING
+================================= */
+
+.ospf-advanced-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.ospf-advanced-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+.ospf-advanced-article h2 {
+    color: #1565c0;
+    font-size: 1.6rem;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ospf-advanced-article h3 {
+    color: #37474f;
+    font-size: 1.2rem;
+    margin-top: 25px;
+}
+
+.ospf-advanced-article p {
+    margin-bottom: 16px;
+}
+
+.ospf-advanced-article ul,
+.ospf-advanced-article ol {
+    padding-left: 28px;
+    margin-bottom: 20px;
+}
+
+.ospf-advanced-article li {
+    margin-bottom: 8px;
+}
+
+.ospf-advanced-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.ospf-advanced-article code {
+    font-family: Consolas, Monaco, monospace;
+}
+
+.ospf-advanced-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.ospf-advanced-article th,
+.ospf-advanced-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.ospf-advanced-article th {
+    background: #e3f2fd;
+    color: #172554;
+}
+
+.ospf-advanced-article tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.ospf-advanced-note {
+    background: #e3f2fd;
+    border-left: 4px solid #1976d2;
+    padding: 16px;
+    margin: 25px 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    .ospf-advanced-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .ospf-advanced-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .ospf-advanced-article h2 {
+        font-size: 1.35rem;
+    }
+
+    .ospf-advanced-article pre {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+
+    .ospf-advanced-article table {
+        font-size: 0.85rem;
+    }
+
+    .ospf-advanced-article th,
+    .ospf-advanced-article td {
+        padding: 8px;
+    }
+}
+
+/* =================================
+   BGP ARTICLE STYLING
+================================= */
+
+.bgp-article {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    line-height: 1.8;
+    color: #263238;
+}
+
+.bgp-article h1 {
+    font-size: 2.3rem;
+    color: #172554;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+.bgp-article h2 {
+    color: #1565c0;
+    font-size: 1.6rem;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bgp-article h3 {
+    color: #37474f;
+    font-size: 1.2rem;
+    margin-top: 25px;
+}
+
+.bgp-article p {
+    margin-bottom: 16px;
+}
+
+.bgp-article ul,
+.bgp-article ol {
+    padding-left: 28px;
+    margin-bottom: 20px;
+}
+
+.bgp-article li {
+    margin-bottom: 8px;
+}
+
+.bgp-article pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.bgp-article code {
+    font-family: Consolas, Monaco, monospace;
+}
+
+.bgp-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.bgp-article th,
+.bgp-article td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.bgp-article th {
+    background: #e3f2fd;
+    color: #172554;
+}
+
+.bgp-article tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+@media (max-width: 600px) {
+    .bgp-article {
+        padding: 18px;
+        margin: 20px auto;
+    }
+
+    .bgp-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .bgp-article h2 {
+        font-size: 1.35rem;
+    }
+
+    .bgp-article pre {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+
+    .bgp-article table {
+        font-size: 0.85rem;
+    }
+
+    .bgp-article th,
+    .bgp-article td {
+        padding: 8px;
+    }
+}
+
+/* =====================================
+   ROUTE REDISTRIBUTION ARTICLE
+===================================== */
+
+.redistribution-article {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 35px;
+    background: #ffffff;
+    color: #263445;
+    border-radius: 12px;
+    line-height: 1.8;
+}
+
+.redistribution-article h1 {
+    font-size: 2.3rem;
+    color: #172b4d;
+    line-height: 1.3;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 18px;
+}
+
+.redistribution-article h2 {
+    font-size: 1.65rem;
+    color: #1e40af;
+    margin-top: 42px;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dbe4f0;
+}
+
+.redistribution-article h3 {
+    font-size: 1.2rem;
+    color: #334e75;
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+
+.redistribution-article p {
+    margin-bottom: 18px;
+}
+
+.redistribution-article ul,
+.redistribution-article ol {
+    padding-left: 28px;
+    margin-bottom: 22px;
+}
+
+.redistribution-article li {
+    margin-bottom: 9px;
+}
+
+.redistribution-article pre {
+    background: #172033;
+    color: #dbeafe;
+    padding: 22px;
+    border-radius: 9px;
+    overflow-x: auto;
+    margin: 22px 0;
+    border-left: 4px solid #3b82f6;
+    line-height: 1.6;
+}
+
+.redistribution-article pre code {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 0.92rem;
+    white-space: pre;
+}
+
+.redistribution-article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    overflow: hidden;
+}
+
+.redistribution-article th,
+.redistribution-article td {
+    border: 1px solid #dbe3ed;
+    padding: 13px 15px;
+    text-align: left;
+}
+
+.redistribution-article th {
+    background: #eaf1ff;
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.redistribution-article tr:nth-child(even) {
+    background: #f7f9fc;
+}
+
+.redistribution-note {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    padding: 18px 20px;
+    margin: 25px 0;
+    border-radius: 6px;
+}
+
+.redistribution-article strong {
+    color: #1e40af;
+}
+
+@media (max-width: 768px) {
+    .redistribution-article {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .redistribution-article h1 {
+        font-size: 1.8rem;
+    }
+
+    .redistribution-article h2 {
+        font-size: 1.4rem;
+    }
+
+    .redistribution-article table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .redistribution-article pre {
+        padding: 15px;
+    }
+}
