@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn DNS, domain name resolution, DNS records, caching, TTL and Linux DNS troubleshooting.">
+  <title>DNS Explained | Network Knowledge</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <a href="../index.html" class="logo">Network Knowledge</a>
+    <a href="../index.html">Home</a>
+  </nav>
+</header>
+
+<main class="article-container">
+<article>
+
+<h1>DNS: Domain Name System Explained</h1>
+
+<p class="article-intro">
+DNS translates human-readable domain names into IP addresses,
+allowing computers to locate websites and network services.
+</p>
+
+<p><strong>Category:</strong> Networking Fundamentals</p>
+<p><strong>Reading time:</strong> 12 minutes</p>
+
+<hr>
+
+<h2>1. What is DNS?</h2>
+
+<p>
+DNS stands for Domain Name System. It is a distributed,
+hierarchical naming system that translates domain names
+into information such as IP addresses.
+</p>
+
+<p>For example:</p>
+
+<pre>
+Domain Name: example.com
+IPv4 Address: 93.184.216.34
+</pre>
+
+<p>
+Instead of remembering numerical IP addresses,
+users can access services using memorable domain names.
+</p>
+
+<h2>2. Why is DNS Necessary?</h2>
+
+<p>
+Computers communicate using IP addresses. However,
+remembering the addresses of every website and server
+would be difficult.
+</p>
+
+<p>DNS provides:</p>
+
+<ul>
+<li>Domain name resolution.</li>
+<li>Distributed naming management.</li>
+<li>Flexible IP address changes.</li>
+<li>Service discovery through DNS records.</li>
+<li>Scalable network communication.</li>
+</ul>
+
+<h2>3. How DNS Resolution Works</h2>
+
+<p>
+DNS resolution is the process of finding information
+associated with a domain name.
+</p>
+
+<p>Consider a user accessing example.com:</p>
+
+<ol>
+<li><strong>Client request:</strong> The browser needs the IP address of example.com.</li>
+<li><strong>Local cache:</strong> The operating system checks available DNS caches.</li>
+<li><strong>Recursive resolver:</strong> The request is sent to a DNS resolver if no cached answer is available.</li>
+<li><strong>Root server:</strong> The resolver discovers the appropriate top-level domain servers.</li>
+<li><strong>TLD server:</strong> The resolver receives a referral to the domain's authoritative DNS server.</li>
+<li><strong>Authoritative server:</strong> The requested DNS record is returned.</li>
+<li><strong>Response:</strong> The resolver sends the answer back to the client.</li>
+</ol>
+
+<h3>DNS Resolution Flow</h3>
+
+<pre>
+       Client Computer
+              |
+              | DNS Query
+              v
+      Recursive Resolver
+              |
+              v
+         Root Server
+              |
+              v
+          TLD Server
+              |
+              v
+    Authoritative Server
+              |
+              | DNS Answer
+              v
+      Recursive Resolver
+              |
+              v
+       Client Computer
+              |
+              v
+        Website Access
+</pre>
+
+<h2>4. DNS Hierarchy</h2>
+
+<p>
+DNS follows a hierarchical structure that organizes
+domain names into different levels.
+</p>
+
+<h3>Root Domain</h3>
+
+<p>
+The root domain is the highest level of the DNS hierarchy.
+It is represented by a dot (.). 
+</p>
+
+<h3>Top-Level Domain (TLD)</h3>
+
+<p>
+TLDs are located directly below the root.
+Examples include:
+</p>
+
+<ul>
+<li>.com</li>
+<li>.org</li>
+<li>.net</li>
+<li>.edu</li>
+<li>.in</li>
+</ul>
+
+<h3>Second-Level Domain</h3>
+
+<p>
+This is the registered domain name under a TLD.
+For example, in example.com, example is the second-level domain.
+</p>
+
+<h3>Subdomain</h3>
+
+<p>
+A subdomain is located beneath another domain.
+Examples include:
+</p>
+
+<pre>
+www.example.com
+mail.example.com
+blog.example.com
+</pre>
+
+<h2>5. Types of DNS Queries</h2>
+
+<h3>Recursive Query</h3>
+
+<p>
+In a recursive query, the client expects the DNS resolver
+to provide a final answer or an error rather than a referral
+to another DNS server.
+</p>
+
+<h3>Iterative Query</h3>
+
+<p>
+In an iterative query, a DNS server returns the best
+available answer or a referral to another DNS server.
+The resolver continues the lookup.
+</p>
+
+<h2>6. Common DNS Record Types</h2>
+
+<p>
+DNS records contain information about domain names
+and the services associated with them.
+</p>
+
+<table border="1" cellpadding="10">
+<thead>
+<tr>
+<th>Record</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>A</td>
+<td>Maps a hostname to an IPv4 address.</td>
+<td>192.0.2.10</td>
+</tr>
+
+<tr>
+<td>AAAA</td>
+<td>Maps a hostname to an IPv6 address.</td>
+<td>2001:db8::10</td>
+</tr>
+
+<tr>
+<td>CNAME</td>
+<td>Creates an alias pointing to another domain name.</td>
+<td>www.example.com</td>
+</tr>
+
+<tr>
+<td>MX</td>
+<td>Identifies mail servers for a domain.</td>
+<td>mail.example.com</td>
+</tr>
+
+<tr>
+<td>NS</td>
+<td>Identifies authoritative name servers.</td>
+<td>ns1.example.com</td>
+</tr>
+
+<tr>
+<td>PTR</td>
+<td>Provides reverse DNS information.</td>
+<td>Reverse hostname lookup</td>
+</tr>
+
+<tr>
+<td>TXT</td>
+<td>Stores text information for verification and email security.</td>
+<td>SPF information</td>
+</tr>
+
+<tr>
+<td>SOA</td>
+<td>Contains administrative information about a DNS zone.</td>
+<td>Zone information</td>
+</tr>
+
+</tbody>
+</table>
+
+<h2>7. DNS Port Numbers: TCP and UDP</h2>
+
+<p>
+DNS commonly uses port 53 over both UDP and TCP.
+</p>
+
+<h3>UDP Port 53</h3>
+
+<p>
+UDP is commonly used for standard DNS queries
+because it has low communication overhead.
+</p>
+
+<h3>TCP Port 53</h3>
+
+<p>
+TCP is used for DNS zone transfers and responses
+where TCP is required. DNS can also use TCP for
+ordinary queries.
+</p>
+
+<h2>8. DNS Caching and TTL</h2>
+
+<p>
+DNS caching temporarily stores DNS responses so that
+repeated lookups can be answered more efficiently.
+</p>
+
+<h3>What is TTL?</h3>
+
+<p>
+TTL stands for Time To Live. It specifies how long
+a DNS record may remain cached before it needs
+to be refreshed.
+</p>
+
+<pre>
+Domain: example.com
+Record: A
+TTL: 3600 seconds
+
+3600 seconds = 1 hour
+</pre>
+
+<p>
+Caching reduces unnecessary DNS queries and
+improves lookup efficiency.
+</p>
+
+<h2>9. Practical Linux DNS Commands</h2>
+
+<p>
+Linux provides several command-line utilities
+for DNS lookups and troubleshooting.
+</p>
+
+<h3>nslookup</h3>
+
+<p>Used to query DNS information.</p>
+
+<pre>
+nslookup example.com
+</pre>
+
+<h3>dig</h3>
+
+<p>
+A flexible DNS lookup utility that provides
+detailed response information.
+</p>
+
+<pre>
+dig example.com
+</pre>
+
+<p>Query specific record types:</p>
+
+<pre>
+dig example.com MX
+dig example.com NS
+dig example.com AAAA
+</pre>
+
+<h3>host</h3>
+
+<p>A simple DNS lookup utility.</p>
+
+<pre>
+host example.com
+</pre>
+
+<h3>Check DNS Configuration</h3>
+
+<pre>
+cat /etc/resolv.conf
+</pre>
+
+<p>
+This file commonly displays DNS resolver configuration
+on Linux systems, although modern distributions may
+manage DNS through other services.
+</p>
+
+<h2>10. DNS Troubleshooting Scenarios</h2>
+
+<h3>Problem 1: Website does not resolve</h3>
+
+<p>Possible causes:</p>
+
+<ul>
+<li>Incorrect DNS server configuration.</li>
+<li>DNS server unavailable.</li>
+<li>Incorrect domain name.</li>
+<li>Missing or incorrect DNS record.</li>
+</ul>
+
+<p>Useful commands:</p>
+
+<pre>
+nslookup example.com
+dig example.com
+</pre>
+
+<h3>Problem 2: DNS Server is Unreachable</h3>
+
+<p>
+Check network connectivity and verify the configured
+DNS resolver.
+</p>
+
+<pre>
+ip addr
+ip route
+ping 8.8.8.8
+</pre>
+
+<h3>Problem 3: DNS Returns an Incorrect Address</h3>
+
+<p>
+Inspect the DNS response and check for stale cached
+information or incorrect authoritative records.
+</p>
+
+<pre>
+dig example.com
+dig example.com @8.8.8.8
+</pre>
+
+<h2>11. DNS Security</h2>
+
+<p>
+DNS is essential to internet communication, but
+it can be targeted by several types of attacks.
+</p>
+
+<ul>
+<li><strong>DNS Spoofing:</strong> Providing false DNS information to redirect users.</li>
+
+<li><strong>DNS Cache Poisoning:</strong> Injecting incorrect records into a DNS cache.</li>
+
+<li><strong>DNS Amplification:</strong> Abusing DNS responses in reflection-based denial-of-service attacks.</li>
+
+<li><strong>DNS Tunneling:</strong> Carrying data through DNS queries and responses in ways that may bypass normal network controls.</li>
+</ul>
+
+<h3>DNSSEC</h3>
+
+<p>
+DNSSEC uses cryptographic signatures to help verify
+the authenticity and integrity of DNS data.
+</p>
+
+<h2>12. Frequently Asked Questions</h2>
+
+<h3>Is DNS a Layer 7 or Layer 4 protocol?</h3>
+
+<p>
+DNS is an application-layer protocol. It commonly
+uses UDP or TCP at the transport layer.
+</p>
+
+<h3>What is the default DNS port?</h3>
+
+<p>
+DNS commonly uses port 53 over both UDP and TCP.
+</p>
+
+<h3>What is the difference between DNS and DHCP?</h3>
+
+<p>
+DNS resolves domain names into DNS records.
+DHCP automatically provides network configuration
+information to clients, including IP addresses
+and DNS server addresses.
+</p>
+
+<h3>Can DNS work without the internet?</h3>
+
+<p>
+Yes. DNS can operate inside private networks
+using internal DNS servers and private namespaces.
+</p>
+
+<h3>What is the difference between a recursive resolver
+and an authoritative DNS server?</h3>
+
+<p>
+A recursive resolver performs lookups on behalf
+of clients. An authoritative DNS server provides
+the official DNS records for the zones it serves.
+</p>
+
+<h2>13. Conclusion</h2>
+
+<p>
+DNS is one of the fundamental services that makes
+modern networking possible. It translates domain names
+into useful network information and supports communication
+between applications and servers.
+</p>
+
+<p>
+For networking engineers and Linux administrators,
+understanding DNS resolution, record types, caching
+and troubleshooting commands is essential.
+</p>
+
+<hr>
+
+<h2>Related Articles</h2>
+
+<ul>
+<li><a href="tcp-vs-udp.html">TCP vs UDP</a></li>
+<li><a href="osi-model.html">Understanding the OSI Model</a></li>
+<li><a href="ipv4-addressing.html">IPv4 Addressing Explained</a></li>
+</ul>
+
+<p><a href="../index.html">← Back to Home</a></p>
+
+</article>
+</main>
+
+<footer>
+  <p>© <span id="year"></span> Network Knowledge. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
