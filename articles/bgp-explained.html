@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BGP Explained: eBGP, iBGP and Path Selection</title>
+
+    <meta name="description" content="Learn Border Gateway Protocol, autonomous systems, eBGP, iBGP, BGP attributes, best-path selection, configuration and troubleshooting.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<main class="bgp-article">
+<article>
+
+<h1>BGP Explained: Border Gateway Protocol</h1>
+
+<p>
+    Border Gateway Protocol (BGP) is the routing protocol used to
+    exchange routing information between autonomous systems (ASes).
+    It plays a fundamental role in connecting networks across the Internet.
+</p>
+
+<p>
+    Unlike OSPF and EIGRP, which are primarily used to route traffic
+    within an autonomous system, BGP is designed to exchange routing
+    information between independently administered networks.
+</p>
+
+<h2>1. What Is BGP?</h2>
+
+<p>
+    BGP is a path-vector exterior gateway routing protocol.
+    It uses routing policies and path attributes to select routes
+    between autonomous systems.
+</p>
+
+<p>Important characteristics include:</p>
+
+<ul>
+    <li>Path-vector routing protocol.</li>
+    <li>Used for inter-domain routing.</li>
+    <li>Runs over TCP port 179.</li>
+    <li>Supports policy-based routing decisions.</li>
+    <li>Supports CIDR and route aggregation.</li>
+    <li>Uses AS_PATH to help prevent routing loops.</li>
+    <li>Supports eBGP and iBGP peering.</li>
+</ul>
+
+<h2>2. Understanding Autonomous Systems</h2>
+
+<p>
+    An Autonomous System (AS) is a group of IP networks operated
+    under a common routing policy and identified by an Autonomous
+    System Number (ASN).
+</p>
+
+<p>
+    Organizations, Internet Service Providers and large network
+    operators can have their own AS numbers.
+</p>
+
+<p>Example:</p>
+
+<pre><code>
+AS 65001          AS 65002          AS 65003
+
+  Router A -------- Router B -------- Router C
+
+       eBGP              eBGP
+</code></pre>
+
+<p>
+    Each autonomous system advertises reachable prefixes to its
+    BGP neighbors according to its routing policies.
+</p>
+
+<h2>3. Public and Private AS Numbers</h2>
+
+<p>
+    AS numbers are assigned by regional Internet registries
+    and coordinated globally.
+</p>
+
+<p>
+    Private AS number ranges are also available for use in
+    private routing environments.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>16-bit range</th>
+<th>32-bit range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public</td>
+<td>1–64495</td>
+<td>131072–4199999999</td>
+</tr>
+<tr>
+<td>Private</td>
+<td>64512–65534</td>
+<td>4200000000–4294967294</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+    AS 0 and AS 65535 are reserved in the 16-bit range.
+    The private ranges shown are not globally unique public ASNs.
+</p>
+
+<h2>4. eBGP vs iBGP</h2>
+
+<p>
+    BGP has two major peering types: External BGP (eBGP) and
+    Internal BGP (iBGP).
+</p>
+
+<h3>External BGP (eBGP)</h3>
+
+<p>
+    eBGP is used to exchange routing information between routers
+    belonging to different autonomous systems.
+</p>
+
+<h3>Internal BGP (iBGP)</h3>
+
+<p>
+    iBGP exchanges BGP routing information between routers
+    belonging to the same autonomous system.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>eBGP</th>
+<th>iBGP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AS relationship</td>
+<td>Different ASes</td>
+<td>Same AS</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Inter-domain routing</td>
+<td>Internal distribution of BGP routes</td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>ISP-to-ISP peering</td>
+<td>Between routers in one organization</td>
+</tr>
+<tr>
+<td>AS_PATH</td>
+<td>Normally prepends the advertising AS</td>
+<td>Normally does not prepend the local AS</td>
+</tr>
+</tbody>
+</table>
+
+<h2>5. BGP Neighbor Relationships</h2>
+
+<p>
+    BGP routers establish neighbor relationships, also called
+    BGP sessions or peerings, to exchange routing information.
+</p>
+
+<p>
+    Unlike many interior routing protocols, BGP uses TCP port
+    179 for reliable communication.
+</p>
+
+<p>
+    Important requirements include:
+</p>
+
+<ul>
+    <li>IP reachability between the peers.</li>
+    <li>Correct local and remote AS configuration.</li>
+    <li>Compatible authentication settings, if configured.</li>
+    <li>TCP port 179 connectivity.</li>
+    <li>Correct source-interface and multihop settings when required.</li>
+</ul>
+
+<h3>BGP Neighbor States</h3>
+
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idle</td>
+<td>BGP is waiting to start or restart the connection process.</td>
+</tr>
+<tr>
+<td>Connect</td>
+<td>BGP is attempting to establish a TCP connection.</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>BGP is trying to establish the TCP connection again.</td>
+</tr>
+<tr>
+<td>OpenSent</td>
+<td>An OPEN message has been sent.</td>
+</tr>
+<tr>
+<td>OpenConfirm</td>
+<td>An OPEN message has been received and BGP is waiting for a KEEPALIVE.</td>
+</tr>
+<tr>
+<td>Established</td>
+<td>The BGP session is established and can exchange routes.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>6. BGP Message Types</h2>
+
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OPEN</td>
+<td>Establishes a BGP session and exchanges session parameters.</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>Advertises or withdraws routing information.</td>
+</tr>
+<tr>
+<td>KEEPALIVE</td>
+<td>Maintains the BGP session.</td>
+</tr>
+<tr>
+<td>NOTIFICATION</td>
+<td>Reports an error and usually closes the session.</td>
+</tr>
+<tr>
+<td>ROUTE-REFRESH</td>
+<td>Requests route re-advertisement without resetting the session, when supported.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>7. Important BGP Path Attributes</h2>
+
+<p>
+    BGP uses path attributes to describe routes and make routing
+    decisions.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AS_PATH</td>
+<td>Lists AS numbers traversed by a route.</td>
+</tr>
+<tr>
+<td>NEXT_HOP</td>
+<td>Identifies the next-hop IP address for a route.</td>
+</tr>
+<tr>
+<td>LOCAL_PREF</td>
+<td>Expresses preference for routes within an AS; higher is preferred.</td>
+</tr>
+<tr>
+<td>MED</td>
+<td>Suggests a preferred entry point into an AS; lower is generally preferred when compared.</td>
+</tr>
+<tr>
+<td>ORIGIN</td>
+<td>Indicates how a route originated.</td>
+</tr>
+<tr>
+<td>COMMUNITY</td>
+<td>Tags routes for routing-policy decisions.</td>
+</tr>
+<tr>
+<td>WEIGHT</td>
+<td>Cisco-specific attribute used locally on a router.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>8. BGP Best-Path Selection</h2>
+
+<p>
+    A BGP router may learn multiple routes to the same destination.
+    It evaluates path attributes and routing rules to select a
+    preferred path.
+</p>
+
+<p>
+    The exact decision process depends on the vendor and configuration.
+    Common Cisco IOS decision criteria include:
+</p>
+
+<ol>
+    <li>Highest Weight.</li>
+    <li>Highest Local Preference.</li>
+    <li>Locally originated routes are preferred.</li>
+    <li>Shortest AS_PATH.</li>
+    <li>Lowest ORIGIN type value: IGP, EGP, then Incomplete.</li>
+    <li>Lowest MED, when the comparison rules permit.</li>
+    <li>Prefer eBGP over iBGP.</li>
+    <li>Lowest IGP metric to the BGP next hop.</li>
+</ol>
+
+<p>
+    Additional tie-breakers can apply. This is a simplified
+    introduction rather than the complete vendor-specific algorithm.
+</p>
+
+<h2>9. Configuring eBGP on Cisco Routers</h2>
+
+<p>
+    Consider two routers belonging to different autonomous systems.
+</p>
+
+<pre><code>
+R1                         R2
+
+AS 65001                  AS 65002
+
+192.168.12.1 ----------- 192.168.12.2
+
+R1 LAN: 192.168.1.0/24
+R2 LAN: 192.168.2.0/24
+</code></pre>
+
+<h3>R1 Configuration</h3>
+
+<pre><code>enable
+configure terminal
+
+router bgp 65001
+ neighbor 192.168.12.2 remote-as 65002
+ network 192.168.1.0 mask 255.255.255.0
+
+end
+write memory</code></pre>
+
+<h3>R2 Configuration</h3>
+
+<pre><code>enable
+configure terminal
+
+router bgp 65002
+ neighbor 192.168.12.1 remote-as 65001
+ network 192.168.2.0 mask 255.255.255.0
+
+end
+write memory</code></pre>
+
+<p>
+    The network command advertises a prefix only when an
+    exact matching route exists in the routing table.
+</p>
+
+<p>
+    These examples assume that interface IP addressing and
+    connected LAN networks have already been configured.
+</p>
+
+<h2>10. BGP Verification Commands</h2>
+
+<pre><code>show ip bgp summary
+show ip bgp
+show ip bgp neighbors
+show ip route bgp
+show running-config
+</code></pre>
+
+<p>
+    These commands help verify BGP sessions, received routes,
+    advertised routes and routing configuration.
+</p>
+
+<h2>11. BGP Troubleshooting</h2>
+
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Possible Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Neighbor stuck in Active</td>
+<td>TCP connectivity failure, incorrect neighbor address or filtering.</td>
+</tr>
+<tr>
+<td>Neighbor stuck in Idle</td>
+<td>Configuration issue or BGP process not progressing.</td>
+</tr>
+<tr>
+<td>Routes not advertised</td>
+<td>Missing exact route in the routing table or incorrect network statement.</td>
+</tr>
+<tr>
+<td>Routes not installed</td>
+<td>Unreachable next hop or another route-selection issue.</td>
+</tr>
+<tr>
+<td>Session rejected</td>
+<td>Remote AS mismatch or incompatible session parameters.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>12. Practical Packet Tracer Lab</h2>
+
+<p>
+    Build a two-AS BGP network using two Cisco routers.
+</p>
+
+<ol>
+    <li>Connect R1 and R2 through an Ethernet link.</li>
+    <li>Configure the link IP addresses.</li>
+    <li>Configure one LAN behind each router.</li>
+    <li>Assign AS 65001 to R1 and AS 65002 to R2.</li>
+    <li>Configure eBGP neighbors.</li>
+    <li>Advertise the LAN prefixes using network statements.</li>
+    <li>Verify that the BGP neighbor state becomes Established.</li>
+    <li>Inspect the BGP table.</li>
+    <li>Test communication between end devices.</li>
+</ol>
+
+<p>
+    Packet Tracer support for BGP depends on the router model and
+    simulated IOS version. Verify that your selected devices
+    support the required commands.
+</p>
+
+<h2>13. Key Takeaways</h2>
+
+<ul>
+    <li>BGP is a path-vector routing protocol.</li>
+    <li>BGP is used for routing between autonomous systems.</li>
+    <li>It uses TCP port 179.</li>
+    <li>eBGP connects different ASes.</li>
+    <li>iBGP distributes BGP routes within the same AS.</li>
+    <li>AS_PATH helps prevent routing loops.</li>
+    <li>Path attributes influence BGP route selection.</li>
+    <li>The Established state indicates a working BGP session.</li>
+</ul>
+
+<h2>Conclusion</h2>
+
+<p>
+    BGP is one of the most important routing protocols in modern
+    networking. Understanding autonomous systems, peer relationships,
+    path attributes and route selection provides a foundation for
+    studying Internet routing and enterprise network design.
+</p>
+
+</article>
+</main>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
