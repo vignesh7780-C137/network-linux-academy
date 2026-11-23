@@ -1,0 +1,919 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how DHCP works, understand the DORA process, DHCP leases, scopes, options, relay agents, and configure a Cisco DHCP server in Packet Tracer.">
+    <meta name="keywords" content="DHCP, Dynamic Host Configuration Protocol, DORA, DHCP server, DHCP client, DHCP relay, Cisco DHCP configuration, Packet Tracer">
+    <title>How DHCP Works: Complete Beginner's Guide | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="navigation" id="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="dhcp-article">
+
+    <section class="dhcp-hero">
+        <p class="dhcp-category">NETWORKING FUNDAMENTALS</p>
+        <h1>How DHCP Works: A Complete Beginner's Guide</h1>
+        <p>
+            Understand how devices automatically receive IP addresses,
+            subnet masks, default gateways, and DNS server information.
+            Learn the DHCP process and configure a Cisco DHCP server
+            in Packet Tracer.
+        </p>
+        <div class="dhcp-meta">
+            <span>Beginner Friendly</span>
+            <span>IPv4 Networking</span>
+            <span>CCNA Foundation</span>
+        </div>
+    </section>
+
+    <div class="dhcp-layout">
+
+        <aside class="dhcp-toc">
+            <h2>On this page</h2>
+            <ol>
+                <li><a href="#introduction">What is DHCP?</a></li>
+                <li><a href="#why-dhcp">Why do we need DHCP?</a></li>
+                <li><a href="#how-it-works">How DHCP works</a></li>
+                <li><a href="#dora">The DORA process</a></li>
+                <li><a href="#dhcp-components">DHCP components</a></li>
+                <li><a href="#lease">DHCP leases</a></li>
+                <li><a href="#options">DHCP options</a></li>
+                <li><a href="#ports">DHCP ports</a></li>
+                <li><a href="#relay">DHCP relay agent</a></li>
+                <li><a href="#packet-tracer">Packet Tracer lab</a></li>
+                <li><a href="#verification">Verification commands</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#security">DHCP security</a></li>
+                <li><a href="#faq">FAQs</a></li>
+            </ol>
+        </aside>
+
+        <article class="dhcp-content">
+
+            <section id="introduction">
+                <h2>1. What Is DHCP?</h2>
+
+                <p>
+                    DHCP stands for <strong>Dynamic Host Configuration Protocol</strong>.
+                    It is a network protocol that automatically provides
+                    IP configuration information to devices on an IP network.
+                </p>
+
+                <p>
+                    When a computer connects to a network, it needs appropriate
+                    IP configuration to communicate with other devices.
+                    This information can be configured manually or assigned
+                    automatically by a DHCP server.
+                </p>
+
+                <div class="dhcp-callout">
+                    <strong>Simple definition:</strong> DHCP automatically
+                    assigns network configuration information to devices,
+                    reducing the need for administrators to configure every
+                    device manually.
+                </div>
+
+                <h3>Example</h3>
+
+                <p>
+                    Imagine connecting your laptop to your home Wi-Fi.
+                    You normally do not have to manually enter an IP address,
+                    subnet mask, gateway, and DNS server.
+                </p>
+
+                <p>
+                    Your router or another DHCP server can provide those
+                    settings automatically.
+                </p>
+
+                <div class="dhcp-example">
+                    <h3>Example DHCP configuration received by a laptop</h3>
+                    <div class="dhcp-config-row">
+                        <span>IP Address</span>
+                        <strong>192.168.1.105</strong>
+                    </div>
+                    <div class="dhcp-config-row">
+                        <span>Subnet Mask</span>
+                        <strong>255.255.255.0</strong>
+                    </div>
+                    <div class="dhcp-config-row">
+                        <span>Default Gateway</span>
+                        <strong>192.168.1.1</strong>
+                    </div>
+                    <div class="dhcp-config-row">
+                        <span>DNS Server</span>
+                        <strong>192.168.1.1</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section id="why-dhcp">
+                <h2>2. Why Do We Need DHCP?</h2>
+
+                <h3>Automatic IP configuration</h3>
+                <p>
+                    DHCP reduces manual configuration by automatically
+                    providing IP addresses and other network settings.
+                </p>
+
+                <h3>Centralized administration</h3>
+                <p>
+                    Administrators can manage address pools and network
+                    configuration from a central DHCP server instead of
+                    configuring each client separately.
+                </p>
+
+                <h3>Reduced configuration errors</h3>
+                <p>
+                    Centralized assignment helps reduce mistakes such as
+                    assigning the same static IP address to multiple devices.
+                </p>
+
+                <h3>Efficient address utilization</h3>
+                <p>
+                    DHCP leases allow addresses to be reused when devices
+                    no longer need them, subject to the server's lease
+                    and reservation policies.
+                </p>
+
+                <h3>Scalability</h3>
+                <p>
+                    DHCP is especially useful in offices, campuses, data
+                    centers, and large networks containing many client devices.
+                </p>
+            </section>
+
+            <section id="how-it-works">
+                <h2>3. How Does DHCP Work?</h2>
+
+                <p>
+                    A DHCP client communicates with a DHCP server to obtain
+                    its network configuration. The initial discovery normally
+                    uses broadcast communication because the client may not
+                    yet have an assigned IP address or know the server's address.
+                </p>
+
+                <p>
+                    For IPv4 DHCP, the process commonly uses four messages:
+                    Discover, Offer, Request, and Acknowledgment.
+                </p>
+
+                <div class="dhcp-callout">
+                    These four messages are commonly remembered using
+                    the abbreviation <strong>DORA</strong>.
+                </div>
+            </section>
+
+            <section id="dora">
+                <h2>4. Understanding the DORA Process</h2>
+
+                <p>
+                    DORA represents the four main messages used in the
+                    initial DHCP address allocation process.
+                </p>
+
+                <div class="dhcp-dora">
+
+                    <div class="dhcp-dora-step">
+                        <span class="dhcp-step-number">01</span>
+                        <div>
+                            <h3>Discover</h3>
+                            <p>
+                                The client broadcasts a DHCP Discover message
+                                to locate available DHCP servers.
+                            </p>
+                            <code>DHCPDISCOVER</code>
+                        </div>
+                    </div>
+
+                    <div class="dhcp-dora-arrow">↓</div>
+
+                    <div class="dhcp-dora-step">
+                        <span class="dhcp-step-number">02</span>
+                        <div>
+                            <h3>Offer</h3>
+                            <p>
+                                A DHCP server responds with a DHCP Offer
+                                containing proposed IP configuration
+                                information.
+                            </p>
+                            <code>DHCPOFFER</code>
+                        </div>
+                    </div>
+
+                    <div class="dhcp-dora-arrow">↓</div>
+
+                    <div class="dhcp-dora-step">
+                        <span class="dhcp-step-number">03</span>
+                        <div>
+                            <h3>Request</h3>
+                            <p>
+                                The client broadcasts a DHCP Request indicating
+                                which offered address and server it wants to use.
+                            </p>
+                            <code>DHCPREQUEST</code>
+                        </div>
+                    </div>
+
+                    <div class="dhcp-dora-arrow">↓</div>
+
+                    <div class="dhcp-dora-step">
+                        <span class="dhcp-step-number">04</span>
+                        <div>
+                            <h3>Acknowledgment</h3>
+                            <p>
+                                The selected DHCP server sends a DHCP ACK,
+                                confirming the configuration lease.
+                            </p>
+                            <code>DHCPACK</code>
+                        </div>
+                    </div>
+
+                </div>
+
+                <h3>Step-by-step example</h3>
+
+                <p>
+                    Suppose a laptop joins a network where the DHCP server
+                    manages the address range 192.168.1.100 through
+                    192.168.1.200.
+                </p>
+
+                <ol>
+                    <li>The laptop sends DHCP Discover to find a server.</li>
+                    <li>The server offers 192.168.1.105.</li>
+                    <li>The laptop requests 192.168.1.105.</li>
+                    <li>The server confirms the lease with DHCP ACK.</li>
+                </ol>
+
+                <p>
+                    The laptop can now configure its interface using the
+                    assigned network settings.
+                </p>
+
+                <div class="dhcp-callout">
+                    <strong>Important:</strong> DORA describes the common
+                    initial allocation sequence. DHCP also supports other
+                    message types and different renewal and rebinding
+                    procedures.
+                </div>
+            </section>
+
+            <section id="dhcp-components">
+                <h2>5. Main DHCP Components</h2>
+
+                <div class="dhcp-type">
+                    <h3>DHCP Client</h3>
+                    <p>
+                        A device that requests network configuration from
+                        a DHCP server. Examples include laptops, smartphones,
+                        printers, and servers.
+                    </p>
+                </div>
+
+                <div class="dhcp-type">
+                    <h3>DHCP Server</h3>
+                    <p>
+                        A system that manages IP address allocation and
+                        provides configuration information to clients.
+                    </p>
+                </div>
+
+                <div class="dhcp-type">
+                    <h3>DHCP Scope or Address Pool</h3>
+                    <p>
+                        A configured range of IP addresses that a DHCP
+                        server can assign to clients on a particular network.
+                    </p>
+                </div>
+
+                <div class="dhcp-type">
+                    <h3>DHCP Reservation</h3>
+                    <p>
+                        A configuration that associates a particular client
+                        identifier, commonly its MAC address, with a specific
+                        IP address.
+                    </p>
+                </div>
+
+                <div class="dhcp-type">
+                    <h3>DHCP Relay Agent</h3>
+                    <p>
+                        A network device that forwards DHCP messages between
+                        clients and servers located on different IP networks.
+                    </p>
+                </div>
+            </section>
+
+            <section id="lease">
+                <h2>6. What Is a DHCP Lease?</h2>
+
+                <p>
+                    A DHCP lease is the period for which a DHCP client is
+                    permitted to use an assigned IP address under the
+                    server's configuration.
+                </p>
+
+                <p>
+                    A lease is not necessarily permanent. The client and
+                    server follow a renewal process to maintain the address
+                    assignment.
+                </p>
+
+                <h3>Lease renewal</h3>
+
+                <p>
+                    In the standard DHCPv4 process, the client normally
+                    attempts renewal at the T1 time, which defaults to
+                    50% of the lease duration if not otherwise specified.
+                </p>
+
+                <p>
+                    If renewal with the original server is unsuccessful,
+                    the client normally enters the rebinding phase at T2,
+                    which defaults to 87.5% of the lease duration.
+                </p>
+
+                <div class="dhcp-timeline">
+                    <div class="dhcp-timeline-item">
+                        <strong>0%</strong>
+                        <span>Lease begins</span>
+                    </div>
+                    <div class="dhcp-timeline-item">
+                        <strong>50%</strong>
+                        <span>T1 renewal attempt</span>
+                    </div>
+                    <div class="dhcp-timeline-item">
+                        <strong>87.5%</strong>
+                        <span>T2 rebinding attempt</span>
+                    </div>
+                    <div class="dhcp-timeline-item">
+                        <strong>100%</strong>
+                        <span>Lease expires</span>
+                    </div>
+                </div>
+
+                <p>
+                    These percentages are the standard default values.
+                    DHCP servers can provide different renewal and rebinding
+                    times.
+                </p>
+            </section>
+
+            <section id="options">
+                <h2>7. Common DHCP Options</h2>
+
+                <p>
+                    DHCP options allow servers to provide additional
+                    configuration information to clients.
+                </p>
+
+                <div class="dhcp-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Subnet Mask</td><td>Provides the client's IPv4 subnet mask.</td></tr>
+                            <tr><td>3</td><td>Router</td><td>Provides default gateway information.</td></tr>
+                            <tr><td>6</td><td>DNS Servers</td><td>Provides DNS server addresses.</td></tr>
+                            <tr><td>15</td><td>Domain Name</td><td>Provides the client's domain name.</td></tr>
+                            <tr><td>51</td><td>IP Address Lease Time</td><td>Specifies the lease duration.</td></tr>
+                            <tr><td>53</td><td>DHCP Message Type</td><td>Identifies the DHCP message type.</td></tr>
+                            <tr><td>54</td><td>Server Identifier</td><td>Identifies the DHCP server.</td></tr>
+                            <tr><td>66</td><td>TFTP Server Name</td><td>Provides a TFTP server name.</td></tr>
+                            <tr><td>67</td><td>Bootfile Name</td><td>Provides a boot file name.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    These options are useful for providing consistent
+                    configuration information across an organization.
+                </p>
+            </section>
+
+            <section id="ports">
+                <h2>8. DHCP Port Numbers</h2>
+
+                <p>
+                    DHCP for IPv4 uses UDP as its transport protocol.
+                </p>
+
+                <div class="dhcp-ports">
+                    <div>
+                        <h3>UDP 67</h3>
+                        <strong>Server Port</strong>
+                        <p>Used by DHCP servers to receive client messages.</p>
+                    </div>
+
+                    <div>
+                        <h3>UDP 68</h3>
+                        <strong>Client Port</strong>
+                        <p>Used by DHCP clients to receive server messages.</p>
+                    </div>
+                </div>
+
+                <div class="dhcp-callout">
+                    <strong>Remember:</strong> DHCPv4 uses UDP port 67
+                    for the server and UDP port 68 for the client.
+                </div>
+            </section>
+
+            <section id="relay">
+                <h2>9. What Is a DHCP Relay Agent?</h2>
+
+                <p>
+                    DHCP Discover messages are normally broadcast within
+                    the client's local Layer 2 broadcast domain. Routers
+                    do not ordinarily forward these broadcasts between
+                    IP networks.
+                </p>
+
+                <p>
+                    What happens when the DHCP server is located on a
+                    different network?
+                </p>
+
+                <p>
+                    This is where a <strong>DHCP relay agent</strong> becomes
+                    useful. A router or Layer 3 switch can receive client
+                    DHCP broadcasts and forward the requests to a remote
+                    DHCP server.
+                </p>
+
+                <h3>Example network</h3>
+
+                <div class="dhcp-relay-diagram">
+                    <div class="dhcp-relay-node">
+                        <strong>Client Network</strong>
+                        <span>192.168.10.0/24</span>
+                        <small>DHCP Client</small>
+                    </div>
+
+                    <div class="dhcp-relay-arrow">
+                        <span>DHCP Broadcast</span>
+                        <strong>→</strong>
+                    </div>
+
+                    <div class="dhcp-relay-node dhcp-relay-router">
+                        <strong>Router</strong>
+                        <span>DHCP Relay</span>
+                        <small>ip helper-address</small>
+                    </div>
+
+                    <div class="dhcp-relay-arrow">
+                        <span>Forwarded Request</span>
+                        <strong>→</strong>
+                    </div>
+
+                    <div class="dhcp-relay-node">
+                        <strong>DHCP Server</strong>
+                        <span>192.168.100.10</span>
+                        <small>Address Pool</small>
+                    </div>
+                </div>
+
+                <h3>Cisco DHCP relay configuration</h3>
+
+                <pre class="dhcp-code"><code>Router(config)# interface gigabitEthernet 0/0
+Router(config-if)# ip helper-address 192.168.100.10</code></pre>
+
+                <p>
+                    The <code>ip helper-address</code> command configures
+                    the interface to relay supported UDP broadcasts,
+                    including DHCP requests, to the specified destination.
+                </p>
+
+                <p>
+                    It is configured on the interface that receives the
+                    client broadcasts, pointing to the remote DHCP server.
+                </p>
+            </section>
+
+            <section id="packet-tracer">
+                <h2>10. Practical Lab: Configure a Cisco DHCP Server</h2>
+
+                <p>
+                    Let's configure a Cisco router to provide IP addresses
+                    automatically to computers connected to a switch.
+                </p>
+
+                <h3>Lab objective</h3>
+
+                <ul>
+                    <li>Build a simple LAN in Packet Tracer.</li>
+                    <li>Configure the router's LAN interface.</li>
+                    <li>Create a DHCP address pool.</li>
+                    <li>Exclude selected IP addresses.</li>
+                    <li>Configure PCs as DHCP clients.</li>
+                    <li>Verify the assigned network settings.</li>
+                </ul>
+
+                <h3>Required devices</h3>
+
+                <ul>
+                    <li>1 Cisco router supporting DHCP server functionality.</li>
+                    <li>1 Cisco 2960 switch.</li>
+                    <li>2 PCs.</li>
+                    <li>Ethernet cables.</li>
+                </ul>
+
+                <h3>Network topology</h3>
+
+                <div class="dhcp-topology">
+                    <div class="dhcp-topology-node">
+                        <strong>PC1</strong>
+                        <span>DHCP Client</span>
+                    </div>
+
+                    <div class="dhcp-topology-node">
+                        <strong>PC2</strong>
+                        <span>DHCP Client</span>
+                    </div>
+
+                    <div class="dhcp-topology-switch">
+                        <strong>Switch</strong>
+                        <span>Layer 2</span>
+                    </div>
+
+                    <div class="dhcp-topology-router">
+                        <strong>Router</strong>
+                        <span>DHCP Server</span>
+                    </div>
+                </div>
+
+                <h3>IP addressing plan</h3>
+
+                <div class="dhcp-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Network</td><td>192.168.10.0/24</td></tr>
+                            <tr><td>Router Gateway</td><td>192.168.10.1</td></tr>
+                            <tr><td>DHCP Pool</td><td>192.168.10.100 – 192.168.10.200</td></tr>
+                            <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                            <tr><td>DNS Server</td><td>8.8.8.8</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Step 1: Connect the devices</h3>
+
+                <p>
+                    Connect PC1 and PC2 to the switch. Connect the switch
+                    to the router's GigabitEthernet 0/0 interface.
+                    Use the appropriate Ethernet connections.
+                </p>
+
+                <h3>Step 2: Configure the router interface</h3>
+
+                <pre class="dhcp-code"><code>enable
+configure terminal
+
+interface gigabitEthernet 0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit</code></pre>
+
+                <p>
+                    This configures the router's LAN interface and makes
+                    it the default gateway for the client network.
+                </p>
+
+                <h3>Step 3: Exclude reserved IP addresses</h3>
+
+                <pre class="dhcp-code"><code>ip dhcp excluded-address 192.168.10.1 192.168.10.99</code></pre>
+
+                <p>
+                    This prevents the router's DHCP service from assigning
+                    addresses from 192.168.10.1 through 192.168.10.99.
+                </p>
+
+                <h3>Step 4: Create the DHCP pool</h3>
+
+                <pre class="dhcp-code"><code>ip dhcp pool OFFICE-LAN
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+dns-server 8.8.8.8
+exit</code></pre>
+
+                <p>
+                    The pool defines the network and provides clients with
+                    their default gateway and DNS server information.
+                </p>
+
+                <p>
+                    Because addresses 192.168.10.1 through 192.168.10.99
+                    are excluded, the remaining eligible range in this
+                    example is 192.168.10.100 through 192.168.10.254.
+                    The pool is not restricted to ending at .200 unless
+                    additional exclusions are configured.
+                </p>
+
+                <h3>Step 5: Configure PCs as DHCP clients</h3>
+
+                <ol>
+                    <li>Open PC1 in Packet Tracer.</li>
+                    <li>Select Desktop.</li>
+                    <li>Open IP Configuration.</li>
+                    <li>Select DHCP.</li>
+                    <li>Repeat the process for PC2.</li>
+                </ol>
+
+                <p>
+                    The PCs should receive addresses from the DHCP pool,
+                    along with the subnet mask, gateway, and DNS settings.
+                </p>
+
+                <h3>Step 6: Verify connectivity</h3>
+
+                <p>Open PC1's Command Prompt and run:</p>
+
+                <pre class="dhcp-code"><code>ipconfig
+ping 192.168.10.1</code></pre>
+
+                <p>
+                    The first command displays the assigned network
+                    configuration. The second tests connectivity to
+                    the default gateway.
+                </p>
+
+                <div class="dhcp-callout">
+                    <strong>Expected result:</strong> Both PCs should receive
+                    valid addresses from the DHCP pool and should be able
+                    to communicate with their default gateway.
+                </div>
+            </section>
+
+            <section id="verification">
+                <h2>11. Useful DHCP Verification Commands</h2>
+
+                <div class="dhcp-command">
+                    <code>show ip dhcp binding</code>
+                    <p>Displays active DHCP address bindings.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>show ip dhcp pool</code>
+                    <p>Displays DHCP pool information and address utilization.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>show ip dhcp conflict</code>
+                    <p>Displays IP addresses recorded as conflicting.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>show running-config</code>
+                    <p>Displays the router configuration, including DHCP settings.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>ipconfig /all</code>
+                    <p>Displays detailed network configuration on a Windows client.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>ipconfig /release</code>
+                    <p>Releases the current DHCP IPv4 configuration on Windows.</p>
+                </div>
+
+                <div class="dhcp-command">
+                    <code>ipconfig /renew</code>
+                    <p>Requests DHCP configuration again on Windows.</p>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>12. Common DHCP Problems and Troubleshooting</h2>
+
+                <div class="dhcp-problem">
+                    <h3>Client does not receive an IP address</h3>
+                    <p>
+                        Check physical connectivity, switch port status,
+                        VLAN assignment, DHCP pool configuration, and
+                        whether the DHCP server is reachable.
+                    </p>
+                </div>
+
+                <div class="dhcp-problem">
+                    <h3>Incorrect subnet mask or gateway</h3>
+                    <p>
+                        Check the subnet and default-router settings in
+                        the DHCP pool. Confirm that the configuration
+                        matches the intended client network.
+                    </p>
+                </div>
+
+                <div class="dhcp-problem">
+                    <h3>DHCP address pool exhausted</h3>
+                    <p>
+                        If all available addresses are allocated, new
+                        clients may not receive an address. Review pool
+                        utilization and lease information.
+                    </p>
+                </div>
+
+                <div class="dhcp-problem">
+                    <h3>DHCP server on another subnet</h3>
+                    <p>
+                        Configure a DHCP relay agent on the Layer 3
+                        interface receiving client broadcasts. Verify
+                        routing between the relay and the DHCP server.
+                    </p>
+                </div>
+
+                <div class="dhcp-problem">
+                    <h3>Duplicate IP address</h3>
+                    <p>
+                        Review static addressing, DHCP reservations,
+                        address exclusions, and DHCP conflict records.
+                        Ensure manually assigned addresses do not overlap
+                        with dynamically allocated addresses.
+                    </p>
+                </div>
+
+                <div class="dhcp-problem">
+                    <h3>Incorrect VLAN configuration</h3>
+                    <p>
+                        Check that the client is connected to the intended
+                        VLAN and that the corresponding DHCP scope or
+                        relay configuration is available.
+                    </p>
+                </div>
+            </section>
+
+            <section id="security">
+                <h2>13. DHCP Security Considerations</h2>
+
+                <p>
+                    DHCP is convenient, but administrators should protect
+                    DHCP infrastructure from unauthorized configuration
+                    and malicious activity.
+                </p>
+
+                <h3>Rogue DHCP servers</h3>
+                <p>
+                    A rogue DHCP server can provide clients with incorrect
+                    gateways, DNS servers, or IP addresses. This can disrupt
+                    connectivity or redirect network traffic.
+                </p>
+
+                <h3>DHCP snooping</h3>
+                <p>
+                    DHCP snooping is a Layer 2 security feature supported
+                    by many managed switches. It can distinguish trusted
+                    and untrusted switch interfaces and restrict DHCP
+                    server messages arriving on untrusted ports.
+                </p>
+
+                <h3>Address management</h3>
+                <p>
+                    Use appropriate address exclusions and reservations,
+                    monitor DHCP leases, and maintain accurate documentation.
+                </p>
+
+                <h3>Infrastructure protection</h3>
+                <p>
+                    Restrict administrative access to DHCP servers and
+                    network devices. Keep configurations backed up and
+                    apply security updates.
+                </p>
+            </section>
+
+            <section id="faq">
+                <h2>14. Frequently Asked Questions</h2>
+
+                <div class="dhcp-faq">
+                    <h3>What does DHCP stand for?</h3>
+                    <p>
+                        DHCP stands for Dynamic Host Configuration Protocol.
+                    </p>
+                </div>
+
+                <div class="dhcp-faq">
+                    <h3>What are the four steps of DHCP?</h3>
+                    <p>
+                        The common initial IPv4 address allocation sequence
+                        is Discover, Offer, Request, and Acknowledgment.
+                        This is known as DORA.
+                    </p>
+                </div>
+
+                <div class="dhcp-faq">
+                    <h3>Which ports does DHCP use?</h3>
+                    <p>
+                        DHCPv4 uses UDP port 67 on the server side and
+                        UDP port 68 on the client side.
+                    </p>
+                </div>
+
+                <div class="dhcp-faq">
+                    <h3>Can a router act as a DHCP server?</h3>
+                    <p>
+                        Yes. Many Cisco routers support DHCP server
+                        functionality and can allocate IP addresses
+                        to connected clients.
+                    </p>
+                </div>
+
+                <div class="dhcp-faq">
+                    <h3>What is the difference between DHCP and DNS?</h3>
+                    <p>
+                        DHCP provides network configuration information
+                        to devices. DNS translates domain names into
+                        corresponding resource records, commonly including
+                        IP addresses.
+                    </p>
+                </div>
+
+                <div class="dhcp-faq">
+                    <h3>What happens when DHCP is unavailable?</h3>
+                    <p>
+                        A device may retain a valid existing lease until
+                        it expires. A device that cannot obtain configuration
+                        may use a manually configured address or, in some
+                        environments, an automatic private IPv4 address.
+                    </p>
+                </div>
+            </section>
+
+            <section class="dhcp-conclusion">
+                <h2>Conclusion</h2>
+                <p>
+                    DHCP is an essential networking protocol that automates
+                    IP address allocation and network configuration.
+                    Understanding DORA, leases, DHCP options, relay agents,
+                    and troubleshooting helps network administrators
+                    manage both small and enterprise networks.
+                </p>
+                <p>
+                    To strengthen your understanding, configure a DHCP
+                    server in Packet Tracer, inspect the assigned leases,
+                    and experiment with different address pools and
+                    network configurations.
+                </p>
+            </section>
+
+            <section class="dhcp-related">
+                <h2>Related Networking Guides</h2>
+                <ul>
+                    <li><a href="ipv4-addressing.html">IPv4 Addressing Explained</a></li>
+                    <li><a href="subnetting-for-beginners.html">IPv4 Subnetting for Beginners</a></li>
+                    <li><a href="vlan-explained.html">What Is a VLAN?</a></li>
+                    <li><a href="osi-model.html">Understanding the OSI Model</a></li>
+                    <li><a href="ospf-introduction.html">Introduction to OSPF</a></li>
+                </ul>
+            </section>
+
+            <section class="dhcp-references">
+                <h2>References and Further Reading</h2>
+                <ul>
+                    <li><a href="https://www.rfc-editor.org/rfc/rfc2131" target="_blank" rel="noopener noreferrer">RFC 2131 — Dynamic Host Configuration Protocol</a></li>
+                    <li><a href="https://www.rfc-editor.org/rfc/rfc2132" target="_blank" rel="noopener noreferrer">RFC 2132 — DHCP Options and BOOTP Vendor Extensions</a></li>
+                    <li><a href="https://www.cisco.com/" target="_blank" rel="noopener noreferrer">Cisco — Networking Documentation</a></li>
+                </ul>
+            </section>
+
+            <div class="dhcp-back">
+                <a href="../index.html">← Back to Home</a>
+            </div>
+
+        </article>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
