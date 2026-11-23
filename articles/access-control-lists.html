@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Cisco Access Control Lists (ACLs), standard and extended ACLs, wildcard masks, configuration and troubleshooting.">
+    <title>Access Control Lists (ACLs) Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="navigation" class="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="acl-article">
+
+    <h1>Access Control Lists (ACLs) Explained</h1>
+
+    <p>
+        Access Control Lists (ACLs) are sets of rules used by network
+        devices to permit or deny traffic based on specified conditions.
+        They are commonly configured on routers and Layer 3 switches.
+    </p>
+
+    <p>
+        ACLs help administrators control network traffic, restrict
+        unauthorized communication and implement basic traffic filtering.
+    </p>
+
+    <h2>1. Why Are ACLs Important?</h2>
+
+    <p>Consider an organization with three departments:</p>
+
+    <ul>
+        <li>Administration: 192.168.10.0/24</li>
+        <li>Engineering: 192.168.20.0/24</li>
+        <li>Finance: 192.168.30.0/24</li>
+    </ul>
+
+    <p>
+        Suppose the organization wants to prevent Engineering computers
+        from accessing Finance computers while allowing other
+        communication.
+    </p>
+
+    <p>
+        An ACL can inspect packet information and decide whether
+        the traffic should be permitted or denied.
+    </p>
+
+    <h2>2. How Do ACLs Work?</h2>
+
+    <p>
+        ACL entries are evaluated from top to bottom. The device
+        processes the first matching entry and applies its action.
+    </p>
+
+    <p>There are two common actions:</p>
+
+    <ul>
+        <li><strong>Permit:</strong> Allow matching traffic.</li>
+        <li><strong>Deny:</strong> Block matching traffic.</li>
+    </ul>
+
+    <div class="acl-note">
+        <strong>Important:</strong> Cisco ACLs have an implicit
+        deny-all rule at the end. Traffic that does not match an
+        earlier permit statement is denied.
+    </div>
+
+    <h2>3. Types of ACLs</h2>
+
+    <h3>Standard ACL</h3>
+
+    <p>
+        Standard ACLs filter traffic based only on the source IPv4
+        address.
+    </p>
+
+    <p>Example:</p>
+
+    <pre><code>access-list 10 permit 192.168.10.0 0.0.0.255
+access-list 10 deny any</code></pre>
+
+    <p>
+        This permits traffic from the 192.168.10.0/24 source network
+        and denies other sources.
+    </p>
+
+    <h3>Extended ACL</h3>
+
+    <p>
+        Extended ACLs can filter traffic using several fields,
+        including:
+    </p>
+
+    <ul>
+        <li>Source IP address</li>
+        <li>Destination IP address</li>
+        <li>IP protocol</li>
+        <li>TCP or UDP port numbers</li>
+    </ul>
+
+    <p>Example:</p>
+
+    <pre><code>access-list 101 permit tcp
+192.168.10.0 0.0.0.255
+192.168.20.0 0.0.0.255 eq 80</code></pre>
+
+    <p>
+        This example permits matching TCP traffic from the
+        192.168.10.0/24 network to destination port 80
+        in the 192.168.20.0/24 network.
+    </p>
+
+    <h2>4. Numbered ACLs vs Named ACLs</h2>
+
+    <p>
+        ACLs can be configured using numeric identifiers or descriptive
+        names.
+    </p>
+
+    <h3>Numbered Standard ACL</h3>
+
+    <pre><code>access-list 10 permit 192.168.10.0 0.0.0.255</code></pre>
+
+    <h3>Named Standard ACL</h3>
+
+    <pre><code>ip access-list standard ADMIN_ACCESS
+permit 192.168.10.0 0.0.0.255
+deny any
+exit</code></pre>
+
+    <h3>Named Extended ACL</h3>
+
+    <pre><code>ip access-list extended BLOCK_FINANCE
+deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+permit ip any any
+exit</code></pre>
+
+    <h2>5. Understanding Wildcard Masks</h2>
+
+    <p>
+        Wildcard masks tell an ACL which bits of an IPv4 address
+        should be matched.
+    </p>
+
+    <p>
+        A wildcard mask is the inverse of a subnet mask.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Subnet Mask</th>
+                <th>Wildcard Mask</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>255.255.255.0</td>
+                <td>0.0.0.255</td>
+            </tr>
+            <tr>
+                <td>255.255.0.0</td>
+                <td>0.0.255.255</td>
+            </tr>
+            <tr>
+                <td>255.255.255.255</td>
+                <td>0.0.0.0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        For example, 192.168.10.0 0.0.0.255 matches addresses
+        in the 192.168.10.0/24 network.
+    </p>
+
+    <h2>6. Inbound vs Outbound ACLs</h2>
+
+    <h3>Inbound ACL</h3>
+
+    <p>
+        An inbound ACL examines packets as they enter a router
+        interface, before the router makes its forwarding decision.
+    </p>
+
+    <h3>Outbound ACL</h3>
+
+    <p>
+        An outbound ACL examines packets as they leave a router
+        interface, after the routing decision.
+    </p>
+
+    <h2>7. Applying an ACL to an Interface</h2>
+
+    <p>Example extended ACL:</p>
+
+    <pre><code>configure terminal
+
+ip access-list extended BLOCK_FINANCE
+deny ip 192.168.20.0 0.0.0.255 192.168.30.0 0.0.0.255
+permit ip any any
+exit</code></pre>
+
+    <p>Apply the ACL inbound on an interface:</p>
+
+    <pre><code>interface gigabitEthernet 0/0
+ip access-group BLOCK_FINANCE in
+exit</code></pre>
+
+    <p>
+        The interface name and direction must be chosen according
+        to the actual network topology.
+    </p>
+
+    <h2>8. Verification Commands</h2>
+
+    <pre><code>show access-lists
+
+show ip access-lists
+
+show ip interface
+
+show running-config</code></pre>
+
+    <h2>9. Common ACL Troubleshooting Problems</h2>
+
+    <ul>
+        <li>Incorrect source or destination IP address.</li>
+        <li>Incorrect wildcard mask.</li>
+        <li>ACL applied to the wrong interface.</li>
+        <li>Incorrect inbound or outbound direction.</li>
+        <li>Missing permit statement due to implicit deny.</li>
+        <li>ACL entries arranged in the wrong order.</li>
+        <li>Incorrect protocol or port number.</li>
+    </ul>
+
+    <h2>10. Practical Lab Challenge</h2>
+
+    <p>Build a Packet Tracer network with:</p>
+
+    <ul>
+        <li>One router</li>
+        <li>Three switches or VLANs</li>
+        <li>Three different IPv4 networks</li>
+        <li>At least one PC in each network</li>
+    </ul>
+
+    <p>Configure these requirements:</p>
+
+    <ol>
+        <li>Allow Administration to communicate with all networks.</li>
+        <li>Prevent Engineering from accessing Finance.</li>
+        <li>Allow Engineering to access Administration.</li>
+        <li>Verify the results using ping and ACL counters.</li>
+    </ol>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        ACLs are essential tools for controlling network traffic.
+        Understanding standard and extended ACLs, wildcard masks,
+        rule ordering and interface direction helps network
+        administrators implement effective traffic filtering.
+    </p>
+
+    <p><a href="../index.html">← Back to Home</a></p>
+
+</main>
+
+<footer>
+    <p>© 2026 Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
