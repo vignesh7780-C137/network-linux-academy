@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EIGRP Explained: Configuration, DUAL and Troubleshooting</title>
+
+    <meta name="description" content="Learn EIGRP routing, DUAL algorithm, neighbor relationships, successor and feasible successor routes, Cisco configuration and troubleshooting.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<main class="eigrp-article">
+
+    <article>
+
+        <h1>EIGRP Explained: Enhanced Interior Gateway Routing Protocol</h1>
+
+        <p>
+            EIGRP (Enhanced Interior Gateway Routing Protocol) is a dynamic
+            routing protocol developed by Cisco. It allows routers to exchange
+            routing information and automatically select the best paths
+            through an IP network.
+        </p>
+
+        <p>
+            EIGRP is commonly described as an advanced distance-vector
+            routing protocol. It uses the Diffusing Update Algorithm (DUAL)
+            to calculate loop-free routes and provide fast convergence.
+        </p>
+
+        <h2>1. What Is EIGRP?</h2>
+
+        <p>
+            EIGRP enables routers to discover neighboring routers, exchange
+            routing information, and maintain routes to remote networks.
+        </p>
+
+        <p>Important characteristics include:</p>
+
+        <ul>
+            <li>Advanced distance-vector routing protocol.</li>
+            <li>Uses the DUAL algorithm.</li>
+            <li>Supports classless routing and VLSM.</li>
+            <li>Supports route summarization.</li>
+            <li>Uses partial and bounded updates.</li>
+            <li>Supports equal-cost and unequal-cost load balancing.</li>
+            <li>Uses multicast address 224.0.0.10 for IPv4 updates.</li>
+        </ul>
+
+        <h2>2. How EIGRP Works</h2>
+
+        <p>
+            EIGRP routers discover neighbors and establish relationships
+            before exchanging routing information.
+        </p>
+
+        <p>The basic process is:</p>
+
+        <ol>
+            <li>Routers send EIGRP Hello packets.</li>
+            <li>Neighbor relationships are established.</li>
+            <li>Routers exchange routing information.</li>
+            <li>DUAL calculates loop-free paths.</li>
+            <li>Best routes are installed in the routing table.</li>
+        </ol>
+
+        <h2>3. EIGRP Autonomous System Number</h2>
+
+        <p>
+            EIGRP uses an Autonomous System (AS) number to identify an
+            EIGRP routing process. Routers must use the same AS number
+            to become neighbors through that EIGRP process.
+        </p>
+
+        <p>Example:</p>
+
+        <pre><code>Router(config)# router eigrp 100</code></pre>
+
+        <p>
+            Here, 100 is the EIGRP autonomous system number.
+        </p>
+
+        <h2>4. EIGRP Neighbor Relationships</h2>
+
+        <p>
+            EIGRP routers discover one another using Hello packets.
+            These packets are sent periodically to identify neighboring
+            routers and maintain neighbor relationships.
+        </p>
+
+        <p>
+            For two routers to become EIGRP neighbors, important
+            requirements include:
+        </p>
+
+        <ul>
+            <li>They must have compatible EIGRP AS configuration.</li>
+            <li>They must share a compatible IP subnet on the connecting interface.</li>
+            <li>Authentication settings must match, if configured.</li>
+            <li>K-values must match.</li>
+            <li>EIGRP must be enabled on the connecting interfaces.</li>
+        </ul>
+
+        <p>
+            A router's EIGRP neighbor information can be viewed using:
+        </p>
+
+        <pre><code>Router# show ip eigrp neighbors</code></pre>
+
+        <h2>5. DUAL Algorithm</h2>
+
+        <p>
+            DUAL stands for Diffusing Update Algorithm. It is the
+            algorithm EIGRP uses to calculate loop-free paths and
+            determine which routes can be used as alternatives.
+        </p>
+
+        <p>
+            DUAL helps EIGRP achieve fast convergence without relying
+            on periodic full routing-table updates.
+        </p>
+
+        <h2>6. Successor and Feasible Successor</h2>
+
+        <h3>Successor</h3>
+
+        <p>
+            The successor is the best next-hop router for reaching
+            a destination. Its route is normally installed in the
+            routing table.
+        </p>
+
+        <h3>Feasible Successor</h3>
+
+        <p>
+            A feasible successor is a backup next-hop route that
+            satisfies EIGRP's feasibility condition. It can provide
+            an alternative path if the successor route fails.
+        </p>
+
+        <h3>Feasibility Condition</h3>
+
+        <p>
+            A neighbor's Reported Distance (RD) must be lower than
+            the local router's Feasible Distance (FD) for that
+            neighbor to qualify as a feasible successor.
+        </p>
+
+        <pre><code>Reported Distance &lt; Feasible Distance</code></pre>
+
+        <p>
+            This condition helps ensure that the alternative path
+            is loop-free.
+        </p>
+
+        <h2>7. EIGRP Metric</h2>
+
+        <p>
+            EIGRP calculates route metrics using multiple parameters.
+            By default, bandwidth and delay are used in the metric
+            calculation.
+        </p>
+
+        <p>Other available metric parameters include:</p>
+
+        <ul>
+            <li>Bandwidth</li>
+            <li>Delay</li>
+            <li>Reliability</li>
+            <li>Load</li>
+            <li>MTU (not included in the default metric calculation)</li>
+        </ul>
+
+        <p>
+            EIGRP uses K-values to determine the contribution of
+            metric parameters. Its default K-values prioritize
+            bandwidth and delay.
+        </p>
+
+        <h2>8. EIGRP Packet Types</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Packet</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hello</td>
+                    <td>Discover and maintain neighbors.</td>
+                </tr>
+                <tr>
+                    <td>Update</td>
+                    <td>Exchange routing information.</td>
+                </tr>
+                <tr>
+                    <td>Query</td>
+                    <td>Ask neighbors for routing information.</td>
+                </tr>
+                <tr>
+                    <td>Reply</td>
+                    <td>Respond to a query.</td>
+                </tr>
+                <tr>
+                    <td>Acknowledgment</td>
+                    <td>Reliably acknowledge certain EIGRP packets.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>9. Configuring EIGRP on Cisco Routers</h2>
+
+        <p>
+            Consider a simple topology with three routers connected
+            in a line:
+        </p>
+
+        <pre><code>
+R1 -------- R2 -------- R3
+
+R1 LAN: 192.168.1.0/24
+R2 LAN: 192.168.2.0/24
+R3 LAN: 192.168.3.0/24
+
+R1-R2: 10.0.12.0/30
+R2-R3: 10.0.23.0/30
+        </code></pre>
+
+        <h3>R1 Configuration</h3>
+
+        <pre><code>enable
+configure terminal
+
+router eigrp 100
+ network 192.168.1.0 0.0.0.255
+ network 10.0.12.0 0.0.0.3
+ no auto-summary
+
+end
+write memory</code></pre>
+
+        <h3>R2 Configuration</h3>
+
+        <pre><code>enable
+configure terminal
+
+router eigrp 100
+ network 192.168.2.0 0.0.0.255
+ network 10.0.12.0 0.0.0.3
+ network 10.0.23.0 0.0.0.3
+ no auto-summary
+
+end
+write memory</code></pre>
+
+        <h3>R3 Configuration</h3>
+
+        <pre><code>enable
+configure terminal
+
+router eigrp 100
+ network 192.168.3.0 0.0.0.255
+ network 10.0.23.0 0.0.0.3
+ no auto-summary
+
+end
+write memory</code></pre>
+
+        <p>
+            These are classic EIGRP configuration examples.
+            The network statements enable EIGRP on matching interfaces
+            and advertise their connected networks.
+        </p>
+
+        <h2>10. EIGRP Verification Commands</h2>
+
+        <p>Use these commands to inspect EIGRP operation:</p>
+
+        <pre><code>show ip eigrp neighbors
+show ip eigrp topology
+show ip route eigrp
+show ip protocols
+show ip eigrp interfaces
+show ip eigrp traffic</code></pre>
+
+        <p>
+            Routes learned through EIGRP are marked with the letter
+            D in the Cisco IPv4 routing table.
+        </p>
+
+        <h2>11. EIGRP Troubleshooting</h2>
+
+        <p>Common problems include:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem</th>
+                    <th>Possible Cause</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>No neighbors</td>
+                    <td>AS mismatch, interface issue, subnet mismatch or incompatible K-values.</td>
+                </tr>
+                <tr>
+                    <td>Missing routes</td>
+                    <td>Incorrect network statements or routing configuration.</td>
+                </tr>
+                <tr>
+                    <td>Unstable adjacency</td>
+                    <td>Unreliable link, packet loss or configuration mismatch.</td>
+                </tr>
+                <tr>
+                    <td>Unexpected path selection</td>
+                    <td>Different bandwidth or delay values affecting metrics.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>12. Practical Packet Tracer Lab</h2>
+
+        <p>Build a network containing three Cisco routers.</p>
+
+        <ol>
+            <li>Connect R1 to R2 and R2 to R3.</li>
+            <li>Assign IP addresses to all router interfaces.</li>
+            <li>Configure a separate LAN behind each router.</li>
+            <li>Configure EIGRP using AS number 100.</li>
+            <li>Verify that all three routers become neighbors where directly connected.</li>
+            <li>Check the routing tables.</li>
+            <li>Ping between PCs on different LANs.</li>
+            <li>Disconnect a link and observe how EIGRP reacts.</li>
+        </ol>
+
+        <h2>13. Key Takeaways</h2>
+
+        <ul>
+            <li>EIGRP is an advanced distance-vector routing protocol.</li>
+            <li>DUAL calculates loop-free routes.</li>
+            <li>The successor is the best route.</li>
+            <li>A feasible successor is a qualifying backup route.</li>
+            <li>EIGRP uses Hello packets to discover neighbors.</li>
+            <li>Bandwidth and delay are used in its default metric.</li>
+            <li>The default IPv4 EIGRP multicast address is 224.0.0.10.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+
+        <p>
+            EIGRP is an important dynamic routing protocol to understand
+            when studying enterprise networking and Cisco routing.
+            Learning its neighbor relationships, DUAL algorithm,
+            metrics and troubleshooting commands provides a strong
+            foundation for practical routing labs.
+        </p>
+
+    </article>
+
+</main>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
