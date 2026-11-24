@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn inter-VLAN routing, Router-on-a-Stick, Layer 3 switching, SVIs, Cisco configurations and troubleshooting.">
+    <title>Inter-VLAN Routing Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="navigation" class="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="intervlan-article">
+
+    <h1>Inter-VLAN Routing Explained</h1>
+
+    <p>
+        VLANs divide a switched network into separate logical broadcast
+        domains. However, devices belonging to different VLANs cannot
+        communicate directly through Layer 2 switching alone.
+    </p>
+
+    <p>
+        Inter-VLAN routing allows devices in different VLANs to
+        communicate through a Layer 3 device, such as a router or
+        Layer 3 switch.
+    </p>
+
+    <h2>1. Why Do We Need Inter-VLAN Routing?</h2>
+
+    <p>
+        Imagine an organization with three departments:
+    </p>
+
+    <ul>
+        <li>VLAN 10 – Administration</li>
+        <li>VLAN 20 – Engineering</li>
+        <li>VLAN 30 – Finance</li>
+    </ul>
+
+    <p>
+        Each VLAN represents a separate broadcast domain.
+        A computer in VLAN 10 cannot directly communicate with
+        a computer in VLAN 20 without a Layer 3 routing function.
+    </p>
+
+    <h2>2. Methods of Inter-VLAN Routing</h2>
+
+    <p>There are two commonly used approaches:</p>
+
+    <h3>Method 1: Router-on-a-Stick</h3>
+
+    <p>
+        Router-on-a-Stick uses one physical router interface connected
+        to a switch trunk port. The router interface is divided into
+        multiple logical subinterfaces, with each subinterface
+        handling a particular VLAN.
+    </p>
+
+    <h3>How It Works</h3>
+
+    <ol>
+        <li>A switch receives traffic from a device in a VLAN.</li>
+        <li>The switch forwards the traffic through a trunk link.</li>
+        <li>The 802.1Q VLAN tag identifies the originating VLAN.</li>
+        <li>The router's corresponding subinterface processes the packet.</li>
+        <li>The router routes the packet toward the destination VLAN.</li>
+        <li>The packet returns through the trunk with the appropriate VLAN tag.</li>
+    </ol>
+
+    <h3>Router-on-a-Stick Configuration</h3>
+
+    <p>Example topology:</p>
+
+    <pre><code>PC1 --- VLAN 10
+          |
+       SWITCH
+          |
+       TRUNK
+          |
+       ROUTER</code></pre>
+
+    <p>Example addressing:</p>
+
+    <pre><code>VLAN 10: 192.168.10.0/24
+Gateway: 192.168.10.1
+
+VLAN 20: 192.168.20.0/24
+Gateway: 192.168.20.1</code></pre>
+
+    <p>Configure the switch:</p>
+
+    <pre><code>enable
+configure terminal
+
+vlan 10
+name ADMIN
+exit
+
+vlan 20
+name ENGINEERING
+exit
+
+interface gigabitEthernet 0/1
+switchport mode trunk
+no shutdown
+exit</code></pre>
+
+    <p>Configure the router:</p>
+
+    <pre><code>enable
+configure terminal
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+exit</code></pre>
+
+    <p>
+        The subinterfaces act as the default gateways for their
+        respective VLANs.
+    </p>
+
+    <h2>3. Method 2: Layer 3 Switch Using SVIs</h2>
+
+    <p>
+        A Layer 3 switch can perform routing internally without
+        requiring a separate external router for every VLAN.
+    </p>
+
+    <p>
+        It uses Switched Virtual Interfaces (SVIs), which are
+        logical Layer 3 interfaces associated with VLANs.
+    </p>
+
+    <h3>Layer 3 Switch Configuration</h3>
+
+    <pre><code>enable
+configure terminal
+
+ip routing
+
+vlan 10
+name ADMIN
+exit
+
+vlan 20
+name ENGINEERING
+exit
+
+interface vlan 10
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit
+
+interface vlan 20
+ip address 192.168.20.1 255.255.255.0
+no shutdown
+exit</code></pre>
+
+    <p>
+        The <code>ip routing</code> command enables Layer 3 routing
+        on supported Cisco switches.
+    </p>
+
+    <h2>4. Router-on-a-Stick vs Layer 3 Switching</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Router-on-a-Stick</th>
+                <th>Layer 3 Switch</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Routing device</td>
+                <td>Router</td>
+                <td>Layer 3 switch</td>
+            </tr>
+            <tr>
+                <td>Logical interfaces</td>
+                <td>Subinterfaces</td>
+                <td>SVIs</td>
+            </tr>
+            <tr>
+                <td>Inter-VLAN connection</td>
+                <td>Trunk link to router</td>
+                <td>Internal Layer 3 routing</td>
+            </tr>
+            <tr>
+                <td>Typical use</td>
+                <td>Small networks and labs</td>
+                <td>Enterprise networks</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. Verification Commands</h2>
+
+    <p>Useful Cisco IOS commands include:</p>
+
+    <pre><code>show vlan brief
+
+show interfaces trunk
+
+show ip interface brief
+
+show ip route
+
+show running-config
+
+show interfaces switchport</code></pre>
+
+    <h2>6. Common Troubleshooting Problems</h2>
+
+    <ul>
+        <li>Incorrect VLAN assignment on access ports.</li>
+        <li>Trunk link not configured correctly.</li>
+        <li>Incorrect 802.1Q VLAN ID.</li>
+        <li>Incorrect default gateway on end devices.</li>
+        <li>SVI interface not operational.</li>
+        <li>IP routing not enabled on the Layer 3 switch.</li>
+        <li>Incorrect IP address or subnet mask.</li>
+    </ul>
+
+    <h2>7. Practical Lab Challenge</h2>
+
+    <p>
+        Build a network with two VLANs and two computers in each VLAN.
+        Configure inter-VLAN routing and verify communication between
+        all four computers.
+    </p>
+
+    <p>
+        Test connectivity using the ping command. Then deliberately
+        introduce a configuration error and troubleshoot it.
+    </p>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        Inter-VLAN routing enables communication between logically
+        separated networks. Router-on-a-Stick uses router subinterfaces,
+        while Layer 3 switches use SVIs to perform routing.
+    </p>
+
+    <p>
+        Understanding both methods is important for configuring,
+        maintaining and troubleshooting enterprise networks.
+    </p>
+
+    <p><a href="../index.html">← Back to Home</a></p>
+
+</main>
+
+<footer>
+    <p>© 2026 Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
