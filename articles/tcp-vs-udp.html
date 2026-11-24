@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn the differences between TCP and UDP. Explore connection establishment, reliability, headers, ports, applications, packet flow, and practical networking examples.">
+    <meta name="keywords" content="TCP vs UDP, TCP protocol, UDP protocol, transport layer, three way handshake, TCP header, UDP header, networking">
+    <title>TCP vs UDP Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="transport-article">
+
+    <div class="transport-breadcrumb">
+        <a href="../index.html">Home</a> /
+        <a href="../index.html#networking">Networking</a> /
+        <span>TCP vs UDP</span>
+    </div>
+
+    <header class="transport-header">
+        <span class="transport-category">NETWORK FUNDAMENTALS</span>
+        <h1>TCP vs UDP: Understanding the Differences Between Transport Protocols</h1>
+        <p class="transport-subtitle">
+            Discover how TCP and UDP transport application data across
+            networks, why they behave differently, and how to identify
+            them in real-world network communication.
+        </p>
+        <div class="transport-meta">
+            <span>Beginner to Intermediate</span>
+            <span>•</span>
+            <span>Transport Layer</span>
+            <span>•</span>
+            <span>Networking Fundamentals</span>
+        </div>
+    </header>
+
+    <div class="transport-callout">
+        <strong>What you will learn</strong>
+        <p>
+            Understand the transport layer, TCP and UDP operation,
+            connection establishment, reliability, headers, port
+            numbers, common applications, packet flow, and practical
+            troubleshooting.
+        </p>
+    </div>
+
+    <nav class="transport-toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#transport-layer">What is the transport layer?</a></li>
+            <li><a href="#tcp-introduction">What is TCP?</a></li>
+            <li><a href="#udp-introduction">What is UDP?</a></li>
+            <li><a href="#tcp-vs-udp-comparison">TCP vs UDP comparison</a></li>
+            <li><a href="#tcp-connection">How TCP establishes a connection</a></li>
+            <li><a href="#tcp-reliability">How TCP provides reliability</a></li>
+            <li><a href="#tcp-header">TCP header explained</a></li>
+            <li><a href="#udp-header">UDP header explained</a></li>
+            <li><a href="#port-numbers">Understanding port numbers</a></li>
+            <li><a href="#applications">Real-world applications</a></li>
+            <li><a href="#packet-flow">How application data travels</a></li>
+            <li><a href="#performance">Performance and latency</a></li>
+            <li><a href="#troubleshooting">Network troubleshooting</a></li>
+            <li><a href="#practical-lab">Practical networking lab</a></li>
+            <li><a href="#faq">Frequently asked questions</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ol>
+    </nav>
+
+    <article class="transport-content">
+
+        <section id="transport-layer">
+            <h2>1. What Is the Transport Layer?</h2>
+
+            <p>
+                The transport layer is responsible for communication
+                between applications running on different devices.
+                It provides services that allow application processes
+                to exchange data across a network.
+            </p>
+
+            <p>
+                In the TCP/IP model, TCP and UDP operate at the
+                transport layer. In the OSI model, they are commonly
+                associated with Layer 4.
+            </p>
+
+            <p>
+                Consider opening a website. Your computer communicates
+                with a remote server, but the communication is not
+                simply between two IP addresses. Multiple applications
+                may be communicating simultaneously.
+            </p>
+
+            <p>
+                Transport protocols use <strong>port numbers</strong>
+                to help identify the application endpoints involved
+                in communication.
+            </p>
+
+            <div class="transport-flow">
+                <div class="transport-layer-box">
+                    <strong>Application Layer</strong>
+                    <span>HTTP, DNS, SSH, DHCP</span>
+                </div>
+                <span>↓</span>
+                <div class="transport-layer-box active">
+                    <strong>Transport Layer</strong>
+                    <span>TCP / UDP</span>
+                </div>
+                <span>↓</span>
+                <div class="transport-layer-box">
+                    <strong>Internet Layer</strong>
+                    <span>IPv4 / IPv6</span>
+                </div>
+                <span>↓</span>
+                <div class="transport-layer-box">
+                    <strong>Network Access</strong>
+                    <span>Ethernet / Wi-Fi</span>
+                </div>
+            </div>
+
+            <h3>Why do we need TCP and UDP?</h3>
+
+            <p>
+                IP provides addressing and packet delivery across
+                interconnected networks. However, IP itself does not
+                provide application-level reliable, ordered delivery.
+            </p>
+
+            <p>
+                Applications often need additional transport services.
+                TCP and UDP offer two different approaches:
+            </p>
+
+            <ul>
+                <li><strong>TCP:</strong> Provides a reliable, ordered byte stream.</li>
+                <li><strong>UDP:</strong> Provides a lightweight datagram service without TCP's built-in connection and reliability mechanisms.</li>
+            </ul>
+        </section>
+
+        <section id="tcp-introduction">
+            <h2>2. What Is TCP?</h2>
+
+            <p>
+                <strong>TCP (Transmission Control Protocol)</strong>
+                is a connection-oriented transport protocol that
+                provides reliable, ordered delivery of a byte stream
+                between applications.
+            </p>
+
+            <p>
+                Before normal application data is exchanged, TCP
+                establishes a connection between the communicating
+                endpoints. It then uses sequence numbers,
+                acknowledgments, retransmission, flow control,
+                and congestion control to manage communication.
+            </p>
+
+            <h3>Important characteristics of TCP</h3>
+
+            <ul>
+                <li><strong>Connection-oriented:</strong> Establishes connection state before normal data transfer.</li>
+                <li><strong>Reliable delivery:</strong> Uses acknowledgments and retransmissions to recover from loss.</li>
+                <li><strong>Ordered delivery:</strong> Presents received data to the application in sequence.</li>
+                <li><strong>Full-duplex:</strong> Supports data transfer in both directions.</li>
+                <li><strong>Flow control:</strong> Uses a receive window to help prevent a sender from overwhelming the receiver.</li>
+                <li><strong>Congestion control:</strong> Adjusts sending behavior to respond to network congestion.</li>
+                <li><strong>Byte-stream service:</strong> Applications send and receive a stream of bytes rather than independent message boundaries.</li>
+            </ul>
+
+            <div class="transport-highlight">
+                <strong>Important concept</strong>
+                <p>
+                    TCP provides a byte stream. It does not preserve
+                    application write boundaries as separate messages.
+                    If an application needs message boundaries, it
+                    must define them within the stream.
+                </p>
+            </div>
+        </section>
+
+        <section id="udp-introduction">
+            <h2>3. What Is UDP?</h2>
+
+            <p>
+                <strong>UDP (User Datagram Protocol)</strong> is a
+                connectionless transport protocol that allows
+                applications to send individual datagrams.
+            </p>
+
+            <p>
+                Unlike TCP, UDP does not establish a transport
+                connection through a handshake before sending
+                application data.
+            </p>
+
+            <p>
+                UDP also does not provide built-in retransmission,
+                sequencing, or flow and congestion control equivalent
+                to TCP. Applications that need such features must
+                implement or use additional mechanisms.
+            </p>
+
+            <h3>Important characteristics of UDP</h3>
+
+            <ul>
+                <li><strong>Connectionless:</strong> No TCP-style connection establishment.</li>
+                <li><strong>Low protocol overhead:</strong> Uses a compact 8-byte header.</li>
+                <li><strong>Datagram-based:</strong> Preserves individual message boundaries.</li>
+                <li><strong>No built-in retransmission:</strong> Lost datagrams are not automatically recovered by UDP.</li>
+                <li><strong>No built-in ordering:</strong> Datagrams may arrive out of order.</li>
+                <li><strong>Application flexibility:</strong> Applications can design their own reliability or timing mechanisms when needed.</li>
+            </ul>
+
+            <div class="transport-highlight">
+                <strong>Does UDP guarantee delivery?</strong>
+                <p>
+                    No. UDP provides no guarantee that a datagram
+                    will arrive, arrive only once, or arrive in order.
+                    It offers a lightweight transport service and
+                    leaves additional behavior to the application.
+                </p>
+            </div>
+        </section>
+
+        <section id="tcp-vs-udp-comparison">
+            <h2>4. TCP vs UDP: Key Differences</h2>
+
+            <p>
+                TCP and UDP both use port numbers, but their
+                communication models are different.
+            </p>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>TCP</th>
+                            <th>UDP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Full name</td><td>Transmission Control Protocol</td><td>User Datagram Protocol</td></tr>
+                        <tr><td>Connection model</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+                        <tr><td>Reliability</td><td>Built-in reliable delivery mechanisms</td><td>No built-in delivery guarantee</td></tr>
+                        <tr><td>Ordering</td><td>Ordered byte stream</td><td>No built-in ordering</td></tr>
+                        <tr><td>Handshake</td><td>TCP connection establishment</td><td>No TCP-style handshake</td></tr>
+                        <tr><td>Header size</td><td>Minimum 20 bytes</td><td>8 bytes</td></tr>
+                        <tr><td>Data model</td><td>Byte stream</td><td>Datagrams</td></tr>
+                        <tr><td>Retransmission</td><td>Built in</td><td>Not provided by UDP itself</td></tr>
+                        <tr><td>Flow control</td><td>Built in</td><td>Not provided by UDP itself</td></tr>
+                        <tr><td>Congestion control</td><td>TCP mechanisms</td><td>Application or higher-level protocol responsibility</td></tr>
+                        <tr><td>Typical use</td><td>Web connections, SSH, file transfers</td><td>DNS, voice, video, real-time traffic</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Which one is faster?</h3>
+
+            <p>
+                UDP generally has less transport-layer overhead
+                because it does not perform TCP's connection
+                establishment, acknowledgments, and retransmission
+                procedures.
+            </p>
+
+            <p>
+                However, it is inaccurate to say UDP is always
+                faster in every application. Actual performance
+                depends on network conditions, application design,
+                congestion, packet size, and the protocol built
+                on top of UDP.
+            </p>
+        </section>
+
+        <section id="tcp-connection">
+            <h2>5. How TCP Establishes a Connection</h2>
+
+            <p>
+                TCP normally establishes a connection using a
+                process called the <strong>three-way handshake</strong>.
+                It uses three TCP segments to synchronize connection
+                state between the endpoints.
+            </p>
+
+            <h3>Step 1: SYN</h3>
+            <p>
+                The client sends a TCP segment with the SYN flag
+                set. It proposes an initial sequence number and
+                requests connection establishment.
+            </p>
+
+            <h3>Step 2: SYN-ACK</h3>
+            <p>
+                The server responds with SYN and ACK flags set.
+                It acknowledges the client's SYN and provides
+                its own initial sequence number.
+            </p>
+
+            <h3>Step 3: ACK</h3>
+            <p>
+                The client sends an acknowledgment. The connection
+                is now established and application data can be
+                exchanged.
+            </p>
+
+            <div class="transport-handshake">
+                <div class="handshake-endpoints">
+                    <strong>CLIENT</strong>
+                    <strong>SERVER</strong>
+                </div>
+                <div class="handshake-row">
+                    <span class="handshake-left">SYN</span>
+                    <span class="handshake-arrow">──────────────→</span>
+                    <span></span>
+                </div>
+                <div class="handshake-row">
+                    <span></span>
+                    <span class="handshake-arrow">←──────────────</span>
+                    <span class="handshake-right">SYN + ACK</span>
+                </div>
+                <div class="handshake-row">
+                    <span class="handshake-left">ACK</span>
+                    <span class="handshake-arrow">──────────────→</span>
+                    <span></span>
+                </div>
+                <div class="handshake-success">
+                    TCP connection established
+                </div>
+            </div>
+
+            <h3>Why does TCP need a handshake?</h3>
+
+            <p>
+                The handshake allows both endpoints to synchronize
+                connection state and initial sequence numbers.
+                It also confirms that the other endpoint is
+                participating in the connection establishment process.
+            </p>
+
+            <p>
+                This handshake does not mean that TCP has verified
+                the identity of the remote application or authenticated
+                the user. Authentication and encryption are separate
+                concerns, commonly handled by protocols such as TLS.
+            </p>
+
+            <h3>How does TCP close a connection?</h3>
+
+            <p>
+                TCP commonly uses FIN and ACK segments to close
+                a connection gracefully. Because TCP is full-duplex,
+                each direction can be closed independently.
+            </p>
+
+            <p>
+                A typical graceful close involves four segments:
+                one endpoint sends FIN, the other acknowledges it,
+                and later sends its own FIN, which is acknowledged.
+                RST can be used to reset a connection instead.
+            </p>
+        </section>
+
+        <section id="tcp-reliability">
+            <h2>6. How TCP Provides Reliable Communication</h2>
+
+            <p>
+                TCP uses multiple mechanisms to provide reliable
+                and ordered delivery.
+            </p>
+
+            <h3>6.1 Sequence numbers</h3>
+
+            <p>
+                TCP assigns sequence numbers to bytes in the
+                transmitted stream. These numbers help the receiver
+                identify the position of data and detect missing
+                or duplicate segments.
+            </p>
+
+            <h3>6.2 Acknowledgments</h3>
+
+            <p>
+                The receiver sends acknowledgment information
+                to indicate the next byte it expects to receive.
+                TCP acknowledgments are generally cumulative.
+            </p>
+
+            <h3>6.3 Retransmission</h3>
+
+            <p>
+                If data is not acknowledged within the relevant
+                retransmission timeout, TCP can retransmit it.
+                TCP also uses other loss-recovery mechanisms,
+                such as fast retransmit, depending on the situation.
+            </p>
+
+            <h3>6.4 Flow control</h3>
+
+            <p>
+                TCP uses a receive window to communicate how much
+                additional data the receiver is currently willing
+                to accept. This helps protect a receiver from
+                being overwhelmed by incoming data.
+            </p>
+
+            <h3>6.5 Congestion control</h3>
+
+            <p>
+                TCP also manages the amount of data sent into
+                the network to respond to congestion. Congestion
+                control helps prevent excessive traffic from
+                overwhelming network paths.
+            </p>
+
+            <div class="transport-flow">
+                <div class="transport-layer-box">Sender transmits data</div>
+                <span>↓</span>
+                <div class="transport-layer-box">Receiver checks sequence numbers</div>
+                <span>↓</span>
+                <div class="transport-layer-box">Receiver sends acknowledgment</div>
+                <span>↓</span>
+                <div class="transport-layer-box">Sender advances acknowledged data</div>
+                <span>↓</span>
+                <div class="transport-layer-box active">Missing data can be retransmitted</div>
+            </div>
+        </section>
+
+        <section id="tcp-header">
+            <h2>7. TCP Header Explained</h2>
+
+            <p>
+                A TCP segment contains a header followed by
+                application data. The header carries information
+                required to manage the connection and data transfer.
+            </p>
+
+            <p>
+                The minimum TCP header size is 20 bytes.
+                Options can make it larger, up to 60 bytes.
+            </p>
+
+            <h3>Important TCP header fields</h3>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Source Port</td><td>Identifies the sending application endpoint.</td></tr>
+                        <tr><td>Destination Port</td><td>Identifies the receiving application endpoint.</td></tr>
+                        <tr><td>Sequence Number</td><td>Identifies the sequence position of transmitted data.</td></tr>
+                        <tr><td>Acknowledgment Number</td><td>Indicates the next sequence number expected.</td></tr>
+                        <tr><td>Data Offset</td><td>Indicates the TCP header length.</td></tr>
+                        <tr><td>Control Flags</td><td>Include SYN, ACK, FIN, RST, PSH, URG, and other control bits.</td></tr>
+                        <tr><td>Window</td><td>Communicates the receiver's advertised window.</td></tr>
+                        <tr><td>Checksum</td><td>Helps detect corruption in the TCP segment and its pseudo-header.</td></tr>
+                        <tr><td>Urgent Pointer</td><td>Used with the URG flag for urgent data signaling.</td></tr>
+                        <tr><td>Options</td><td>Carry optional capabilities such as MSS and window scaling.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Important TCP flags</h3>
+
+            <ul>
+                <li><strong>SYN:</strong> Synchronizes sequence numbers and initiates connection establishment.</li>
+                <li><strong>ACK:</strong> Indicates that the acknowledgment field is valid.</li>
+                <li><strong>FIN:</strong> Indicates that the sender has finished sending data in that direction.</li>
+                <li><strong>RST:</strong> Resets a connection.</li>
+                <li><strong>PSH:</strong> Requests that data be pushed toward the receiving application without unnecessary delay.</li>
+                <li><strong>URG:</strong> Indicates that the urgent pointer field is significant.</li>
+            </ul>
+
+            <div class="transport-highlight">
+                <strong>Packet analysis tip</strong>
+                <p>
+                    When examining TCP traffic in Wireshark,
+                    look for SYN, SYN-ACK, and ACK packets.
+                    These are common indicators of a TCP
+                    connection handshake.
+                </p>
+            </div>
+        </section>
+
+        <section id="udp-header">
+            <h2>8. UDP Header Explained</h2>
+
+            <p>
+                UDP uses a compact header of only 8 bytes.
+                It contains four fields, each 16 bits in size.
+            </p>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Size</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Source Port</td><td>16 bits</td><td>Identifies the sending port; it may be zero when no reply port is needed.</td></tr>
+                        <tr><td>Destination Port</td><td>16 bits</td><td>Identifies the destination application port.</td></tr>
+                        <tr><td>Length</td><td>16 bits</td><td>Specifies the length of the UDP header and data.</td></tr>
+                        <tr><td>Checksum</td><td>16 bits</td><td>Provides error detection for the UDP datagram and IP pseudo-header.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>UDP checksum note</h3>
+
+            <p>
+                For IPv4, the UDP checksum is optional at the
+                protocol level. For IPv6, it is normally required,
+                subject to defined exceptions. Modern UDP checksum
+                behavior is described by the relevant standards.
+            </p>
+
+            <p>
+                The small header is one reason UDP is useful
+                for applications that need a lightweight
+                datagram transport.
+            </p>
+        </section>
+
+        <section id="port-numbers">
+            <h2>9. Understanding Port Numbers</h2>
+
+            <p>
+                Port numbers identify application endpoints
+                at the transport layer. TCP and UDP each have
+                their own port-number space.
+            </p>
+
+            <p>
+                Port numbers are 16 bits long, giving a range
+                from 0 to 65535.
+            </p>
+
+            <h3>Three port-number ranges</h3>
+
+            <div class="transport-port-cards">
+                <div>
+                    <strong>0–1023</strong>
+                    <span>Well-known ports</span>
+                    <p>Assigned to widely used services.</p>
+                </div>
+                <div>
+                    <strong>1024–49151</strong>
+                    <span>Registered ports</span>
+                    <p>Registered for particular applications and services.</p>
+                </div>
+                <div>
+                    <strong>49152–65535</strong>
+                    <span>Dynamic/private ports</span>
+                    <p>Available for temporary and private use.</p>
+                </div>
+            </div>
+
+            <h3>Common TCP and UDP ports</h3>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Port</th>
+                            <th>Transport</th>
+                            <th>Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>20/21</td><td>TCP</td><td>FTP data and control (traditional active FTP)</td></tr>
+                        <tr><td>22</td><td>TCP</td><td>SSH</td></tr>
+                        <tr><td>23</td><td>TCP</td><td>Telnet</td></tr>
+                        <tr><td>25</td><td>TCP</td><td>SMTP</td></tr>
+                        <tr><td>53</td><td>UDP and TCP</td><td>DNS</td></tr>
+                        <tr><td>67/68</td><td>UDP</td><td>DHCP server and client</td></tr>
+                        <tr><td>69</td><td>UDP</td><td>TFTP</td></tr>
+                        <tr><td>80</td><td>TCP</td><td>HTTP</td></tr>
+                        <tr><td>110</td><td>TCP</td><td>POP3</td></tr>
+                        <tr><td>123</td><td>UDP</td><td>NTP</td></tr>
+                        <tr><td>143</td><td>TCP</td><td>IMAP</td></tr>
+                        <tr><td>161/162</td><td>UDP</td><td>SNMP and traps</td></tr>
+                        <tr><td>443</td><td>TCP</td><td>HTTPS over TCP</td></tr>
+                        <tr><td>443</td><td>UDP</td><td>HTTP/3 over QUIC</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Remember that port numbers identify services,
+                but the same numerical port can be used by
+                different transport protocols.
+            </p>
+
+            <div class="transport-highlight">
+                <strong>Important DNS detail</strong>
+                <p>
+                    DNS commonly uses UDP port 53, but it also
+                    uses TCP port 53 in situations such as
+                    zone transfers and responses that require
+                    TCP. DNS is not exclusively a UDP service.
+                </p>
+            </div>
+        </section>
+
+        <section id="applications">
+            <h2>10. Real-World Applications of TCP and UDP</h2>
+
+            <h3>Where is TCP commonly used?</h3>
+
+            <ul>
+                <li><strong>HTTPS over TCP:</strong> Secure web communication using HTTP over TLS and TCP.</li>
+                <li><strong>SSH:</strong> Secure remote command-line access.</li>
+                <li><strong>FTP:</strong> Traditional file transfer communication.</li>
+                <li><strong>SMTP:</strong> Email transfer between mail systems.</li>
+                <li><strong>IMAP:</strong> Accessing and managing email messages.</li>
+                <li><strong>Database connections:</strong> Many database protocols use TCP.</li>
+            </ul>
+
+            <h3>Where is UDP commonly used?</h3>
+
+            <ul>
+                <li><strong>DNS:</strong> Many ordinary DNS queries use UDP.</li>
+                <li><strong>DHCP:</strong> Uses UDP for address configuration exchanges.</li>
+                <li><strong>VoIP:</strong> Real-time voice applications commonly use UDP-based media transport.</li>
+                <li><strong>Online gaming:</strong> Many games use UDP for time-sensitive communication.</li>
+                <li><strong>Streaming and real-time media:</strong> Some systems use UDP-based protocols.</li>
+                <li><strong>NTP:</strong> Network time synchronization commonly uses UDP.</li>
+            </ul>
+
+            <h3>Can modern applications use UDP and still be reliable?</h3>
+
+            <p>
+                Yes. UDP itself does not provide TCP-style reliability,
+                but protocols built on top of UDP can implement their
+                own mechanisms.
+            </p>
+
+            <p>
+                For example, <strong>QUIC</strong> uses UDP as its
+                transport substrate and provides features including
+                reliable streams, congestion control, and secure
+                connection establishment. HTTP/3 uses QUIC.
+            </p>
+
+            <p>
+                This is an important modern networking concept:
+                choosing UDP does not necessarily mean an application
+                must accept unreliable communication.
+            </p>
+        </section>
+
+        <section id="packet-flow">
+            <h2>11. How Application Data Travels Through the Network</h2>
+
+            <p>
+                When an application sends data, the transport
+                protocol adds its own header. The IP layer then
+                encapsulates the transport data inside an IP packet.
+            </p>
+
+            <h3>TCP encapsulation</h3>
+
+            <div class="transport-packet">
+                <div class="packet-ip">
+                    <strong>IP Header</strong>
+                    <span>Source and destination IP addresses</span>
+                </div>
+                <div class="packet-tcp">
+                    <strong>TCP Header</strong>
+                    <span>Ports, sequence number, ACK, flags, window</span>
+                </div>
+                <div class="packet-data">
+                    <strong>Application Data</strong>
+                </div>
+            </div>
+
+            <h3>UDP encapsulation</h3>
+
+            <div class="transport-packet">
+                <div class="packet-ip">
+                    <strong>IP Header</strong>
+                    <span>Source and destination IP addresses</span>
+                </div>
+                <div class="packet-udp">
+                    <strong>UDP Header</strong>
+                    <span>Source port, destination port, length, checksum</span>
+                </div>
+                <div class="packet-data">
+                    <strong>Application Data</strong>
+                </div>
+            </div>
+
+            <p>
+                The transport-layer protocol is identified in the
+                IP header. For IPv4, the Protocol field uses value
+                6 for TCP and 17 for UDP. IPv6 uses the corresponding
+                Next Header values for TCP and UDP.
+            </p>
+
+            <p>
+                At the receiving device, the IP layer processes
+                the packet and passes the transport payload to
+                the appropriate TCP or UDP implementation.
+            </p>
+        </section>
+
+        <section id="performance">
+            <h2>12. Performance, Latency, and Reliability</h2>
+
+            <p>
+                TCP and UDP are designed for different transport
+                requirements. Neither is universally better.
+                The appropriate choice depends on what the
+                application needs.
+            </p>
+
+            <h3>When reliability is important</h3>
+
+            <p>
+                Consider transferring a file. If a portion of the
+                file is lost, the application generally needs that
+                missing data to be recovered. TCP provides built-in
+                sequencing, acknowledgment, and retransmission
+                mechanisms that support this requirement.
+            </p>
+
+            <h3>When timeliness is important</h3>
+
+            <p>
+                Consider a live voice conversation. Receiving an
+                old audio packet several seconds late may be less
+                useful than continuing with the current audio.
+                A real-time application may prefer to tolerate
+                some loss rather than wait for retransmission.
+            </p>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Possible choice</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Reliable file transfer</td><td>TCP</td><td>Ordered delivery and retransmission.</td></tr>
+                        <tr><td>Remote terminal access</td><td>TCP</td><td>Reliable interactive byte stream.</td></tr>
+                        <tr><td>Real-time voice media</td><td>UDP</td><td>Low overhead and tolerance of some loss.</td></tr>
+                        <tr><td>DNS query</td><td>Usually UDP</td><td>Small request-response exchange; TCP is also used.</td></tr>
+                        <tr><td>HTTP/3</td><td>UDP with QUIC</td><td>QUIC provides transport features over UDP.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>13. TCP and UDP Network Troubleshooting</h2>
+
+            <p>
+                Understanding transport protocols helps network
+                engineers identify why an application cannot
+                communicate with a remote service.
+            </p>
+
+            <h3>TCP troubleshooting</h3>
+
+            <p>
+                If a client cannot establish a TCP connection,
+                investigate:
+            </p>
+
+            <ul>
+                <li>Whether the destination IP address is reachable.</li>
+                <li>Whether the server is listening on the expected TCP port.</li>
+                <li>Whether a firewall is blocking the connection.</li>
+                <li>Whether routing and return routing are correct.</li>
+                <li>Whether the server is responding with SYN-ACK or RST.</li>
+                <li>Whether retransmissions indicate packet loss or filtering.</li>
+            </ul>
+
+            <h3>UDP troubleshooting</h3>
+
+            <p>
+                UDP does not establish a TCP-style connection.
+                Therefore, the absence of a handshake does not
+                indicate a failure.
+            </p>
+
+            <p>Investigate:</p>
+
+            <ul>
+                <li>Whether the application is listening on the expected UDP port.</li>
+                <li>Whether firewalls permit UDP traffic in the required direction.</li>
+                <li>Whether the destination service is responding.</li>
+                <li>Whether the application is using the correct server and port.</li>
+                <li>Whether packet loss, routing, or network address translation is affecting traffic.</li>
+            </ul>
+
+            <h3>Useful Windows commands</h3>
+
+            <div class="transport-code">
+                <code>netstat -ano</code>
+                <code>netstat -an | findstr ":443"</code>
+                <code>ipconfig /all</code>
+                <code>tracert 8.8.8.8</code>
+            </div>
+
+            <h3>Useful Linux commands</h3>
+
+            <div class="transport-code">
+                <code>ss -tulnp</code>
+                <code>ss -tn</code>
+                <code>ip route</code>
+                <code>ip addr</code>
+                <code>sudo tcpdump -i any tcp port 443</code>
+                <code>sudo tcpdump -i any udp port 53</code>
+            </div>
+
+            <p>
+                The <code>ss</code> command displays socket
+                information. The <code>tcpdump</code> command
+                captures traffic for inspection. Root or
+                elevated privileges may be required.
+            </p>
+        </section>
+
+        <section id="practical-lab">
+            <h2>14. Practical Lab: Observe TCP and UDP Traffic</h2>
+
+            <p>
+                Theory becomes easier to understand when you
+                observe actual packets. This exercise uses
+                Wireshark, a network protocol analyzer.
+            </p>
+
+            <h3>Lab requirements</h3>
+
+            <ul>
+                <li>A Windows or Linux computer.</li>
+                <li>Wireshark installed.</li>
+                <li>An active network connection.</li>
+                <li>Permission to capture traffic on the selected interface.</li>
+            </ul>
+
+            <h3>Part A: Capture TCP traffic</h3>
+
+            <ol>
+                <li>Open Wireshark.</li>
+                <li>Select the active network interface.</li>
+                <li>Start packet capture.</li>
+                <li>Open a website that uses HTTPS over TCP, if available.</li>
+                <li>Stop the capture.</li>
+                <li>Enter this display filter:</li>
+            </ol>
+
+            <div class="transport-code">
+                <code>tcp</code>
+            </div>
+
+            <p>
+                To inspect connection establishment, use:
+            </p>
+
+            <div class="transport-code">
+                <code>tcp.flags.syn == 1</code>
+            </div>
+
+            <p>
+                Look for SYN, SYN-ACK, and ACK packets.
+                Examine the source and destination ports,
+                sequence numbers, acknowledgment numbers,
+                and TCP flags.
+            </p>
+
+            <h3>Part B: Capture UDP traffic</h3>
+
+            <ol>
+                <li>Start a new capture.</li>
+                <li>Generate some DNS traffic by looking up a domain name.</li>
+                <li>Stop the capture.</li>
+                <li>Use the following display filter:</li>
+            </ol>
+
+            <div class="transport-code">
+                <code>udp</code>
+            </div>
+
+            <p>
+                To inspect DNS traffic specifically, use:
+            </p>
+
+            <div class="transport-code">
+                <code>udp.port == 53</code>
+            </div>
+
+            <p>
+                Inspect the UDP source port, destination port,
+                length, checksum status, and DNS message.
+            </p>
+
+            <h3>Part C: Compare your observations</h3>
+
+            <div class="transport-table-wrap">
+                <table class="transport-table">
+                    <thead>
+                        <tr>
+                            <th>Observation</th>
+                            <th>TCP capture</th>
+                            <th>UDP capture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Connection handshake</td><td>TCP SYN sequence may be visible.</td><td>No TCP-style handshake.</td></tr>
+                        <tr><td>Header fields</td><td>Sequence numbers, ACK, flags, window.</td><td>Ports, length, checksum.</td></tr>
+                        <tr><td>Data format</td><td>Byte stream segments.</td><td>Individual datagrams.</td></tr>
+                        <tr><td>Protocol overhead</td><td>At least 20-byte header.</td><td>8-byte header.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="transport-highlight">
+                <strong>Lab objective</strong>
+                <p>
+                    Identify TCP and UDP traffic, recognize
+                    their headers, and explain why their
+                    communication patterns differ.
+                </p>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>15. Frequently Asked Questions</h2>
+
+            <div class="transport-faq">
+                <h3>1. Is TCP more reliable than UDP?</h3>
+                <p>
+                    TCP provides built-in reliable, ordered
+                    delivery mechanisms. UDP does not provide
+                    those guarantees by itself. An application
+                    using UDP can implement additional reliability.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>2. Is UDP always faster than TCP?</h3>
+                <p>
+                    No. UDP has less built-in protocol overhead,
+                    but actual performance depends on the
+                    application, network conditions, and
+                    protocol design.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>3. Does UDP use port numbers?</h3>
+                <p>
+                    Yes. UDP uses 16-bit source and destination
+                    port fields to identify application endpoints.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>4. Can TCP and UDP use the same port number?</h3>
+                <p>
+                    Yes. TCP and UDP have separate port-number
+                    spaces. For example, DNS commonly uses
+                    both TCP port 53 and UDP port 53.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>5. Why does TCP use a three-way handshake?</h3>
+                <p>
+                    It synchronizes connection state and initial
+                    sequence numbers between the endpoints.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>6. Does UDP guarantee packet delivery?</h3>
+                <p>
+                    No. UDP does not guarantee delivery,
+                    ordering, or duplicate protection.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>7. What is the minimum TCP header size?</h3>
+                <p>
+                    The minimum TCP header is 20 bytes.
+                    Options can increase the size.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>8. What is the UDP header size?</h3>
+                <p>
+                    The UDP header is 8 bytes.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>9. Does HTTPS always use TCP?</h3>
+                <p>
+                    No. Traditional HTTPS commonly uses HTTP
+                    over TLS over TCP. HTTP/3 uses QUIC over UDP.
+                </p>
+            </div>
+
+            <div class="transport-faq">
+                <h3>10. Which protocol should I learn first?</h3>
+                <p>
+                    Learn both. Understanding TCP and UDP is
+                    essential for networking, Linux administration,
+                    security, troubleshooting, and network engineering.
+                </p>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>16. Conclusion</h2>
+
+            <p>
+                TCP and UDP are two fundamental transport
+                protocols that support application communication
+                across IP networks.
+            </p>
+
+            <p>
+                TCP provides a reliable, ordered byte stream
+                with connection management, flow control,
+                and congestion control. UDP provides a
+                lightweight datagram service with fewer
+                built-in mechanisms and more responsibility
+                left to the application.
+            </p>
+
+            <p>
+                As a networking learner, you should be comfortable
+                identifying both protocols, understanding their
+                headers, recognizing common port numbers,
+                and examining their behavior in packet captures.
+            </p>
+
+            <div class="transport-next">
+                <span>Continue learning</span>
+                <h3>Next: IPv4 Subnetting for Beginners</h3>
+                <p>
+                    Learn how to divide IPv4 networks into
+                    smaller subnets, calculate network and
+                    broadcast addresses, and allocate IP
+                    addresses efficiently.
+                </p>
+                <a href="subnetting-for-beginners.html">Read the subnetting guide →</a>
+            </div>
+        </section>
+
+        <section class="transport-references">
+            <h2>References and Further Reading</h2>
+            <ul>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc9293"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 9293 — Transmission Control Protocol (TCP)
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc768"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 768 — User Datagram Protocol (UDP)
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc9000"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 9000 — QUIC: A UDP-Based Multiplexed and Secure Transport
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc9114"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 9114 — HTTP/3
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.wireshark.org/docs/"
+                       target="_blank" rel="noopener noreferrer">
+                        Wireshark Documentation
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+    </article>
+</main>
+
+<footer class="site-footer">
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+    <p>Practical knowledge for networking and Linux learners.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
