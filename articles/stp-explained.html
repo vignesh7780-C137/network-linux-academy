@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Spanning Tree Protocol (STP) Explained</title>
+
+    <meta name="description" content="Learn how STP prevents switching loops, root bridge election, port roles, port states, RSTP and Cisco STP configuration.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="../index.html#networking">Networking</a>
+        <a href="../index.html#linux">Linux</a>
+        <a href="../index.html#labs">Practical Labs</a>
+        <a href="../index.html#about">About</a>
+    </nav>
+</header>
+
+<main class="stp-article">
+
+    <p>Networking / Switching</p>
+
+    <h1>Spanning Tree Protocol (STP) Explained</h1>
+
+    <p>
+        Redundant connections are important in enterprise networks.
+        They provide alternative paths when a link fails. However,
+        redundant Layer 2 connections can also create switching loops.
+        Spanning Tree Protocol (STP) prevents these loops.
+    </p>
+
+    <h2>1. What Is STP?</h2>
+
+    <p>
+        Spanning Tree Protocol is a Layer 2 protocol that prevents
+        loops in Ethernet switched networks by creating a loop-free
+        logical topology.
+    </p>
+
+    <p>
+        STP identifies redundant paths and places selected ports
+        into a non-forwarding state. If an active path fails,
+        STP can recalculate the topology and activate an alternative.
+    </p>
+
+    <h2>2. Why Do Switching Loops Occur?</h2>
+
+    <p>
+        Consider three switches connected in a triangle.
+        Multiple Layer 2 paths exist between them.
+    </p>
+
+    <p>
+        Ethernet frames do not normally contain a Layer 2
+        time-to-live field. Broadcast and unknown-unicast frames
+        can therefore circulate repeatedly when a loop exists.
+    </p>
+
+    <h3>Problems Caused by Switching Loops</h3>
+
+    <ul>
+        <li><strong>Broadcast storms:</strong> Broadcast frames circulate repeatedly and consume network bandwidth.</li>
+        <li><strong>MAC address table instability:</strong> Switches may repeatedly learn the same source MAC address on different ports.</li>
+        <li><strong>Duplicate frames:</strong> Devices may receive multiple copies of the same frame.</li>
+        <li><strong>Network congestion:</strong> Excessive traffic can make the network unreliable.</li>
+    </ul>
+
+    <h2>3. How Does STP Work?</h2>
+
+    <p>
+        STP exchanges Bridge Protocol Data Units (BPDUs) between
+        switches. These messages help switches determine the
+        loop-free topology.
+    </p>
+
+    <p>The basic process is:</p>
+
+    <ol>
+        <li>Switches exchange BPDUs.</li>
+        <li>They elect a root bridge.</li>
+        <li>They calculate the best paths toward the root bridge.</li>
+        <li>They select root and designated ports.</li>
+        <li>Redundant paths are prevented from forwarding traffic.</li>
+    </ol>
+
+    <h2>4. What Is the Root Bridge?</h2>
+
+    <p>
+        The root bridge is the central reference point for
+        STP path calculations. Other switches determine
+        their best paths toward this switch.
+    </p>
+
+    <p>
+        STP elects the switch with the lowest Bridge ID
+        as the root bridge.
+    </p>
+
+    <h3>Understanding Bridge ID</h3>
+
+    <p>
+        The Bridge ID includes a bridge priority value and
+        a MAC address. Extended System ID information is
+        also used in modern implementations.
+    </p>
+
+    <p>
+        If two switches have the same effective priority,
+        the lower MAC address wins the election.
+    </p>
+
+    <h2>5. STP Port Roles</h2>
+
+    <h3>Root Port</h3>
+    <p>
+        On a non-root switch, the root port is the port that
+        provides the best path toward the root bridge.
+        A non-root switch has one root port per spanning-tree
+        instance.
+    </p>
+
+    <h3>Designated Port</h3>
+    <p>
+        A designated port is selected for a network segment
+        to forward traffic toward the spanning-tree topology.
+        The root bridge's active ports are designated ports.
+    </p>
+
+    <h3>Alternate Port</h3>
+    <p>
+        An alternate port provides an alternative path
+        toward the root bridge. In classic STP it remains
+        non-forwarding; in RSTP it can rapidly become
+        a forwarding path when needed.
+    </p>
+
+    <h2>6. STP Port States</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>State</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Blocking</td>
+                <td>Does not forward ordinary user frames or learn MAC addresses.</td>
+            </tr>
+            <tr>
+                <td>Listening</td>
+                <td>Processes BPDUs while preparing to participate in forwarding.</td>
+            </tr>
+            <tr>
+                <td>Learning</td>
+                <td>Learns MAC addresses but does not forward ordinary user frames.</td>
+            </tr>
+            <tr>
+                <td>Forwarding</td>
+                <td>Forwards frames and learns MAC addresses.</td>
+            </tr>
+            <tr>
+                <td>Disabled</td>
+                <td>Not participating in STP because the interface is disabled or unavailable.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        These are the traditional 802.1D STP states.
+        RSTP uses a different state model: discarding,
+        learning and forwarding.
+    </p>
+
+    <h2>7. STP Timers</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Timer</th>
+                <th>Traditional default</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Hello Time</td>
+                <td>2 seconds</td>
+                <td>Interval between configuration BPDUs.</td>
+            </tr>
+            <tr>
+                <td>Forward Delay</td>
+                <td>15 seconds</td>
+                <td>Duration of the listening and learning stages.</td>
+            </tr>
+            <tr>
+                <td>Max Age</td>
+                <td>20 seconds</td>
+                <td>How long configuration information remains valid without a refresh.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>8. What Is RSTP?</h2>
+
+    <p>
+        Rapid Spanning Tree Protocol (RSTP), standardized
+        as IEEE 802.1w and later incorporated into IEEE 802.1Q,
+        improves convergence compared with traditional STP.
+    </p>
+
+    <p>
+        RSTP introduces additional port roles and mechanisms
+        that can allow faster recovery after topology changes.
+    </p>
+
+    <h3>STP vs RSTP</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>STP</th>
+                <th>RSTP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Standard</td>
+                <td>802.1D</td>
+                <td>802.1w</td>
+            </tr>
+            <tr>
+                <td>Convergence</td>
+                <td>Generally slower</td>
+                <td>Generally faster</td>
+            </tr>
+            <tr>
+                <td>Port roles</td>
+                <td>Root and designated, with non-designated ports</td>
+                <td>Root, designated, alternate and backup</td>
+            </tr>
+            <tr>
+                <td>Port states</td>
+                <td>Five traditional states</td>
+                <td>Discarding, learning and forwarding</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>9. Cisco STP Configuration</h2>
+
+    <p>
+        On supported Cisco switches, you can configure
+        Rapid PVST+ to run a separate spanning-tree
+        instance for each VLAN.
+    </p>
+
+    <h3>Enable Rapid PVST+</h3>
+
+    <pre><code>enable
+configure terminal
+
+spanning-tree mode rapid-pvst
+
+end</code></pre>
+
+    <h3>Configure a Switch as Root Bridge</h3>
+
+    <pre><code>configure terminal
+
+spanning-tree vlan 10 root primary
+
+end</code></pre>
+
+    <p>
+        This Cisco command adjusts the priority to make the
+        switch the preferred root bridge for VLAN 10, subject
+        to the platform's supported configuration.
+    </p>
+
+    <h3>Verify STP</h3>
+
+    <pre><code>show spanning-tree
+
+show spanning-tree vlan 10
+
+show spanning-tree root
+
+show spanning-tree summary</code></pre>
+
+    <h2>10. Important STP Security Features</h2>
+
+    <h3>PortFast</h3>
+    <p>
+        PortFast allows an appropriate edge port to transition
+        quickly to forwarding. Use it on ports connected to
+        end devices, not ordinary switch-to-switch links.
+    </p>
+
+    <h3>BPDU Guard</h3>
+    <p>
+        BPDU Guard can place a PortFast-enabled interface
+        into an error-disabled state if it receives a BPDU.
+        This helps protect the spanning-tree topology from
+        unexpected switches connected to edge ports.
+    </p>
+
+    <pre><code>configure terminal
+
+interface fastEthernet 0/1
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+
+end</code></pre>
+
+    <h2>11. Practical Packet Tracer Lab</h2>
+
+    <p>
+        Create a topology using three switches connected
+        in a triangle.
+    </p>
+
+    <ol>
+        <li>Connect Switch 1 to Switch 2.</li>
+        <li>Connect Switch 2 to Switch 3.</li>
+        <li>Connect Switch 3 back to Switch 1.</li>
+        <li>Connect a PC to each switch.</li>
+        <li>Configure the switches and verify STP.</li>
+        <li>Identify the root bridge.</li>
+        <li>Find the root ports, designated ports and alternate or blocking path.</li>
+        <li>Disconnect one active link and observe the topology change.</li>
+    </ol>
+
+    <h2>12. Frequently Asked Questions</h2>
+
+    <h3>Does STP work at Layer 2?</h3>
+    <p>
+        Yes. STP operates at the data link layer.
+    </p>
+
+    <h3>Why is a root bridge needed?</h3>
+    <p>
+        It provides a common reference point for switches
+        to calculate their loop-free paths.
+    </p>
+
+    <h3>Does STP remove redundant cables?</h3>
+    <p>
+        No. It logically prevents selected redundant paths
+        from forwarding traffic while retaining them for
+        potential recovery.
+    </p>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        STP is essential for reliable Layer 2 networks.
+        Understanding root bridge election, port roles,
+        port states and RSTP helps network administrators
+        design and troubleshoot redundant switched networks.
+    </p>
+
+    <h2>Related Articles</h2>
+
+    <ul>
+        <li><a href="vlan-explained.html">VLAN Explained</a></li>
+        <li><a href="vlan-trunking.html">VLAN Trunking Explained</a></li>
+        <li><a href="ospf-introduction.html">OSPF Introduction</a></li>
+    </ul>
+
+    <h2>References</h2>
+
+    <ul>
+        <li><a href="https://standards.ieee.org/ieee/802.1D/4473/" target="_blank" rel="noopener noreferrer">IEEE 802.1D - MAC Bridges</a></li>
+        <li><a href="https://standards.ieee.org/ieee/802.1w/3298/" target="_blank" rel="noopener noreferrer">IEEE 802.1w - Rapid Reconfiguration</a></li>
+        <li><a href="https://www.cisco.com/" target="_blank" rel="noopener noreferrer">Cisco Networking Documentation</a></li>
+    </ul>
+
+</main>
+
+<footer>
+    <p>Network & Linux Academy</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
