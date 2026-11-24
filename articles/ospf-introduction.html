@@ -1,3 +1,1003 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn OSPF routing from the fundamentals. Understand OSPFv2, neighbors, Router IDs, areas, LSAs, cost, SPF, Cisco IOS configuration and practical troubleshooting.">
+    <meta name="keywords" content="OSPF, OSPFv2, dynamic routing, Cisco OSPF configuration, Router ID, OSPF areas, LSAs, SPF algorithm, networking">
+    <title>Introduction to OSPF | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul class="navigation" id="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="ospf-article">
+
+    <div class="ospf-breadcrumb">
+        <a href="../index.html">Home</a> /
+        <a href="../index.html#networking">Networking</a> /
+        <span>OSPF Introduction</span>
+    </div>
+
+    <header class="ospf-header">
+        <span class="ospf-category">ROUTING AND SWITCHING</span>
+        <h1>Introduction to OSPF: How Dynamic Routing Works</h1>
+        <p class="ospf-subtitle">
+            Understand how routers discover neighbors, exchange network
+            topology information, calculate the shortest path, and
+            dynamically learn routes using OSPF.
+        </p>
+        <div class="ospf-meta">
+            <span>Intermediate</span>
+            <span>•</span>
+            <span>Routing Protocols</span>
+            <span>•</span>
+            <span>Cisco IOS Practical Lab</span>
+        </div>
+    </header>
+
+    <div class="ospf-callout">
+        <strong>What you will learn</strong>
+        <p>
+            This guide introduces OSPFv2, its working principles,
+            neighbor relationships, Router IDs, areas, link-state
+            advertisements, routing metrics, and a practical
+            two-router Cisco configuration.
+        </p>
+    </div>
+
+    <nav class="ospf-toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#routing-basics">Understanding routing</a></li>
+            <li><a href="#static-dynamic">Static routing vs. dynamic routing</a></li>
+            <li><a href="#what-is-ospf">What is OSPF?</a></li>
+            <li><a href="#ospf-versions">OSPFv2 and OSPFv3</a></li>
+            <li><a href="#ospf-characteristics">Important characteristics</a></li>
+            <li><a href="#ospf-components">Core OSPF components</a></li>
+            <li><a href="#ospf-neighbors">OSPF neighbors and adjacency</a></li>
+            <li><a href="#ospf-states">OSPF neighbor states</a></li>
+            <li><a href="#ospf-areas">OSPF areas</a></li>
+            <li><a href="#ospf-packets">OSPF packet types</a></li>
+            <li><a href="#ospf-lsa">LSAs and LSDB</a></li>
+            <li><a href="#ospf-cost">OSPF cost and SPF algorithm</a></li>
+            <li><a href="#ospf-process">How OSPF works step by step</a></li>
+            <li><a href="#ospf-lab">Practical Cisco OSPF lab</a></li>
+            <li><a href="#ospf-verification">Verification commands</a></li>
+            <li><a href="#ospf-troubleshooting">Troubleshooting OSPF</a></li>
+            <li><a href="#ospf-faq">Frequently asked questions</a></li>
+            <li><a href="#ospf-conclusion">Conclusion</a></li>
+        </ol>
+    </nav>
+
+    <article class="ospf-content">
+
+        <section id="routing-basics">
+            <h2>1. Understanding Routing</h2>
+
+            <p>
+                Before learning OSPF, it is important to understand
+                what routing means in computer networking.
+            </p>
+
+            <p>
+                <strong>Routing</strong> is the process of selecting a path
+                through which network packets travel from a source network
+                to a destination network. Routers use routing information
+                to decide where to forward packets.
+            </p>
+
+            <p>
+                A router maintains a routing table containing information
+                about destination networks and the paths available to reach
+                them.
+            </p>
+
+            <div class="ospf-flow">
+                <div>Source network</div>
+                <span>↓</span>
+                <div>Router examines routing table</div>
+                <span>↓</span>
+                <div>Selects the best matching route</div>
+                <span>↓</span>
+                <div>Forwards packet to next hop</div>
+                <span>↓</span>
+                <div>Destination network</div>
+            </div>
+
+            <p>
+                Routing is essential because devices on different IP
+                networks cannot communicate directly at Layer 2.
+                They generally rely on routers or Layer 3 switches
+                to forward traffic between networks.
+            </p>
+        </section>
+
+        <section id="static-dynamic">
+            <h2>2. Static Routing vs. Dynamic Routing</h2>
+
+            <p>
+                There are different ways to populate a router's routing
+                table. Two fundamental approaches are static routing
+                and dynamic routing.
+            </p>
+
+            <h3>Static routing</h3>
+
+            <p>
+                Static routing requires an administrator to manually
+                configure routes. The router does not automatically
+                discover alternative paths through a routing protocol.
+            </p>
+
+            <p>Example Cisco IOS command:</p>
+
+            <div class="ospf-code">
+                <code>ip route 192.168.20.0 255.255.255.0 10.0.12.2</code>
+            </div>
+
+            <p>
+                This command tells the router to reach network
+                192.168.20.0/24 through next-hop address 10.0.12.2.
+            </p>
+
+            <h3>Dynamic routing</h3>
+
+            <p>
+                Dynamic routing protocols allow routers to exchange
+                routing information automatically. They can learn
+                remote networks and update routes when network
+                topology changes.
+            </p>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Static routing</th>
+                            <th>Dynamic routing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Configuration</td>
+                            <td>Manual</td>
+                            <td>Protocol-based</td>
+                        </tr>
+                        <tr>
+                            <td>Route discovery</td>
+                            <td>Administrator configures routes</td>
+                            <td>Routers exchange information</td>
+                        </tr>
+                        <tr>
+                            <td>Topology changes</td>
+                            <td>May require manual updates</td>
+                            <td>Can adapt automatically</td>
+                        </tr>
+                        <tr>
+                            <td>Resource usage</td>
+                            <td>Generally low</td>
+                            <td>Uses CPU, memory and bandwidth</td>
+                        </tr>
+                        <tr>
+                            <td>Typical use</td>
+                            <td>Small or predictable networks</td>
+                            <td>Networks with multiple routers and paths</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Common dynamic routing protocols include RIP, OSPF,
+                EIGRP and BGP. Each uses different mechanisms and
+                metrics to exchange and select routing information.
+            </p>
+        </section>
+
+        <section id="what-is-ospf">
+            <h2>3. What Is OSPF?</h2>
+
+            <p>
+                <strong>OSPF (Open Shortest Path First)</strong> is a
+                link-state interior gateway routing protocol used
+                to exchange routing information within an autonomous
+                system.
+            </p>
+
+            <p>
+                OSPF allows routers to learn about network topology,
+                build a link-state database, and calculate the best
+                paths to destination networks.
+            </p>
+
+            <p>
+                It uses the <strong>Shortest Path First (SPF) algorithm</strong>,
+                also known as Dijkstra's algorithm, to calculate paths
+                based on OSPF cost.
+            </p>
+
+            <div class="ospf-highlight">
+                <strong>In simple terms</strong>
+                <p>
+                    OSPF enables routers to share information about
+                    the networks and links they know. Each router
+                    uses this information to calculate its own
+                    best routes.
+                </p>
+            </div>
+
+            <p>
+                OSPF is an open standard, which means it is not limited
+                to a single router manufacturer. It is commonly used
+                in enterprise networks.
+            </p>
+        </section>
+
+        <section id="ospf-versions">
+            <h2>4. OSPFv2 and OSPFv3</h2>
+
+            <p>
+                OSPF has different versions designed to support
+                different IP protocol environments.
+            </p>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Primary use</th>
+                            <th>Specification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OSPFv2</td>
+                            <td>IPv4 routing</td>
+                            <td>RFC 2328</td>
+                        </tr>
+                        <tr>
+                            <td>OSPFv3</td>
+                            <td>Originally developed for IPv6</td>
+                            <td>RFC 5340</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                OSPFv3 was originally specified for IPv6. Later
+                extensions also support address families such as IPv4.
+                The configuration and operational details can vary
+                across platforms.
+            </p>
+
+            <p>
+                In this tutorial, all examples use
+                <strong>OSPFv2 with IPv4</strong>.
+            </p>
+        </section>
+
+        <section id="ospf-characteristics">
+            <h2>5. Important Characteristics of OSPF</h2>
+
+            <ul>
+                <li><strong>Link-state protocol:</strong> Routers exchange information about their links and network topology.</li>
+                <li><strong>Open standard:</strong> Supported by multiple networking vendors.</li>
+                <li><strong>Classless routing:</strong> Supports variable-length subnet masks and CIDR prefixes.</li>
+                <li><strong>Hierarchical design:</strong> Supports dividing an OSPF domain into areas.</li>
+                <li><strong>Metric:</strong> Uses cost to select preferred paths.</li>
+                <li><strong>Fast adaptation:</strong> Detects topology changes and recalculates routes.</li>
+                <li><strong>Multicast communication:</strong> Uses multicast addresses for many OSPF control messages on applicable network types.</li>
+                <li><strong>Equal-cost multipath:</strong> Can install multiple equal-cost paths when supported and configured.</li>
+            </ul>
+        </section>
+
+        <section id="ospf-components">
+            <h2>6. Core OSPF Components</h2>
+
+            <p>
+                Several important components work together to make
+                OSPF function.
+            </p>
+
+            <h3>6.1 Router ID</h3>
+
+            <p>
+                A <strong>Router ID (RID)</strong> is a 32-bit identifier
+                used to identify an OSPF router within the OSPF routing
+                domain. It is written in dotted-decimal format.
+            </p>
+
+            <p>Example:</p>
+
+            <div class="ospf-code">
+                <code>1.1.1.1</code>
+            </div>
+
+            <p>
+                An administrator can manually configure a Router ID.
+                If one is not configured, the router selects one
+                according to platform-specific selection rules.
+                On Cisco IOS, these rules commonly consider
+                loopback and active physical interface addresses.
+            </p>
+
+            <p>
+                Router IDs should be unique within the OSPF domain.
+            </p>
+
+            <h3>6.2 Neighbor table</h3>
+
+            <p>
+                The neighbor table contains information about other
+                OSPF routers discovered on connected network segments.
+            </p>
+
+            <h3>6.3 Link-State Database (LSDB)</h3>
+
+            <p>
+                The LSDB stores the link-state information used by
+                OSPF routers to understand the topology of their area.
+                Routers in the same area should have synchronized
+                link-state databases.
+            </p>
+
+            <h3>6.4 Routing table</h3>
+
+            <p>
+                After running the SPF calculation, the router installs
+                selected routes into its IP routing table, subject to
+                route selection and platform rules.
+            </p>
+
+            <div class="ospf-flow">
+                <div>Neighbor information</div>
+                <span>↓</span>
+                <div>Link-State Database</div>
+                <span>↓</span>
+                <div>SPF calculation</div>
+                <span>↓</span>
+                <div>OSPF routes</div>
+                <span>↓</span>
+                <div>IP routing table</div>
+            </div>
+
+            <p>
+                These databases have different purposes. The neighbor
+                table tracks router relationships, the LSDB describes
+                topology, and the routing table contains selected
+                forwarding routes.
+            </p>
+        </section>
+
+        <section id="ospf-neighbors">
+            <h2>7. OSPF Neighbors and Adjacency</h2>
+
+            <p>
+                OSPF routers use Hello packets to discover other
+                OSPF-speaking routers on a connected network segment.
+                These discovered routers can become OSPF neighbors.
+            </p>
+
+            <p>
+                A neighbor relationship allows routers to communicate
+                and, where required by the network type, establish
+                an adjacency to synchronize link-state information.
+            </p>
+
+            <div class="ospf-highlight">
+                <strong>Neighbor vs. adjacency</strong>
+                <p>
+                    A neighbor is an OSPF router discovered on a shared
+                    network. An adjacency is a more advanced relationship
+                    in which routers synchronize their link-state databases.
+                    Not every neighbor on every network type must become
+                    fully adjacent to every other neighbor.
+                </p>
+            </div>
+
+            <h3>Important neighbor parameters</h3>
+
+            <p>
+                Common settings that must be compatible for routers
+                to form a neighbor relationship include:
+            </p>
+
+            <ul>
+                <li>Area ID</li>
+                <li>Hello interval</li>
+                <li>Dead interval</li>
+                <li>Authentication settings, where configured</li>
+                <li>Compatible network type and other required parameters</li>
+                <li>Matching IP subnet on conventional shared networks</li>
+            </ul>
+
+            <p>
+                A mismatch in important parameters can prevent
+                routers from establishing the expected relationship.
+            </p>
+        </section>
+
+        <section id="ospf-states">
+            <h2>8. OSPF Neighbor States</h2>
+
+            <p>
+                OSPF uses a series of states while discovering
+                neighbors and forming adjacencies.
+            </p>
+
+            <div class="ospf-state-list">
+                <div>
+                    <strong>1. Down</strong>
+                    <p>No Hello packets have been received from the neighbor within the relevant process state.</p>
+                </div>
+                <div>
+                    <strong>2. Init</strong>
+                    <p>A Hello packet has been received, but bidirectional communication has not yet been confirmed.</p>
+                </div>
+                <div>
+                    <strong>3. 2-Way</strong>
+                    <p>Bidirectional Hello communication has been established.</p>
+                </div>
+                <div>
+                    <strong>4. ExStart</strong>
+                    <p>Routers begin negotiating the master-slave relationship and initial database exchange sequence.</p>
+                </div>
+                <div>
+                    <strong>5. Exchange</strong>
+                    <p>Routers exchange Database Description packets containing summaries of their link-state databases.</p>
+                </div>
+                <div>
+                    <strong>6. Loading</strong>
+                    <p>Routers request and receive missing or newer link-state information.</p>
+                </div>
+                <div>
+                    <strong>7. Full</strong>
+                    <p>The required link-state databases have been synchronized and the adjacency is complete.</p>
+                </div>
+            </div>
+
+            <p>
+                On broadcast networks, routers that are not selected
+                as the Designated Router or Backup Designated Router
+                may remain in the 2-Way state with one another.
+                This can be normal behavior.
+            </p>
+        </section>
+
+        <section id="ospf-areas">
+            <h2>9. OSPF Areas</h2>
+
+            <p>
+                OSPF supports a hierarchical network design using
+                areas. An area is a logical grouping of OSPF
+                interfaces and routers that share area-specific
+                link-state information.
+            </p>
+
+            <p>
+                Dividing a large network into areas can limit
+                the scope of topology information and reduce
+                the processing required by routers.
+            </p>
+
+            <h3>Area 0 — Backbone area</h3>
+
+            <p>
+                Area 0 is the backbone area of a conventional
+                multiarea OSPF design. Other regular areas connect
+                to the backbone through Area Border Routers (ABRs).
+            </p>
+
+            <div class="ospf-area-diagram">
+                <div class="ospf-area-box">
+                    <strong>Area 1</strong>
+                    <span>Branch network</span>
+                </div>
+                <div class="ospf-area-center">
+                    <strong>Area 0</strong>
+                    <span>Backbone</span>
+                </div>
+                <div class="ospf-area-box">
+                    <strong>Area 2</strong>
+                    <span>Another branch</span>
+                </div>
+            </div>
+
+            <h3>Types of OSPF routers</h3>
+
+            <ul>
+                <li><strong>Internal Router:</strong> Has all OSPF interfaces in the same area.</li>
+                <li><strong>Backbone Router:</strong> Has at least one OSPF interface in Area 0.</li>
+                <li><strong>Area Border Router (ABR):</strong> Connects Area 0 to one or more other areas.</li>
+                <li><strong>Autonomous System Boundary Router (ASBR):</strong> Introduces external routing information into OSPF.</li>
+            </ul>
+
+            <p>
+                Single-area OSPF is often used in smaller networks.
+                Multiarea OSPF becomes useful when a larger network
+                needs a more structured design.
+            </p>
+        </section>
+
+        <section id="ospf-packets">
+            <h2>10. OSPF Packet Types</h2>
+
+            <p>
+                OSPFv2 uses five packet types to establish relationships
+                and exchange link-state information.
+            </p>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>Packet type</th>
+                            <th>Name</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Type 1</td>
+                            <td>Hello</td>
+                            <td>Discovers and maintains neighbor relationships.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 2</td>
+                            <td>Database Description (DBD)</td>
+                            <td>Summarizes link-state database information.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 3</td>
+                            <td>Link-State Request (LSR)</td>
+                            <td>Requests specific link-state information.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 4</td>
+                            <td>Link-State Update (LSU)</td>
+                            <td>Transports link-state advertisements.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 5</td>
+                            <td>Link-State Acknowledgment (LSAck)</td>
+                            <td>Acknowledges received link-state advertisements.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                These packets work together during neighbor discovery,
+                database synchronization, and ongoing topology updates.
+            </p>
+        </section>
+
+        <section id="ospf-lsa">
+            <h2>11. LSAs and the Link-State Database</h2>
+
+            <p>
+                A <strong>Link-State Advertisement (LSA)</strong> is a
+                data structure that describes topology or routing
+                information within OSPF.
+            </p>
+
+            <p>
+                Routers distribute LSAs through the OSPF domain
+                according to their type and flooding scope. The
+                received information is stored in the Link-State
+                Database.
+            </p>
+
+            <h3>Common OSPFv2 LSA types</h3>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>LSA type</th>
+                            <th>Name</th>
+                            <th>General purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Type 1</td>
+                            <td>Router LSA</td>
+                            <td>Describes a router's links within an area.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 2</td>
+                            <td>Network LSA</td>
+                            <td>Describes a multi-access network and its attached routers.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 3</td>
+                            <td>Summary LSA</td>
+                            <td>Advertises inter-area network information.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 4</td>
+                            <td>ASBR Summary LSA</td>
+                            <td>Describes how to reach an ASBR.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 5</td>
+                            <td>AS External LSA</td>
+                            <td>Advertises routes external to the OSPF domain.</td>
+                        </tr>
+                        <tr>
+                            <td>Type 7</td>
+                            <td>NSSA External LSA</td>
+                            <td>Advertises external routes within an NSSA.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                This is an introductory list of commonly encountered
+                LSA types. OSPF has additional LSA types and rules
+                for different network designs.
+            </p>
+        </section>
+
+        <section id="ospf-cost">
+            <h2>12. OSPF Cost and the SPF Algorithm</h2>
+
+            <p>
+                OSPF uses a metric called <strong>cost</strong> to
+                evaluate paths. Lower total cost is preferred when
+                comparing eligible paths to a destination.
+            </p>
+
+            <h3>How is OSPF cost calculated?</h3>
+
+            <p>
+                On Cisco IOS, the traditional default cost calculation
+                is based on interface bandwidth and a reference
+                bandwidth.
+            </p>
+
+            <div class="ospf-formula">
+                Interface Cost = Reference Bandwidth / Interface Bandwidth
+            </div>
+
+            <p>
+                With the traditional Cisco default reference bandwidth
+                of 100 Mbps, a Fast Ethernet interface with a bandwidth
+                of 100 Mbps has a cost of 1. A Gigabit Ethernet interface
+                may also have a cost of 1 unless the reference bandwidth
+                is adjusted.
+            </p>
+
+            <p>
+                For this reason, administrators often configure a
+                consistent reference bandwidth across OSPF routers
+                so that higher-speed interfaces can be distinguished.
+            </p>
+
+            <h3>What is the SPF algorithm?</h3>
+
+            <p>
+                OSPF uses Dijkstra's Shortest Path First algorithm
+                to calculate the shortest paths from the local
+                router to destinations represented in its LSDB.
+            </p>
+
+            <p>
+                The algorithm evaluates the topology and accumulates
+                link costs to determine the best paths.
+            </p>
+
+            <div class="ospf-example">
+                <strong>Example path comparison</strong>
+                <p>Path A: Router 1 → Router 2 → Router 4</p>
+                <p>Cost: 10 + 10 = 20</p>
+                <hr>
+                <p>Path B: Router 1 → Router 3 → Router 4</p>
+                <p>Cost: 5 + 30 = 35</p>
+                <div class="ospf-result">Preferred path: Path A (total cost 20)</div>
+            </div>
+
+            <p>
+                The example illustrates the basic principle: when
+                the paths are otherwise eligible, OSPF prefers the
+                path with the lower total cost.
+            </p>
+        </section>
+
+        <section id="ospf-process">
+            <h2>13. How OSPF Works Step by Step</h2>
+
+            <p>
+                The following sequence provides a simplified view
+                of OSPF operation:
+            </p>
+
+            <ol class="ospf-process-list">
+                <li>
+                    <strong>Neighbor discovery</strong>
+                    <p>Routers send and receive Hello packets on OSPF-enabled interfaces.</p>
+                </li>
+                <li>
+                    <strong>Neighbor relationship</strong>
+                    <p>Compatible routers establish neighbor relationships.</p>
+                </li>
+                <li>
+                    <strong>Adjacency and database exchange</strong>
+                    <p>Routers that need to become adjacent exchange database summaries and synchronize LSAs.</p>
+                </li>
+                <li>
+                    <strong>LSDB synchronization</strong>
+                    <p>Routers build a consistent view of the topology within their area.</p>
+                </li>
+                <li>
+                    <strong>SPF calculation</strong>
+                    <p>Each router calculates its best paths using its own position in the topology.</p>
+                </li>
+                <li>
+                    <strong>Route installation</strong>
+                    <p>Selected OSPF routes are installed into the IP routing table.</p>
+                </li>
+                <li>
+                    <strong>Topology change</strong>
+                    <p>When a relevant link or route changes, OSPF distributes updated information and recalculates paths as necessary.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section id="ospf-lab">
+            <h2>14. Practical Cisco OSPF Lab</h2>
+
+            <p>
+                Now let's configure OSPF on two Cisco routers.
+                This simple lab demonstrates how routers can
+                automatically learn remote networks without
+                manually configuring static routes.
+            </p>
+
+            <h3>Lab objective</h3>
+
+            <p>
+                Establish an OSPF neighbor relationship between
+                R1 and R2. Advertise their respective LAN networks
+                so that devices on both LANs can communicate
+                through the routers.
+            </p>
+
+            <h3>Topology</h3>
+
+            <div class="ospf-topology">
+                <div class="ospf-lan">
+                    <strong>LAN 1</strong>
+                    <span>192.168.10.0/24</span>
+                    <span>PC1</span>
+                </div>
+
+                <div class="ospf-router">
+                    <strong>R1</strong>
+                    <span>10.0.12.1/30</span>
+                </div>
+
+                <div class="ospf-link">
+                    <span>10.0.12.0/30</span>
+                    <span>────────────</span>
+                </div>
+
+                <div class="ospf-router">
+                    <strong>R2</strong>
+                    <span>10.0.12.2/30</span>
+                </div>
+
+                <div class="ospf-lan">
+                    <strong>LAN 2</strong>
+                    <span>192.168.20.0/24</span>
+                    <span>PC2</span>
+                </div>
+            </div>
+
+            <p class="ospf-note">
+                The diagram is a logical representation. In Packet Tracer,
+                connect the routers using an Ethernet link and connect
+                each router's LAN interface to a switch and PC.
+            </p>
+
+            <h3>IP addressing plan</h3>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Interface</th>
+                            <th>IP address</th>
+                            <th>Subnet mask</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>R1</td><td>G0/0</td><td>10.0.12.1</td><td>255.255.255.252</td></tr>
+                        <tr><td>R1</td><td>G0/1</td><td>192.168.10.1</td><td>255.255.255.0</td></tr>
+                        <tr><td>R2</td><td>G0/0</td><td>10.0.12.2</td><td>255.255.255.252</td></tr>
+                        <tr><td>R2</td><td>G0/1</td><td>192.168.20.1</td><td>255.255.255.0</td></tr>
+                        <tr><td>PC1</td><td>NIC</td><td>192.168.10.10</td><td>255.255.255.0</td></tr>
+                        <tr><td>PC2</td><td>NIC</td><td>192.168.20.10</td><td>255.255.255.0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                Configure PC1's default gateway as 192.168.10.1
+                and PC2's default gateway as 192.168.20.1.
+            </p>
+
+            <h3>Step 1: Configure R1 interfaces</h3>
+
+            <div class="ospf-code">
+                <code>enable</code>
+                <code>configure terminal</code>
+                <code>hostname R1</code>
+                <code>interface gigabitEthernet 0/0</code>
+                <code>ip address 10.0.12.1 255.255.255.252</code>
+                <code>no shutdown</code>
+                <code>exit</code>
+                <code>interface gigabitEthernet 0/1</code>
+                <code>ip address 192.168.10.1 255.255.255.0</code>
+                <code>no shutdown</code>
+                <code>exit</code>
+            </div>
+
+            <h3>Step 2: Configure R2 interfaces</h3>
+
+            <div class="ospf-code">
+                <code>enable</code>
+                <code>configure terminal</code>
+                <code>hostname R2</code>
+                <code>interface gigabitEthernet 0/0</code>
+                <code>ip address 10.0.12.2 255.255.255.252</code>
+                <code>no shutdown</code>
+                <code>exit</code>
+                <code>interface gigabitEthernet 0/1</code>
+                <code>ip address 192.168.20.1 255.255.255.0</code>
+                <code>no shutdown</code>
+                <code>exit</code>
+            </div>
+
+            <h3>Step 3: Configure OSPF on R1</h3>
+
+            <div class="ospf-code">
+                <code>router ospf 1</code>
+                <code>router-id 1.1.1.1</code>
+                <code>network 10.0.12.0 0.0.0.3 area 0</code>
+                <code>network 192.168.10.0 0.0.0.255 area 0</code>
+                <code>passive-interface gigabitEthernet 0/1</code>
+                <code>end</code>
+            </div>
+
+            <h3>Step 4: Configure OSPF on R2</h3>
+
+            <div class="ospf-code">
+                <code>router ospf 1</code>
+                <code>router-id 2.2.2.2</code>
+                <code>network 10.0.12.0 0.0.0.3 area 0</code>
+                <code>network 192.168.20.0 0.0.0.255 area 0</code>
+                <code>passive-interface gigabitEthernet 0/1</code>
+                <code>end</code>
+            </div>
+
+            <p>
+                The OSPF process ID is locally significant on Cisco IOS.
+                It does not need to match between routers. Both routers
+                use Area 0 on their shared link, allowing them to
+                establish an OSPF neighbor relationship.
+            </p>
+
+            <p>
+                The wildcard mask is the inverse of the subnet mask.
+                For example, 255.255.255.252 corresponds to
+                0.0.0.3.
+            </p>
+
+            <p>
+                The passive-interface command prevents OSPF Hello
+                packets from being sent through the LAN interface
+                where no OSPF neighbor is expected. The LAN network
+                is still advertised into OSPF.
+            </p>
+
+            <h3>Step 5: Verify the neighbor relationship</h3>
+
+            <p>On either router, run:</p>
+
+            <div class="ospf-code">
+                <code>show ip ospf neighbor</code>
+            </div>
+
+            <p>
+                You should see the other router's Router ID and
+                a neighbor state indicating a successful adjacency.
+                On this point-to-point-style Ethernet connection,
+                the expected state is Full.
+            </p>
+
+            <h3>Step 6: Verify learned routes</h3>
+
+            <div class="ospf-code">
+                <code>show ip route ospf</code>
+            </div>
+
+            <p>
+                R1 should learn the 192.168.20.0/24 network through
+                R2. R2 should learn the 192.168.10.0/24 network
+                through R1.
+            </p>
+
+            <h3>Step 7: Test connectivity</h3>
+
+            <p>From PC1, open the command prompt and run:</p>
+
+            <div class="ospf-code">
+                <code>ping 192.168.20.10</code>
+            </div>
+
+            <p>
+                If the addressing, default gateways, interfaces,
+                and OSPF configuration are correct, PC1 should
+                be able to reach PC2.
+            </p>
+
+            <div class="ospf-highlight">
+                <strong>Lab success criteria</strong>
+                <ul>
+                    <li>Both router interfaces are up/up.</li>
+                    <li>R1 and R2 form an OSPF adjacency.</li>
+                    <li>R1 learns the remote LAN route.</li>
+                    <li>R2 learns the remote LAN route.</li>
+                    <li>PC1 can ping PC2.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ospf-verification">
+            <h2>15. Useful OSPF Verification Commands</h2>
+
+            <div class="ospf-table-wrap">
+                <table class="ospf-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>show ip ospf</code></td><td>Displays OSPF process information.</td></tr>
+                        <tr><td><code>show ip ospf neighbor</code></td><td>Displays OSPF neighbors and their states.</td></tr>
+                        <tr><td><code>show ip route ospf</code></td><td>Displays OSPF-learned routes.</td></tr>
+                        <tr><td><code>show ip ospf interface brief</code></td><td>Summarizes OSPF-enabled interfaces.</td></tr>
+                        <tr><td><code>show ip ospf database</code></td><td>Displays link-state database information.</td></tr>
+                        <tr><td><code>show running-config</code></td><td>Displays the active device configuration.</td></tr>
+                        <tr><td><code>show ip interface brief</code></td><td>Displays interface addresses and operational status.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
             <p>
                 A useful troubleshooting habit is to verify the
                 physical interfaces first, then inspect OSPF
