@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Route Redistribution Explained: OSPF, EIGRP and BGP</title>
+
+    <meta name="description" content="Learn route redistribution between OSPF, EIGRP and BGP, including seed metrics, administrative distance, routing loops, Cisco configuration and troubleshooting.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<main class="redistribution-article">
+<article>
+
+<h1>Route Redistribution Explained</h1>
+
+<p>
+    Route redistribution is the process of exchanging routing
+    information between different routing protocols or routing
+    processes.
+</p>
+
+<p>
+    In enterprise networks, an organization may use OSPF in one
+    part of its infrastructure and EIGRP in another. Redistribution
+    allows routes learned by one protocol to be introduced into
+    another routing protocol.
+</p>
+
+<h2>1. What Is Route Redistribution?</h2>
+
+<p>
+    Different routing protocols maintain their own routing
+    information and use different algorithms and metrics.
+    Redistribution allows a router to take routes learned from
+    one routing source and advertise them into another.
+</p>
+
+<p>For example:</p>
+
+<pre><code>
+       OSPF DOMAIN
+            |
+            |
+           R1
+            |
+       REDISTRIBUTION
+          ROUTER
+            |
+           R2
+            |
+       EIGRP DOMAIN
+</code></pre>
+
+<p>
+    R1 and R2 can be connected through a router that participates
+    in both routing domains. That router can redistribute routes
+    between OSPF and EIGRP.
+</p>
+
+<h2>2. Why Is Redistribution Needed?</h2>
+
+<p>Common situations include:</p>
+
+<ul>
+    <li>Connecting networks that use different routing protocols.</li>
+    <li>Merging two organizations with different network designs.</li>
+    <li>Transitioning from one routing protocol to another.</li>
+    <li>Connecting enterprise networks to external routing domains.</li>
+    <li>Integrating legacy infrastructure with newer networks.</li>
+</ul>
+
+<h2>3. One-Way vs Mutual Redistribution</h2>
+
+<h3>One-Way Redistribution</h3>
+
+<p>
+    Routes are redistributed in only one direction.
+    For example, OSPF routes may be advertised into EIGRP
+    without redistributing EIGRP routes back into OSPF.
+</p>
+
+<h3>Mutual Redistribution</h3>
+
+<p>
+    Routes are redistributed in both directions.
+    OSPF routes enter EIGRP, and EIGRP routes enter OSPF.
+</p>
+
+<pre><code>
+       OSPF  ---------->  EIGRP
+             One-way
+
+       OSPF  <----------> EIGRP
+             Mutual
+</code></pre>
+
+<p>
+    Mutual redistribution requires careful planning because
+    routes can potentially be advertised back into their
+    original routing protocol.
+</p>
+
+<h2>4. Understanding Seed Metrics</h2>
+
+<p>
+    Different routing protocols use different metric systems.
+    A route redistributed into another protocol may need a
+    suitable metric before the receiving protocol can use it.
+</p>
+
+<p>Examples of routing metrics:</p>
+
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Metric Characteristics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RIP</td>
+<td>Hop count</td>
+</tr>
+<tr>
+<td>OSPF</td>
+<td>Cost</td>
+</tr>
+<tr>
+<td>EIGRP</td>
+<td>Composite metric, primarily bandwidth and delay by default</td>
+</tr>
+<tr>
+<td>BGP</td>
+<td>Path attributes and policy-based selection</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+    A seed metric is an initial metric assigned to a redistributed
+    route when the destination protocol requires one.
+</p>
+
+<div class="redistribution-note">
+    <strong>Important:</strong> Never assume that a route's original
+    metric can be copied directly into another routing protocol.
+    Metric conversion and configuration must be planned.
+</div>
+
+<h2>5. Administrative Distance</h2>
+
+<p>
+    Administrative Distance (AD) indicates the trustworthiness
+    of a routing information source on Cisco routers.
+</p>
+
+<p>
+    When multiple routing sources provide a route to the same
+    destination prefix, the router generally prefers the route
+    with the lowest administrative distance.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Routing Source</th>
+<th>Default AD</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Connected</td><td>0</td></tr>
+<tr><td>Static</td><td>1</td></tr>
+<tr><td>EIGRP Summary</td><td>5</td></tr>
+<tr><td>eBGP</td><td>20</td></tr>
+<tr><td>EIGRP Internal</td><td>90</td></tr>
+<tr><td>OSPF</td><td>110</td></tr>
+<tr><td>IS-IS</td><td>115</td></tr>
+<tr><td>RIP</td><td>120</td></tr>
+<tr><td>EIGRP External</td><td>170</td></tr>
+<tr><td>iBGP</td><td>200</td></tr>
+</tbody>
+</table>
+
+<p>
+    Administrative distance is a local router preference and
+    is not advertised to other routers as a routing protocol metric.
+</p>
+
+<h2>6. Redistribution Between OSPF and EIGRP</h2>
+
+<p>
+    Consider a router running both OSPF and EIGRP.
+    It connects two routing domains and redistributes routes
+    between them.
+</p>
+
+<pre><code>
+       OSPF DOMAIN
+      192.168.1.0/24
+             |
+             |
+             R1
+       OSPF + EIGRP
+             |
+             |
+             R2
+             |
+       EIGRP DOMAIN
+      192.168.2.0/24
+</code></pre>
+
+<p>
+    The redistribution router must participate in both routing
+    processes and have working interfaces and routing information.
+</p>
+
+<h2>7. Cisco Configuration Example</h2>
+
+<p>
+    The following examples use classic Cisco IOS routing
+    configuration. They assume that interface addressing and
+    routing processes have already been configured.
+</p>
+
+<h3>Configure OSPF</h3>
+
+<pre><code>router ospf 1
+ network 10.0.12.0 0.0.0.3 area 0
+ network 192.168.1.0 0.0.0.255 area 0
+</code></pre>
+
+<h3>Configure EIGRP</h3>
+
+<pre><code>router eigrp 100
+ network 10.0.23.0 0.0.0.3
+ network 192.168.2.0 0.0.0.255
+ no auto-summary
+</code></pre>
+
+<h3>Redistribute OSPF into EIGRP</h3>
+
+<pre><code>router eigrp 100
+ redistribute ospf 1 metric 10000 100 255 1 1500
+</code></pre>
+
+<p>
+    The EIGRP metric values represent bandwidth in Kbps,
+    delay in tens of microseconds, reliability, load and MTU.
+    The example uses a seed metric suitable for a basic lab.
+</p>
+
+<h3>Redistribute EIGRP into OSPF</h3>
+
+<pre><code>router ospf 1
+ redistribute eigrp 100 subnets
+</code></pre>
+
+<p>
+    The subnets keyword allows eligible subnet routes to be
+    redistributed. Exact command support can vary by IOS version.
+</p>
+
+<h2>8. Routing Loops and Route Feedback</h2>
+
+<p>
+    One of the most important risks of mutual redistribution
+    is route feedback.
+</p>
+
+<p>
+    Consider this sequence:
+</p>
+
+<ol>
+    <li>OSPF advertises a route into EIGRP.</li>
+    <li>EIGRP advertises the route to another router.</li>
+    <li>The route is redistributed back into OSPF.</li>
+    <li>Routers may now learn the same destination through
+        an unintended routing path.</li>
+</ol>
+
+<p>
+    Poorly designed redistribution can cause routing loops,
+    suboptimal paths and unstable routing decisions.
+</p>
+
+<h2>9. Preventing Redistribution Problems</h2>
+
+<p>Common techniques include:</p>
+
+<ul>
+    <li>Route tagging.</li>
+    <li>Route maps.</li>
+    <li>Prefix lists.</li>
+    <li>Distribute lists where appropriate.</li>
+    <li>Carefully planned redistribution boundaries.</li>
+    <li>Explicit metric configuration.</li>
+</ul>
+
+<h3>Example: Route Tagging with OSPF</h3>
+
+<pre><code>route-map EIGRP-TO-OSPF permit 10
+ set tag 100
+
+router ospf 1
+ redistribute eigrp 100 subnets route-map EIGRP-TO-OSPF
+</code></pre>
+
+<p>
+    The route map tags eligible redistributed routes with
+    tag 100. A corresponding filtering policy can prevent
+    those routes from being redistributed back into EIGRP.
+</p>
+
+<h2>10. Verification Commands</h2>
+
+<pre><code>show ip route
+show ip protocols
+show ip ospf database
+show ip eigrp topology
+show running-config
+show route-map
+</code></pre>
+
+<p>
+    Use these commands to inspect routing tables, routing
+    processes, protocol databases and redistribution policies.
+</p>
+
+<h2>11. Common Troubleshooting Issues</h2>
+
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Possible Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Routes not redistributed</td>
+<td>Incorrect source process, route map or redistribution command.</td>
+</tr>
+<tr>
+<td>EIGRP routes missing</td>
+<td>Missing or invalid EIGRP seed metric.</td>
+</tr>
+<tr>
+<td>OSPF routes missing</td>
+<td>Missing redistribution configuration or route filtering.</td>
+</tr>
+<tr>
+<td>Unexpected routing paths</td>
+<td>Administrative distance, metrics or route policies.</td>
+</tr>
+<tr>
+<td>Routing loops</td>
+<td>Route feedback caused by mutual redistribution.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>12. Practical Packet Tracer Lab</h2>
+
+<p>
+    Build a network with three routers:
+</p>
+
+<ul>
+    <li>R1 runs OSPF.</li>
+    <li>R2 runs both OSPF and EIGRP.</li>
+    <li>R3 runs EIGRP.</li>
+</ul>
+
+<p>Lab tasks:</p>
+
+<ol>
+    <li>Configure IP addresses on all interfaces.</li>
+    <li>Configure OSPF between R1 and R2.</li>
+    <li>Configure EIGRP between R2 and R3.</li>
+    <li>Verify that both routing protocols form the expected adjacencies.</li>
+    <li>Redistribute OSPF into EIGRP.</li>
+    <li>Verify that R3 learns the OSPF LAN prefix.</li>
+    <li>Redistribute EIGRP into OSPF.</li>
+    <li>Verify that R1 learns the EIGRP LAN prefix.</li>
+    <li>Test end-to-end connectivity.</li>
+    <li>Experiment with route maps and route tags.</li>
+</ol>
+
+<h2>13. Key Takeaways</h2>
+
+<ul>
+    <li>Redistribution exchanges routes between routing protocols.</li>
+    <li>One-way redistribution works in one direction.</li>
+    <li>Mutual redistribution works in both directions.</li>
+    <li>Seed metrics may be required by the destination protocol.</li>
+    <li>Administrative distance influences local route selection.</li>
+    <li>Route tagging and filtering help prevent route feedback.</li>
+    <li>Careful planning is essential in enterprise networks.</li>
+</ul>
+
+<h2>Conclusion</h2>
+
+<p>
+    Route redistribution is an essential concept in complex
+    enterprise network environments. Understanding metrics,
+    administrative distance, route feedback and filtering
+    provides the foundation for safely connecting different
+    routing domains.
+</p>
+
+</article>
+</main>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
