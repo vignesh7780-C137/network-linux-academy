@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn computer networking and Linux through practical tutorials, configuration guides and hands-on labs.">
+  <meta name="description" content="Learn computer networking through structured tutorials covering routing, switching, IP addressing, network services and practical configuration concepts.">
   <title>Network & Linux Academy | Learn. Configure. Understand.</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -28,21 +27,20 @@
 
   <main>
     <section class="hero" id="home">
+      <div class="search-container">
+        <form id="search-form" class="search-box">
+          <input
+            type="search"
+            id="site-search"
+            placeholder="Search networking, Linux, tutorials..."
+            aria-label="Search tutorials"
+            autocomplete="off"
+          >
+          <button type="submit">Search</button>
+        </form>
 
-<div class="search-container">
-  <form id="search-form" class="search-box">
-    <input
-      type="search"
-      id="site-search"
-      placeholder="Search networking, Linux, tutorials..."
-      aria-label="Search tutorials"
-      autocomplete="off"
-    >
-    <button type="submit">Search</button>
-  </form>
-
-  <div id="search-results" class="search-results" aria-live="polite"></div>
-</div>
+        <div id="search-results" class="search-results" aria-live="polite"></div>
+      </div>
 
       <p class="eyebrow">INDEPENDENT TECHNOLOGY LEARNING PLATFORM</p>
       <h1>Understand Technology.<br><span>Build Real Skills.</span></h1>
@@ -60,29 +58,141 @@
       <div class="section-heading">
         <p class="eyebrow">01 / NETWORKING</p>
         <h2>Computer Networking</h2>
-        <p>Understand how devices communicate and how networks operate.</p>
+        <p>Explore all our current networking tutorials, from foundational concepts to advanced routing and switching.</p>
       </div>
 
       <div class="article-grid">
         <article class="article-card">
-          <span class="category">FUNDAMENTALS</span>
-          <h3>Understanding the OSI Model</h3>
-          <p>Explore the seven layers of the OSI model and understand their roles in network communication.</p>
-          <a href="articles/osi-model.html">Read article →</a>
+          <span class="category">NETWORK SECURITY</span>
+          <h3>Access Control Lists (ACLs) Explained</h3>
+          <p>Learn standard and extended ACLs, wildcard masks, traffic filtering and Cisco configuration.</p>
+          <a href="articles/access-control-lists.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>BGP Explained</h3>
+          <p>Understand autonomous systems, eBGP, iBGP, path attributes and route selection.</p>
+          <a href="articles/bgp-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">NETWORK SERVICES</span>
+          <h3>DHCP Explained</h3>
+          <p>Learn the DORA process, address leases, DHCP relay and configuration.</p>
+          <a href="articles/dhcp-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">NETWORK SERVICES</span>
+          <h3>DNS: Domain Name System Explained</h3>
+          <p>Understand DNS resolution, records, hierarchy, caching and troubleshooting.</p>
+          <a href="articles/dns-domain-name-system.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>EIGRP Explained</h3>
+          <p>Explore DUAL, successor and feasible successor routes, metrics and configuration.</p>
+          <a href="articles/eigrp-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">SWITCHING</span>
+          <h3>EtherChannel Explained</h3>
+          <p>Learn link aggregation, EtherChannel, LACP, PAgP and verification.</p>
+          <a href="articles/etherchannel-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">SWITCHING</span>
+          <h3>Inter-VLAN Routing Explained</h3>
+          <p>Understand Router-on-a-Stick, Layer 3 switching, SVIs and 802.1Q.</p>
+          <a href="articles/inter-vlan-routing.html">Read article →</a>
         </article>
 
         <article class="article-card">
           <span class="category">IP ADDRESSING</span>
           <h3>IPv4 Addressing Explained</h3>
-          <p>Learn IP addresses, subnet masks, network IDs and host IDs.</p>
+          <p>Learn IPv4 address structure, network and host portions, and subnet masks.</p>
           <a href="articles/ipv4-addressing.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">IP ADDRESSING</span>
+          <h3>IPv6 Addressing Explained</h3>
+          <p>Learn IPv6 structure, hexadecimal notation, address types, SLAAC and DHCPv6.</p>
+          <a href="articles/ipv6-addressing.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>Network Address Translation (NAT)</h3>
+          <p>Understand Static NAT, Dynamic NAT, PAT and NAT Overload.</p>
+          <a href="articles/nat-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">FUNDAMENTALS</span>
+          <h3>Understanding the OSI Model</h3>
+          <p>Explore the seven layers of the OSI model and their networking functions.</p>
+          <a href="articles/osi-model.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>Advanced OSPF Explained</h3>
+          <p>Explore OSPF areas, LSAs, LSDB, SPF, DR and BDR elections, and multi-area routing.</p>
+          <a href="articles/ospf-advanced.html">Read article →</a>
         </article>
 
         <article class="article-card">
           <span class="category">ROUTING</span>
           <h3>Introduction to OSPF</h3>
-          <p>Discover how OSPF dynamically finds routes between networks.</p>
+          <p>Learn the fundamentals of Open Shortest Path First dynamic routing.</p>
           <a href="articles/ospf-introduction.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">ROUTING</span>
+          <h3>Route Redistribution Explained</h3>
+          <p>Understand redistribution between routing protocols, seed metrics and route tagging.</p>
+          <a href="articles/route-redistribution.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">SWITCHING</span>
+          <h3>Spanning Tree Protocol (STP)</h3>
+          <p>Understand switching loops, root bridge election, STP port roles and RSTP.</p>
+          <a href="articles/stp-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">IP ADDRESSING</span>
+          <h3>IPv4 Subnetting for Beginners</h3>
+          <p>Learn subnet masks, CIDR, network addresses, broadcast addresses, host ranges and VLSM.</p>
+          <a href="articles/subnetting-for-beginners.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">FUNDAMENTALS</span>
+          <h3>TCP vs UDP Explained</h3>
+          <p>Compare TCP and UDP, their transport-layer behavior, reliability, ports and use cases.</p>
+          <a href="articles/tcp-vs-udp.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">SWITCHING</span>
+          <h3>What Is a VLAN?</h3>
+          <p>Understand VLANs, broadcast domains, access ports, trunk ports and segmentation.</p>
+          <a href="articles/vlan-explained.html">Read article →</a>
+        </article>
+
+        <article class="article-card">
+          <span class="category">SWITCHING</span>
+          <h3>VLAN Trunking Explained: IEEE 802.1Q</h3>
+          <p>Learn trunk ports, 802.1Q tagging, native VLANs and Cisco trunk configuration.</p>
+          <a href="articles/vlan-trunking.html">Read article →</a>
         </article>
       </div>
     </section>
@@ -91,30 +201,13 @@
       <div class="section-heading">
         <p class="eyebrow">02 / LINUX</p>
         <h2>Linux Administration</h2>
-        <p>Learn the Linux operating system through commands and practical examples.</p>
+        <p>Linux tutorials and administration guides will be added in a future update.</p>
       </div>
 
-      <div class="article-grid">
-        <article class="article-card">
-          <span class="category">COMMAND LINE</span>
-          <h3>Essential Linux Commands</h3>
-          <p>Get comfortable navigating the Linux terminal.</p>
-          <a href="articles/linux-commands.html">Read article →</a>
-        </article>
-
-        <article class="article-card">
-          <span class="category">PERMISSIONS</span>
-          <h3>Linux File Permissions</h3>
-          <p>Understand users, groups, chmod and chown.</p>
-          <a href="articles/linux-permissions.html">Read article →</a>
-        </article>
-
-        <article class="article-card">
-          <span class="category">ADMINISTRATION</span>
-          <h3>Understanding Linux Services</h3>
-          <p>Learn how system services operate and how to manage them.</p>
-          <a href="articles/linux-services.html">Read article →</a>
-        </article>
+      <div class="lab-panel">
+        <h3>Linux learning library is in development</h3>
+        <p>We are focusing on building the networking tutorial library first. Linux commands, permissions, services and administration topics will be added as their articles become available.</p>
+        <span class="coming-soon">LINUX ARTICLES — COMING SOON</span>
       </div>
     </section>
 
