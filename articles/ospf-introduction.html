@@ -1,0 +1,210 @@
+            <p>
+                A useful troubleshooting habit is to verify the
+                physical interfaces first, then inspect OSPF
+                neighbors, routes, and database information.
+            </p>
+        </section>
+
+        <section id="ospf-troubleshooting">
+            <h2>16. Troubleshooting Common OSPF Problems</h2>
+
+            <div class="ospf-trouble">
+                <h3>Problem 1: OSPF neighbors are not forming</h3>
+                <p><strong>Possible causes:</strong></p>
+                <ul>
+                    <li>Incorrect IP address or subnet mask.</li>
+                    <li>Interfaces are administratively down.</li>
+                    <li>Area IDs do not match.</li>
+                    <li>Hello or dead intervals are incompatible.</li>
+                    <li>Authentication settings do not match.</li>
+                    <li>OSPF is not enabled on the expected interface.</li>
+                </ul>
+                <p><strong>Useful commands:</strong></p>
+                <code>show ip interface brief</code>
+                <code>show ip ospf interface</code>
+                <code>show ip ospf neighbor</code>
+            </div>
+
+            <div class="ospf-trouble">
+                <h3>Problem 2: Neighbor stuck in 2-Way state</h3>
+                <p>
+                    On a broadcast network, this can be normal between
+                    routers that are not the DR or BDR. On other
+                    network types or topologies, investigate the
+                    expected adjacency behavior and network type.
+                </p>
+            </div>
+
+            <div class="ospf-trouble">
+                <h3>Problem 3: Neighbor stuck in ExStart or Exchange</h3>
+                <p>
+                    Possible causes include MTU mismatches, duplicate
+                    Router IDs, or problems during database exchange.
+                    Check interface MTU and OSPF neighbor information.
+                </p>
+            </div>
+
+            <div class="ospf-trouble">
+                <h3>Problem 4: OSPF adjacency is Full, but the route is missing</h3>
+                <p>
+                    Check whether the destination network is actually
+                    advertised, whether the relevant interface is
+                    participating in OSPF, and whether route filtering,
+                    area design, or route selection affects the result.
+                </p>
+            </div>
+
+            <div class="ospf-trouble">
+                <h3>Problem 5: OSPF chooses an unexpected path</h3>
+                <p>
+                    Inspect interface costs, reference bandwidth,
+                    topology information, and the routing table.
+                    A lower total OSPF cost is preferred among
+                    eligible paths.
+                </p>
+            </div>
+        </section>
+
+        <section id="ospf-faq">
+            <h2>17. Frequently Asked Questions</h2>
+
+            <div class="ospf-faq">
+                <h3>1. Is OSPF a distance-vector or link-state protocol?</h3>
+                <p>
+                    OSPF is a link-state routing protocol. Routers
+                    exchange link-state information and calculate
+                    routes using the SPF algorithm.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>2. What algorithm does OSPF use?</h3>
+                <p>
+                    OSPF uses Dijkstra's Shortest Path First algorithm
+                    to calculate best paths based on link-state
+                    information and cost.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>3. What is the default OSPF administrative distance on Cisco IOS?</h3>
+                <p>
+                    The commonly used Cisco IOS default administrative
+                    distance for OSPF is 110. This value is configurable
+                    and can differ on other platforms.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>4. Does the OSPF process ID need to match?</h3>
+                <p>
+                    No. On Cisco IOS, the OSPF process ID is locally
+                    significant. Neighboring routers do not need
+                    to use the same process ID.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>5. What is Area 0?</h3>
+                <p>
+                    Area 0 is the OSPF backbone area. In a conventional
+                    multiarea design, other regular areas connect
+                    to the backbone.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>6. What is a Router ID?</h3>
+                <p>
+                    A Router ID is a 32-bit identifier used to
+                    identify an OSPF router. It is written in
+                    dotted-decimal format.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>7. What is the difference between OSPFv2 and OSPFv3?</h3>
+                <p>
+                    OSPFv2 is used for IPv4 routing. OSPFv3 was
+                    originally designed for IPv6 and has extensions
+                    for additional address families.
+                </p>
+            </div>
+
+            <div class="ospf-faq">
+                <h3>8. What does a Full neighbor state mean?</h3>
+                <p>
+                    It indicates that the required link-state
+                    databases have been synchronized between
+                    the adjacent routers.
+                </p>
+            </div>
+        </section>
+
+        <section id="ospf-conclusion">
+            <h2>18. Conclusion</h2>
+
+            <p>
+                OSPF is an important dynamic routing protocol
+                used in enterprise and service-provider networks.
+                Understanding how it discovers neighbors,
+                exchanges link-state information, builds an LSDB,
+                and calculates paths provides a strong foundation
+                for routing and switching.
+            </p>
+
+            <p>
+                Reading about OSPF is only the first step.
+                Practise configuring it in Packet Tracer,
+                inspect neighbor relationships, examine routing
+                tables, and deliberately introduce configuration
+                mistakes to understand troubleshooting.
+            </p>
+
+            <div class="ospf-next-article">
+                <span>Continue learning</span>
+                <h3>Next: TCP vs UDP</h3>
+                <p>
+                    Understand how the transport layer delivers
+                    data and why different applications use
+                    different transport protocols.
+                </p>
+                <a href="tcp-vs-udp.html">Read the TCP vs UDP guide →</a>
+            </div>
+        </section>
+
+        <section class="ospf-references">
+            <h2>References and Further Reading</h2>
+            <ul>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc2328"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 2328 — OSPF Version 2
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc5340"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 5340 — OSPF for IPv6
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book.html"
+                       target="_blank" rel="noopener noreferrer">
+                        Cisco IOS — IP Routing: OSPF Configuration Guide
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+    </article>
+</main>
+
+<footer class="site-footer">
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+    <p>Practical knowledge for networking and Linux learners.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
