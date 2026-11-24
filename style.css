@@ -4705,3 +4705,24 @@ input:focus-visible {
 .contact-page .info-cta .button { flex: 0 0 auto; white-space: nowrap; }
 .contact-page .info-back { max-width: 820px; margin: 30px auto 0; }
 @media (max-width: 640px) { .contact-page .info-cta { align-items: flex-start; flex-direction: column; padding: 22px; } }
+
+
+/* FOOTER LEGAL AND SITE LINKS */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 12px;
+}
+.footer-links a {
+  color: #c6d2dc;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+}
