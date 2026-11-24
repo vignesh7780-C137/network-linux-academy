@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>OSI Model Explained: 7 Layers | Network & Linux Academy</title>
+
+  <meta name="description" content="Learn the seven layers of the OSI model, their functions, protocols, devices and real-world networking examples.">
+
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header class="header">
+  <a href="../index.html" class="logo">N<span>&</span>L Academy</a>
+
+  <nav class="navigation">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#networking">Networking</a>
+    <a href="../index.html#linux">Linux</a>
+    <a href="../index.html#labs">Practical Labs</a>
+  </nav>
+</header>
+
+<main class="article-container">
+
+  <div class="article-header">
+    <p class="eyebrow">NETWORKING / FUNDAMENTALS</p>
+
+    <h1>Understanding the OSI Model: A Complete Beginner's Guide</h1>
+
+    <p class="article-subtitle">
+      Understand how network communication works through the
+      seven layers of the Open Systems Interconnection model.
+    </p>
+
+    <div class="article-meta">
+      <span>Beginner Level</span>
+      <span>Networking Fundamentals</span>
+      <span>12–15 min read</span>
+    </div>
+  </div>
+
+  <div class="article-layout">
+
+    <aside class="table-of-contents">
+      <h3>On This Page</h3>
+
+      <a href="#introduction">Introduction</a>
+      <a href="#seven-layers">Seven Layers</a>
+      <a href="#application">7. Application</a>
+      <a href="#presentation">6. Presentation</a>
+      <a href="#session">5. Session</a>
+      <a href="#transport">4. Transport</a>
+      <a href="#network">3. Network</a>
+      <a href="#data-link">2. Data Link</a>
+      <a href="#physical">1. Physical</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#example">Real-world Example</a>
+      <a href="#faq">FAQs</a>
+    </aside>
+
+    <article class="article-content">
+
+      <section id="introduction">
+        <h2>1. Introduction to the OSI Model</h2>
+
+        <p>
+          The Open Systems Interconnection (OSI) model is a
+          conceptual framework used to understand how data
+          travels between devices over a network.
+        </p>
+
+        <p>
+          It divides network communication into seven
+          separate layers. Each layer has specific
+          responsibilities and interacts with the layers
+          directly above and below it.
+        </p>
+
+        <p>
+          The OSI model was developed by the International
+          Organization for Standardization (ISO) to provide
+          a common reference for network communication.
+        </p>
+
+        <div class="info-box">
+          <strong>Important:</strong>
+          The OSI model is a reference model for understanding
+          networking. Real-world Internet communication is
+          commonly described using the TCP/IP model.
+        </div>
+      </section>
+
+      <section id="seven-layers">
+        <h2>2. The Seven Layers of the OSI Model</h2>
+
+        <p>
+          The OSI model consists of seven layers, starting
+          from the Application Layer at the top and ending
+          with the Physical Layer at the bottom.
+        </p>
+
+        <div class="osi-stack">
+          <div class="osi-layer layer-7">
+            <strong>Layer 7 — Application</strong>
+            <span>Network services for applications</span>
+          </div>
+          <div class="osi-layer layer-6">
+            <strong>Layer 6 — Presentation</strong>
+            <span>Data representation and encryption</span>
+          </div>
+          <div class="osi-layer layer-5">
+            <strong>Layer 5 — Session</strong>
+            <span>Communication session management</span>
+          </div>
+          <div class="osi-layer layer-4">
+            <strong>Layer 4 — Transport</strong>
+            <span>End-to-end data delivery</span>
+          </div>
+          <div class="osi-layer layer-3">
+            <strong>Layer 3 — Network</strong>
+            <span>Logical addressing and routing</span>
+          </div>
+          <div class="osi-layer layer-2">
+            <strong>Layer 2 — Data Link</strong>
+            <span>Frames and local network delivery</span>
+          </div>
+          <div class="osi-layer layer-1">
+            <strong>Layer 1 — Physical</strong>
+            <span>Transmission of bits</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="application">
+        <h2>3. Layer 7 — Application Layer</h2>
+
+        <p>
+          The Application Layer provides network services
+          that applications use to communicate.
+        </p>
+
+        <p>
+          When you browse a website, send an email or
+          transfer a file, application-layer protocols
+          help facilitate that communication.
+        </p>
+
+        <h3>Common protocols</h3>
+
+        <ul>
+          <li>HTTP and HTTPS — Web communication</li>
+          <li>DNS — Domain name resolution</li>
+          <li>FTP — File transfer</li>
+          <li>SMTP — Email transmission</li>
+          <li>SSH — Secure remote access</li>
+        </ul>
+
+        <p><strong>Example:</strong> Your browser uses HTTP or HTTPS
+          to request a webpage from a web server.</p>
+      </section>
+
+      <section id="presentation">
+        <h2>4. Layer 6 — Presentation Layer</h2>
+
+        <p>
+          The Presentation Layer deals with how data is
+          represented between communicating systems.
+        </p>
+
+        <h3>Main responsibilities</h3>
+
+        <ul>
+          <li>Data formatting and translation</li>
+          <li>Data encryption and decryption</li>
+          <li>Data compression and decompression</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> Encoding formats such as
+          UTF-8 represent text in a standardized way.
+          Encryption and compression are also functions
+          associated with this layer in the OSI model.
+        </p>
+
+        <div class="info-box">
+          In modern networking, these functions are often
+          implemented within application protocols and
+          software libraries rather than as a distinct layer.
+        </div>
+      </section>
+
+      <section id="session">
+        <h2>5. Layer 5 — Session Layer</h2>
+
+        <p>
+          The Session Layer is responsible for establishing,
+          managing and terminating communication sessions.
+        </p>
+
+        <h3>Main responsibilities</h3>
+
+        <ul>
+          <li>Session establishment</li>
+          <li>Session maintenance</li>
+          <li>Session termination</li>
+          <li>Dialog control and synchronization</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> A communication system
+          may maintain a logical session while two
+          applications exchange information.
+        </p>
+      </section>
+
+      <section id="transport">
+        <h2>6. Layer 4 — Transport Layer</h2>
+
+        <p>
+          The Transport Layer provides end-to-end
+          communication between applications running
+          on different devices.
+        </p>
+
+        <h3>Important protocols</h3>
+
+        <ul>
+          <li>TCP — Transmission Control Protocol</li>
+          <li>UDP — User Datagram Protocol</li>
+        </ul>
+
+        <h3>TCP</h3>
+
+        <p>
+          TCP provides reliable, ordered delivery of data.
+          It uses acknowledgements, sequence numbers and
+          retransmissions to support reliable communication.
+        </p>
+
+        <h3>UDP</h3>
+
+        <p>
+          UDP provides connectionless transport without
+          TCP's built-in reliability and ordering
+          mechanisms. It is useful for applications that
+          prioritize low latency.
+        </p>
+
+        <h3>Other Layer 4 concepts</h3>
+
+        <ul>
+          <li>Port numbers</li>
+          <li>Segmentation</li>
+          <li>Flow control</li>
+          <li>Reliability (TCP)</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> HTTPS commonly uses TCP
+          port 443, while HTTP/3 uses QUIC over UDP.
+        </p>
+      </section>
+
+      <section id="network">
+        <h2>7. Layer 3 — Network Layer</h2>
+
+        <p>
+          The Network Layer handles logical addressing
+          and routing between different networks.
+        </p>
+
+        <h3>Main responsibilities</h3>
+
+        <ul>
+          <li>IP addressing</li>
+          <li>Routing and path selection</li>
+          <li>Packet forwarding</li>
+          <li>Inter-network communication</li>
+        </ul>
+
+        <h3>Important protocols</h3>
+
+        <ul>
+          <li>IPv4</li>
+          <li>IPv6</li>
+          <li>ICMP</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> A router examines the
+          destination IP address of a packet and uses its
+          routing table to determine where to forward it.
+        </p>
+
+        <p>
+          Common Layer 3 devices include routers and
+          Layer 3 switches.
+        </p>
+      </section>
+
+      <section id="data-link">
+        <h2>8. Layer 2 — Data Link Layer</h2>
+
+        <p>
+          The Data Link Layer provides communication
+          between devices on the same local network link.
+        </p>
+
+        <h3>Main responsibilities</h3>
+
+        <ul>
+          <li>Framing</li>
+          <li>MAC addressing</li>
+          <li>Error detection</li>
+          <li>Media access control</li>
+        </ul>
+
+        <h3>Important concepts</h3>
+
+        <ul>
+          <li>Ethernet</li>
+          <li>MAC addresses</li>
+          <li>VLANs</li>
+          <li>Ethernet frames</li>
+          <li>Switching</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> An Ethernet switch
+          examines destination MAC addresses to forward
+          frames through its switching table.
+        </p>
+      </section>
+
+      <section id="physical">
+        <h2>9. Layer 1 — Physical Layer</h2>
+
+        <p>
+          The Physical Layer is responsible for transmitting
+          raw bits across a physical communication medium.
+        </p>
+
+        <h3>Main responsibilities</h3>
+
+        <ul>
+          <li>Bit transmission</li>
+          <li>Electrical and optical signaling</li>
+          <li>Physical connectors</li>
+          <li>Cabling and transmission media</li>
+        </ul>
+
+        <h3>Examples</h3>
+
+        <ul>
+          <li>Ethernet cables</li>
+          <li>Fiber-optic cables</li>
+          <li>Radio signals</li>
+          <li>Hubs and repeaters</li>
+        </ul>
+
+        <p>
+          <strong>Example:</strong> An Ethernet interface
+          converts data into electrical or optical signals
+          for transmission through a network medium.
+        </p>
+      </section>
+
+      <section id="comparison">
+        <h2>10. OSI Layer Comparison Table</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Name</th>
+                <th>Data Unit</th>
+                <th>Examples</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>7</td>
+                <td>Application</td>
+                <td>Data</td>
+                <td>HTTP, DNS</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Presentation</td>
+                <td>Data</td>
+                <td>Encoding, encryption</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Session</td>
+                <td>Data</td>
+                <td>Session management</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Transport</td>
+                <td>Segment / Datagram</td>
+                <td>TCP, UDP</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Network</td>
+                <td>Packet</td>
+                <td>IP, ICMP</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Data Link</td>
+                <td>Frame</td>
+                <td>Ethernet, MAC</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Physical</td>
+                <td>Bits</td>
+                <td>Cables, signals</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="example">
+        <h2>11. Real-World Example: Opening a Website</h2>
+
+        <p>
+          Imagine that you open a website using your
+          computer's web browser.
+        </p>
+
+        <ol>
+          <li><strong>Application:</strong> Your browser creates an HTTP request.</li>
+          <li><strong>Presentation:</strong> Data representation and encryption functions are applied as required.</li>
+          <li><strong>Session:</strong> Communication session functions are handled by the relevant software and protocols.</li>
+          <li><strong>Transport:</strong> TCP or UDP-based transport delivers application data.</li>
+          <li><strong>Network:</strong> IP handles addressing and routing.</li>
+          <li><strong>Data Link:</strong> Ethernet or Wi-Fi carries frames across the local link.</li>
+          <li><strong>Physical:</strong> Bits travel through the physical or wireless medium.</li>
+        </ol>
+
+        <p>
+          This process illustrates how the OSI model
+          helps us understand different responsibilities
+          involved in network communication.
+        </p>
+      </section>
+
+      <section id="faq">
+        <h2>12. Frequently Asked Questions</h2>
+
+        <h3>Why is the OSI model important?</h3>
+        <p>
+          It provides a structured way to understand
+          networking, troubleshoot problems and discuss
+          communication between systems.
+        </p>
+
+        <h3>How many layers does the OSI model have?</h3>
+        <p>
+          It has seven layers, from Physical to Application.
+        </p>
+
+        <h3>Which OSI layer is responsible for routing?</h3>
+        <p>
+          Layer 3, the Network Layer, handles routing and
+          logical addressing.
+        </p>
+
+        <h3>Which OSI layer uses MAC addresses?</h3>
+        <p>
+          Layer 2, the Data Link Layer, uses MAC addresses
+          in Ethernet and other link-layer technologies.
+        </p>
+
+        <h3>Is the OSI model used directly by the Internet?</h3>
+        <p>
+          The OSI model is primarily a conceptual reference.
+          The Internet protocol architecture is commonly
+          described using the TCP/IP model.
+        </p>
+      </section>
+
+      <div class="article-conclusion">
+        <h2>Conclusion</h2>
+        <p>
+          The OSI model is one of the foundational concepts
+          in computer networking. Understanding its seven
+          layers provides a useful starting point for
+          learning switching, routing, protocols and
+          network troubleshooting.
+        </p>
+
+        <p>
+          Continue learning by exploring IP addressing,
+          subnetting and routing fundamentals.
+        </p>
+      </div>
+
+      <a href="../index.html#networking" class="back-link">
+        ← Back to Networking Tutorials
+      </a>
+
+    </article>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Network & Linux Academy.</p>
+  <p>Learn. Configure. Understand.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
