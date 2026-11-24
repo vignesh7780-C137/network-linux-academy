@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Cisco NAT, Static NAT, Dynamic NAT, PAT, NAT address terminology, configuration and troubleshooting.">
+    <title>Network Address Translation (NAT) Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="navigation" class="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="nat-article">
+
+    <h1>Network Address Translation (NAT) Explained</h1>
+
+    <p>
+        Network Address Translation (NAT) is a networking technique
+        that modifies IP address information in packet headers as
+        packets pass through a router or another network device.
+    </p>
+
+    <p>
+        NAT is commonly used to allow devices with private IPv4
+        addresses to communicate with external networks using
+        public IPv4 addresses.
+    </p>
+
+    <h2>1. Why Do We Need NAT?</h2>
+
+    <p>
+        IPv4 provides approximately 4.3 billion possible addresses.
+        However, the rapid growth of internet-connected devices
+        has made globally unique IPv4 addresses scarce.
+    </p>
+
+    <p>
+        Private IPv4 addresses can be reused across different
+        organizations and home networks. They are not directly
+        routable across the public internet.
+    </p>
+
+    <p>
+        NAT allows many devices using private addresses to access
+        external networks through one or more public addresses.
+    </p>
+
+    <h2>2. Private IPv4 Address Ranges</h2>
+
+    <p>RFC 1918 defines three private IPv4 address ranges:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Private Range</th>
+                <th>CIDR</th>
+                <th>Address Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>10.0.0.0 – 10.255.255.255</td>
+                <td>/8</td>
+                <td>16,777,216</td>
+            </tr>
+            <tr>
+                <td>172.16.0.0 – 172.31.255.255</td>
+                <td>/12</td>
+                <td>1,048,576</td>
+            </tr>
+            <tr>
+                <td>192.168.0.0 – 192.168.255.255</td>
+                <td>/16</td>
+                <td>65,536</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Types of NAT</h2>
+
+    <p>Three commonly studied NAT approaches are:</p>
+
+    <ul>
+        <li>Static NAT</li>
+        <li>Dynamic NAT</li>
+        <li>Port Address Translation (PAT)</li>
+    </ul>
+
+    <h3>Static NAT</h3>
+
+    <p>
+        Static NAT creates a fixed one-to-one mapping between
+        a private IP address and a public IP address.
+    </p>
+
+    <p>
+        For example, an internal server with address
+        192.168.1.10 can be mapped to public address 203.0.113.10.
+    </p>
+
+    <pre><code>configure terminal
+
+interface gigabitEthernet 0/0
+ip nat inside
+exit
+
+interface gigabitEthernet 0/1
+ip nat outside
+exit
+
+ip nat inside source static 192.168.1.10 203.0.113.10</code></pre>
+
+    <h3>Dynamic NAT</h3>
+
+    <p>
+        Dynamic NAT maps private addresses to available public
+        addresses from a configured pool.
+    </p>
+
+    <p>
+        Unlike Static NAT, the mapping is not permanently fixed
+        to one particular public address.
+    </p>
+
+    <pre><code>configure terminal
+
+access-list 1 permit 192.168.1.0 0.0.0.255
+
+ip nat pool PUBLIC_POOL 203.0.113.10 203.0.113.20 netmask 255.255.255.0
+
+ip nat inside source list 1 pool PUBLIC_POOL</code></pre>
+
+    <h3>Port Address Translation (PAT)</h3>
+
+    <p>
+        PAT allows multiple private devices to share one public
+        IPv4 address by using different transport-layer port numbers.
+    </p>
+
+    <p>
+        It is also commonly called NAT Overload.
+    </p>
+
+    <pre><code>configure terminal
+
+access-list 1 permit 192.168.1.0 0.0.0.255
+
+interface gigabitEthernet 0/0
+ip nat inside
+exit
+
+interface gigabitEthernet 0/1
+ip nat outside
+exit
+
+ip nat inside source list 1 interface gigabitEthernet 0/1 overload</code></pre>
+
+    <p>
+        In this example, the router uses its outside interface
+        address for translations and distinguishes simultaneous
+        connections using port information.
+    </p>
+
+    <h2>4. Understanding NAT Terminology</h2>
+
+    <p>Cisco NAT terminology describes addresses from the perspective
+       of the network being translated.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Term</th>
+                <th>Meaning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Inside Local</td>
+                <td>Address of an inside host as it appears within the inside network, usually private.</td>
+            </tr>
+            <tr>
+                <td>Inside Global</td>
+                <td>Address representing an inside host to the outside network.</td>
+            </tr>
+            <tr>
+                <td>Outside Global</td>
+                <td>Address assigned to an outside host in the outside network.</td>
+            </tr>
+            <tr>
+                <td>Outside Local</td>
+                <td>Address representing an outside host to the inside network.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. Inside and Outside Interfaces</h2>
+
+    <p>
+        A NAT router identifies which interfaces face the inside
+        network and which face the outside network.
+    </p>
+
+    <pre><code>interface gigabitEthernet 0/0
+ip nat inside
+
+interface gigabitEthernet 0/1
+ip nat outside</code></pre>
+
+    <p>
+        The actual interface names depend on the router model
+        and network topology.
+    </p>
+
+    <h2>6. NAT Verification Commands</h2>
+
+    <pre><code>show ip nat translations
+
+show ip nat statistics
+
+show access-lists
+
+show running-config
+
+debug ip nat</code></pre>
+
+    <p>
+        Use debug commands carefully because they can generate
+        significant output on busy devices.
+    </p>
+
+    <h2>7. Common NAT Troubleshooting Problems</h2>
+
+    <ul>
+        <li>Inside and outside interfaces configured incorrectly.</li>
+        <li>Incorrect access-list network or wildcard mask.</li>
+        <li>Missing default route toward the outside network.</li>
+        <li>Incorrect NAT pool configuration.</li>
+        <li>Missing overload keyword when PAT is intended.</li>
+        <li>Incorrect IP addressing or subnet masks.</li>
+        <li>Traffic not reaching the router for translation.</li>
+    </ul>
+
+    <h2>8. Practical Packet Tracer Lab</h2>
+
+    <p>Build a small network containing:</p>
+
+    <ul>
+        <li>One Cisco router</li>
+        <li>One switch</li>
+        <li>Two internal PCs</li>
+        <li>One simulated external network or server</li>
+    </ul>
+
+    <p>Configure the following:</p>
+
+    <ol>
+        <li>Assign private IPv4 addresses to internal PCs.</li>
+        <li>Configure the router's inside and outside interfaces.</li>
+        <li>Configure PAT using the outside interface address.</li>
+        <li>Configure a suitable default route.</li>
+        <li>Test connectivity to the external server.</li>
+        <li>Inspect the NAT translation table.</li>
+    </ol>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        NAT plays an important role in IPv4 networks by translating
+        addresses between inside and outside networks.
+        Static NAT, Dynamic NAT and PAT serve different requirements.
+    </p>
+
+    <p>
+        Understanding NAT configuration and verification is an
+        important skill for network engineers and administrators.
+    </p>
+
+    <p><a href="../index.html">← Back to Home</a></p>
+
+</main>
+
+<footer>
+    <p>© 2026 Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
