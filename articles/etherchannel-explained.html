@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EtherChannel Explained: LACP and Link Aggregation</title>
+
+    <meta name="description" content="Learn Cisco EtherChannel, link aggregation, LACP, PAgP, port-channel configuration, verification and troubleshooting.">
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="../index.html#networking">Networking</a>
+        <a href="../index.html#linux">Linux</a>
+        <a href="../index.html#labs">Practical Labs</a>
+        <a href="../index.html#about">About</a>
+    </nav>
+</header>
+
+<main class="ether-article">
+
+    <p>Networking / Switching</p>
+
+    <h1>EtherChannel Explained: Link Aggregation, LACP and PAgP</h1>
+
+    <p>
+        Enterprise networks often need more bandwidth and
+        redundancy between switches. EtherChannel combines
+        multiple physical Ethernet links into one logical
+        connection to help achieve these goals.
+    </p>
+
+    <h2>1. What Is EtherChannel?</h2>
+
+    <p>
+        EtherChannel is a Cisco technology that groups multiple
+        physical Ethernet links into a single logical link
+        called a port-channel.
+    </p>
+
+    <p>
+        Instead of treating each cable as an independent
+        connection, switches manage the bundled links as
+        one logical interface.
+    </p>
+
+    <h2>2. Why Do We Need EtherChannel?</h2>
+
+    <ul>
+        <li><strong>Increased aggregate bandwidth:</strong> Multiple links contribute capacity to the bundle.</li>
+        <li><strong>Redundancy:</strong> Traffic can continue over remaining member links if one link fails, provided the channel remains operational.</li>
+        <li><strong>Load distribution:</strong> Traffic can be distributed across member links using a hashing algorithm.</li>
+        <li><strong>Simplified STP operation:</strong> STP normally sees a correctly formed EtherChannel as one logical link.</li>
+    </ul>
+
+    <h2>3. How Does EtherChannel Work?</h2>
+
+    <p>
+        Consider two switches connected using four physical
+        Gigabit Ethernet cables.
+    </p>
+
+    <p>
+        These four links can be bundled into one logical
+        Port-Channel interface. The switches distribute
+        traffic across available member links.
+    </p>
+
+    <p>
+        A single traffic flow is generally mapped to one
+        physical member link at a time. EtherChannel does
+        not normally split every individual frame across
+        all links.
+    </p>
+
+    <h2>4. EtherChannel Protocols</h2>
+
+    <h3>LACP</h3>
+
+    <p>
+        Link Aggregation Control Protocol (LACP) is an
+        industry-standard link aggregation protocol defined
+        by IEEE 802.1AX, historically associated with
+        IEEE 802.3ad.
+    </p>
+
+    <p>
+        LACP dynamically negotiates and maintains compatible
+        link aggregation between devices.
+    </p>
+
+    <h3>PAgP</h3>
+
+    <p>
+        Port Aggregation Protocol (PAgP) is a Cisco-proprietary
+        protocol used to negotiate EtherChannel formation.
+    </p>
+
+    <h3>Comparison</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>LACP</th>
+                <th>PAgP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Standard</td>
+                <td>IEEE 802.1AX</td>
+                <td>Cisco proprietary</td>
+            </tr>
+            <tr>
+                <td>Active mode</td>
+                <td>Actively sends LACP messages</td>
+                <td>Not applicable</td>
+            </tr>
+            <tr>
+                <td>Passive mode</td>
+                <td>Waits for LACP messages</td>
+                <td>Not applicable</td>
+            </tr>
+            <tr>
+                <td>Desirable mode</td>
+                <td>Not applicable</td>
+                <td>Actively negotiates</td>
+            </tr>
+            <tr>
+                <td>Auto mode</td>
+                <td>Not applicable</td>
+                <td>Waits for PAgP messages</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. LACP Modes</h2>
+
+    <ul>
+        <li><strong>Active:</strong> Initiates LACP negotiation.</li>
+        <li><strong>Passive:</strong> Responds to LACP negotiation but does not initiate it.</li>
+    </ul>
+
+    <p>
+        An active side can form a channel with a passive side.
+        Two passive sides will not initiate negotiation.
+    </p>
+
+    <h2>6. PAgP Modes</h2>
+
+    <ul>
+        <li><strong>Desirable:</strong> Actively negotiates EtherChannel.</li>
+        <li><strong>Auto:</strong> Waits for another device to initiate negotiation.</li>
+    </ul>
+
+    <p>
+        A desirable side can form a channel with an auto side.
+        Two auto sides will not initiate negotiation.
+    </p>
+
+    <h2>7. EtherChannel Configuration Requirements</h2>
+
+    <p>
+        Physical interfaces in the same EtherChannel must
+        have compatible configurations.
+    </p>
+
+    <ul>
+        <li>Compatible interface speeds and duplex settings.</li>
+        <li>Same access VLAN when configured as access ports.</li>
+        <li>Matching trunk configuration when configured as trunks.</li>
+        <li>Compatible allowed VLAN and native VLAN settings.</li>
+        <li>Same channel protocol and compatible negotiation modes.</li>
+        <li>Compatible Layer 2 or Layer 3 configuration.</li>
+    </ul>
+
+    <h2>8. Cisco EtherChannel Configuration Using LACP</h2>
+
+    <p>
+        Example: two switches have two physical connections,
+        GigabitEthernet 0/1 and 0/2. We will bundle them
+        into Port-Channel 1.
+    </p>
+
+    <h3>Switch 1</h3>
+
+    <pre><code>enable
+configure terminal
+
+interface range gigabitEthernet 0/1 - 2
+ switchport mode trunk
+ channel-group 1 mode active
+ no shutdown
+
+interface port-channel 1
+ switchport mode trunk
+
+end
+write memory</code></pre>
+
+    <h3>Switch 2</h3>
+
+    <pre><code>enable
+configure terminal
+
+interface range gigabitEthernet 0/1 - 2
+ switchport mode trunk
+ channel-group 1 mode active
+ no shutdown
+
+interface port-channel 1
+ switchport mode trunk
+
+end
+write memory</code></pre>
+
+    <p>
+        Both switches use LACP active mode. Ensure that
+        both ends have compatible trunk and channel settings.
+    </p>
+
+    <h2>9. Verification Commands</h2>
+
+    <pre><code>show etherchannel summary
+
+show etherchannel detail
+
+show interfaces port-channel 1
+
+show lacp neighbor
+
+show interfaces trunk</code></pre>
+
+    <p>
+       
