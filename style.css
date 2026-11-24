@@ -4511,3 +4511,61 @@ input:focus-visible {
     text-align: center;
   }
 }
+
+
+/* INFORMATION PAGES */
+.info-page {
+  width: min(900px, 88%);
+  margin: 0 auto;
+  padding: 76px 0 90px;
+}
+.info-page h1 {
+  color: #14243a;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+.info-page .info-lead {
+  color: #64748b;
+  font-size: 1.2rem;
+  max-width: 780px;
+  margin-bottom: 48px;
+}
+.info-page section {
+  margin: 0 0 38px;
+}
+.info-page h2 {
+  color: #14243a;
+  font-size: 1.55rem;
+  margin-bottom: 12px;
+}
+.info-page p,
+.info-page li {
+  color: #475569;
+}
+.info-page p {
+  margin-bottom: 14px;
+}
+.info-page ul {
+  padding-left: 24px;
+}
+.info-page li {
+  margin-bottom: 10px;
+}
+.info-page a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+.info-page a:hover {
+  text-decoration: underline;
+}
+.info-page .info-back {
+  margin-top: 48px;
+}
+@media (max-width: 768px) {
+  .info-page {
+    width: 88%;
+    padding: 52px 0 65px;
+  }
+}
