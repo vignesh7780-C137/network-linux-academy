@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn IPv4 subnetting from the beginning. Understand subnet masks, CIDR notation, network addresses, broadcast addresses, and usable host ranges with worked examples.">
+    <meta name="keywords" content="IPv4 subnetting, subnet mask, CIDR, network address, broadcast address, CCNA subnetting">
+    <title>IPv4 Subnetting for Beginners | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+            ☰
+        </button>
+        <ul class="navigation" id="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="subnet-article">
+
+    <section class="subnet-hero">
+        <p class="subnet-category">NETWORKING FUNDAMENTALS</p>
+        <h1>IPv4 Subnetting for Beginners: A Complete Guide</h1>
+        <p>
+            Understand how subnetting works, how subnet masks divide networks,
+            and how to calculate network addresses, broadcast addresses, and
+            usable host ranges.
+        </p>
+        <div class="subnet-meta">
+            <span>Beginner Friendly</span>
+            <span>IPv4</span>
+            <span>CCNA Foundation</span>
+        </div>
+    </section>
+
+    <div class="subnet-layout">
+
+        <aside class="subnet-toc">
+            <h2>On this page</h2>
+            <ol>
+                <li><a href="#introduction">What is subnetting?</a></li>
+                <li><a href="#why-subnetting">Why do we need it?</a></li>
+                <li><a href="#binary">IPv4 and binary</a></li>
+                <li><a href="#subnet-mask">Subnet masks</a></li>
+                <li><a href="#cidr">CIDR notation</a></li>
+                <li><a href="#calculations">Subnet calculations</a></li>
+                <li><a href="#worked-example">Worked example</a></li>
+                <li><a href="#subnet-table">Common subnet sizes</a></li>
+                <li><a href="#vlsm">Introduction to VLSM</a></li>
+                <li><a href="#practice">Practice questions</a></li>
+                <li><a href="#faq">FAQs</a></li>
+            </ol>
+        </aside>
+
+        <article class="subnet-content">
+
+            <section id="introduction">
+                <h2>1. What Is Subnetting?</h2>
+                <p>
+                    Subnetting is the process of dividing a larger IP network
+                    into smaller logical networks called <strong>subnets</strong>.
+                    Each subnet has its own network address and address range.
+                </p>
+                <p>
+                    Instead of placing every device inside one large network,
+                    an administrator can divide devices into smaller groups.
+                    For example, a company might create separate subnets for
+                    its administration, finance, engineering, and guest networks.
+                </p>
+
+                <div class="subnet-callout">
+                    <strong>Remember:</strong> Subnetting divides an IP network
+                    into smaller networks. It does not physically divide the
+                    network cables or devices.
+                </div>
+            </section>
+
+            <section id="why-subnetting">
+                <h2>2. Why Do We Need Subnetting?</h2>
+                <p>Subnetting provides several practical benefits:</p>
+                <ul>
+                    <li><strong>Better organization:</strong> Devices can be grouped by department, function, or location.</li>
+                    <li><strong>Smaller broadcast domains:</strong> Routers separate broadcast traffic between different IP subnets.</li>
+                    <li><strong>Efficient address allocation:</strong> Networks can receive address ranges appropriate to their size.</li>
+                    <li><strong>Network management:</strong> Administrators can apply routing and security policies between subnets.</li>
+                    <li><strong>Scalability:</strong> A network can grow without placing every device in one enormous subnet.</li>
+                </ul>
+            </section>
+
+            <section id="binary">
+                <h2>3. Understanding IPv4 and Binary</h2>
+                <p>
+                    An IPv4 address is 32 bits long. It is written as four
+                    decimal numbers called octets, separated by dots.
+                </p>
+
+                <div class="subnet-example">
+                    <h3>Example IPv4 address</h3>
+                    <p class="subnet-ip">192.168.1.10</p>
+                    <p>Each octet represents 8 bits.</p>
+                    <div class="subnet-binary">
+                        <div><strong>192</strong><span>11000000</span></div>
+                        <div><strong>168</strong><span>10101000</span></div>
+                        <div><strong>1</strong><span>00000001</span></div>
+                        <div><strong>10</strong><span>00001010</span></div>
+                    </div>
+                    <p>Total: 4 × 8 = 32 bits.</p>
+                </div>
+
+                <h3>Binary place values</h3>
+                <p>Each 8-bit octet uses these place values:</p>
+                <div class="subnet-place-values">
+                    <span>128</span><span>64</span><span>32</span><span>16</span>
+                    <span>8</span><span>4</span><span>2</span><span>1</span>
+                </div>
+                <p>
+                    For example, the binary number <code>11000000</code>
+                    represents 128 + 64 = <strong>192</strong>.
+                </p>
+            </section>
+
+            <section id="subnet-mask">
+                <h2>4. What Is a Subnet Mask?</h2>
+                <p>
+                    A subnet mask identifies which bits of an IPv4 address
+                    represent the network portion and which bits represent
+                    the host portion.
+                </p>
+                <p>
+                    In a standard IPv4 subnet mask, network bits are set to 1
+                    and host bits are set to 0.
+                </p>
+
+                <div class="subnet-example">
+                    <h3>Example: 255.255.255.0</h3>
+                    <p><strong>Decimal mask:</strong> 255.255.255.0</p>
+                    <p><strong>Binary mask:</strong></p>
+                    <code class="subnet-code">11111111.11111111.11111111.00000000</code>
+                    <p>
+                        The first 24 bits represent the network portion.
+                        The remaining 8 bits represent the host portion.
+                    </p>
+                </div>
+
+                <p>
+                    The subnet mask helps a device determine whether a
+                    destination IPv4 address is on its local network or
+                    needs to be reached through a router.
+                </p>
+            </section>
+
+            <section id="cidr">
+                <h2>5. Understanding CIDR Notation</h2>
+                <p>
+                    CIDR stands for <strong>Classless Inter-Domain Routing</strong>.
+                    CIDR notation represents the number of network bits using
+                    a slash followed by a number.
+                </p>
+
+                <div class="subnet-example">
+                    <h3>Example: 192.168.1.0/24</h3>
+                    <p>The <strong>/24</strong> means that 24 bits are used for
+                    the network portion.</p>
+                    <p>That leaves 32 − 24 = 8 host bits.</p>
+                    <p><strong>Subnet mask:</strong> 255.255.255.0</p>
+                </div>
+
+                <p>Here are some common CIDR prefixes:</p>
+                <ul>
+                    <li><code>/8</code> — 255.0.0.0</li>
+                    <li><code>/16</code> — 255.255.0.0</li>
+                    <li><code>/24</code> — 255.255.255.0</li>
+                    <li><code>/25</code> — 255.255.255.128</li>
+                    <li><code>/26</code> — 255.255.255.192</li>
+                    <li><code>/27</code> — 255.255.255.224</li>
+                    <li><code>/28</code> — 255.255.255.240</li>
+                </ul>
+            </section>
+
+            <section id="calculations">
+                <h2>6. The Four Important Subnet Calculations</h2>
+
+                <h3>6.1 Number of host bits</h3>
+                <p>
+                    Subtract the CIDR prefix from 32:
+                </p>
+                <div class="subnet-formula">Host bits = 32 − prefix length</div>
+
+                <h3>6.2 Total number of addresses</h3>
+                <p>
+                    Raise 2 to the power of the number of host bits:
+                </p>
+                <div class="subnet-formula">Total addresses = 2<sup>host bits</sup></div>
+
+                <h3>6.3 Usable host addresses</h3>
+                <p>
+                    For a conventional IPv4 subnet with at least two host bits,
+                    the network and broadcast addresses are not assigned to
+                    ordinary hosts.
+                </p>
+                <div class="subnet-formula">Usable hosts = 2<sup>host bits</sup> − 2</div>
+                <p>
+                    Special cases exist, including /31 point-to-point links
+                    and /32 host routes.
+                </p>
+
+                <h3>6.4 Block size</h3>
+                <p>
+                    When the subnet mask changes within an octet, calculate
+                    the block size using:
+                </p>
+                <div class="subnet-formula">Block size = 256 − interesting octet value</div>
+                <p>
+                    For example, a /26 mask is 255.255.255.192.
+                    The block size is 256 − 192 = <strong>64</strong>.
+                </p>
+            </section>
+
+            <section id="worked-example">
+                <h2>7. Worked Example: 192.168.1.0/26</h2>
+                <p>
+                    Let's calculate the network address, broadcast address,
+                    and usable host range for:
+                </p>
+                <div class="subnet-formula">192.168.1.0/26</div>
+
+                <h3>Step 1: Find the subnet mask</h3>
+                <p>
+                    A /26 prefix means 26 network bits and 6 host bits.
+                </p>
+                <p><strong>Subnet mask:</strong> 255.255.255.192</p>
+
+                <h3>Step 2: Calculate the total addresses</h3>
+                <p>There are 6 host bits:</p>
+                <div class="subnet-formula">2<sup>6</sup> = 64 addresses</div>
+
+                <h3>Step 3: Calculate usable hosts</h3>
+                <div class="subnet-formula">64 − 2 = 62 usable host addresses</div>
+
+                <h3>Step 4: Calculate the block size</h3>
+                <div class="subnet-formula">256 − 192 = 64</div>
+
+                <h3>Step 5: Identify the address range</h3>
+                <p>
+                    The subnet ranges in the final octet increase in blocks
+                    of 64:
+                </p>
+                <ul>
+                    <li>First subnet: 192.168.1.0 – 192.168.1.63</li>
+                    <li>Second subnet: 192.168.1.64 – 192.168.1.127</li>
+                    <li>Third subnet: 192.168.1.128 – 192.168.1.191</li>
+                    <li>Fourth subnet: 192.168.1.192 – 192.168.1.255</li>
+                </ul>
+
+                <div class="subnet-result">
+                    <h3>First subnet result</h3>
+                    <p><strong>Network address:</strong> 192.168.1.0</p>
+                    <p><strong>First usable address:</strong> 192.168.1.1</p>
+                    <p><strong>Last usable address:</strong> 192.168.1.62</p>
+                    <p><strong>Broadcast address:</strong> 192.168.1.63</p>
+                    <p><strong>Total addresses:</strong> 64</p>
+                    <p><strong>Usable hosts:</strong> 62</p>
+                </div>
+            </section>
+
+            <section id="subnet-table">
+                <h2>8. Common IPv4 Subnet Sizes</h2>
+                <p>
+                    This table covers common prefixes used in private LANs
+                    and practical subnetting exercises.
+                </p>
+
+                <div class="subnet-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CIDR</th>
+                                <th>Subnet Mask</th>
+                                <th>Total Addresses</th>
+                                <th>Usable Hosts*</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td></tr>
+                            <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td></tr>
+                            <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td></tr>
+                            <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td></tr>
+                            <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td></tr>
+                            <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td></tr>
+                            <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="subnet-note">
+                    *Usable-host figures use the conventional network and
+                    broadcast address reservation. /31 and /32 have special uses.
+                </p>
+            </section>
+
+            <section id="vlsm">
+                <h2>9. Introduction to VLSM</h2>
+                <p>
+                    VLSM stands for <strong>Variable Length Subnet Masking</strong>.
+                    It allows different subnets within the same address space
+                    to use different prefix lengths.
+                </p>
+                <p>
+                    Imagine a company needs three networks:
+                </p>
+                <ul>
+                    <li>Network A: 100 host addresses</li>
+                    <li>Network B: 50 host addresses</li>
+                    <li>Network C: 20 host addresses</li>
+                </ul>
+                <p>
+                    Giving every network a /24 would allocate 256 addresses
+                    to each subnet, even when many addresses are unnecessary.
+                    VLSM allows the administrator to select appropriately
+                    sized subnets for each requirement.
+                </p>
+                <div class="subnet-callout">
+                    <strong>Important:</strong> Allocate the largest required
+                    subnet first when planning a VLSM address allocation.
+                    Then allocate smaller subnets from the remaining space,
+                    ensuring that subnet ranges do not overlap.
+                </div>
+            </section>
+
+            <section id="practice">
+                <h2>10. Test Your Subnetting Knowledge</h2>
+                <p>Try solving these questions before checking the answers.</p>
+
+                <div class="subnet-question">
+                    <h3>Question 1</h3>
+                    <p>How many host bits are available in a /27 subnet?</p>
+                    <details>
+                        <summary>Show answer</summary>
+                        <p>32 − 27 = <strong>5 host bits</strong>.</p>
+                    </details>
+                </div>
+
+                <div class="subnet-question">
+                    <h3>Question 2</h3>
+                    <p>How many total IPv4 addresses are available in a /28 subnet?</p>
+                    <details>
+                        <summary>Show answer</summary>
+                        <p>2<sup>4</sup> = <strong>16 total addresses</strong>.</p>
+                    </details>
+                </div>
+
+                <div class="subnet-question">
+                    <h3>Question 3</h3>
+                    <p>What is the subnet mask for /26?</p>
+                    <details>
+                        <summary>Show answer</summary>
+                        <p><strong>255.255.255.192</strong>.</p>
+                    </details>
+                </div>
+
+                <div class="subnet-question">
+                    <h3>Question 4</h3>
+                    <p>
+                        For 192.168.10.64/26, identify the network address,
+                        broadcast address, and usable host range.
+                    </p>
+                    <details>
+                        <summary>Show answer</summary>
+                        <p><strong>Network:</strong> 192.168.10.64</p>
+                        <p><strong>First usable:</strong> 192.168.10.65</p>
+                        <p><strong>Last usable:</strong> 192.168.10.126</p>
+                        <p><strong>Broadcast:</strong> 192.168.10.127</p>
+                    </details>
+                </div>
+            </section>
+
+            <section id="faq">
+                <h2>11. Frequently Asked Questions</h2>
+
+                <div class="subnet-faq">
+                    <h3>What is the difference between an IP address and a subnet mask?</h3>
+                    <p>
+                        An IP address identifies a network interface at the
+                        IPv4 layer. A subnet mask identifies the network and
+                        host portions of the address.
+                    </p>
+                </div>
+
+                <div class="subnet-faq">
+                    <h3>What does /24 mean?</h3>
+                    <p>
+                        It means the first 24 bits are network bits, leaving
+                        8 bits for host addressing.
+                    </p>
+                </div>
+
+                <div class="subnet-faq">
+                    <h3>Can two devices in different subnets communicate?</h3>
+                    <p>
+                        Yes. They generally communicate through a router or
+                        another Layer 3 device that can route traffic between
+                        their networks.
+                    </p>
+                </div>
+
+                <div class="subnet-faq">
+                    <h3>Is subnetting important for CCNA?</h3>
+                    <p>
+                        Yes. Subnetting is a core networking skill used in
+                        IPv4 addressing, routing, network design, and
+                        troubleshooting.
+                    </p>
+                </div>
+            </section>
+
+            <section class="subnet-conclusion">
+                <h2>Conclusion</h2>
+                <p>
+                    Subnetting is one of the most important skills in IPv4
+                    networking. Once you understand binary, subnet masks,
+                    CIDR prefixes, and block sizes, you can calculate subnet
+                    ranges systematically rather than memorizing answers.
+                </p>
+                <p>
+                    Practice with different prefixes and address ranges until
+                    the calculations become familiar. Then move on to VLSM
+                    and practical subnetting exercises.
+                </p>
+            </section>
+
+            <section class="subnet-references">
+                <h2>References and Further Reading</h2>
+                <ul>
+                    <li><a href="https://www.rfc-editor.org/rfc/rfc4632" target="_blank" rel="noopener noreferrer">RFC 4632 — Classless Inter-domain Routing (CIDR)</a></li>
+                    <li><a href="https://www.rfc-editor.org/rfc/rfc1878" target="_blank" rel="noopener noreferrer">RFC 1878 — Variable Length Subnet Table</a></li>
+                    <li><a href="https://www.cisco.com/" target="_blank" rel="noopener noreferrer">Cisco — Networking Documentation</a></li>
+                </ul>
+            </section>
+
+            <div class="subnet-back">
+                <a href="../index.html">← Back to Home</a>
+            </div>
+
+        </article>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
