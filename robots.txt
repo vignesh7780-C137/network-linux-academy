@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vignesh7780-c137.github.io/network-linux-academy/sitemap.xml
