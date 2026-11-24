@@ -4312,7 +4312,7 @@ body {
   padding: 25px;
   border: 1px solid #e1e8ef;
   border-radius: 12px;
-  box-shadow: 0 5px 18px rgba(22,  forty, 60, 0.035);
+  box-shadow: 0 5px 18px rgba(22, 40, 60, 0.035);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
