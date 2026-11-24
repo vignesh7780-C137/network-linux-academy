@@ -15,12 +15,16 @@
 <body>
 
 <header>
-    <nav>
-        <a href="../index.html">Home</a>
-        <a href="../index.html#networking">Networking</a>
-        <a href="../index.html#linux">Linux</a>
-        <a href="../index.html#labs">Practical Labs</a>
-        <a href="../index.html#about">About</a>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network &amp; Linux Academy</a>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="navigation" class="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
     </nav>
 </header>
 
@@ -240,4 +244,37 @@ show lacp neighbor
 show interfaces trunk</code></pre>
 
     <p>
-       
+        Use these commands to confirm that the port-channel is formed,
+        member interfaces are bundled, and LACP neighbors are detected.
+    </p>
+
+    <h2>10. Key Takeaways</h2>
+
+    <ul>
+        <li>EtherChannel combines multiple physical links into one logical link.</li>
+        <li>LACP is the standards-based negotiation protocol; PAgP is Cisco proprietary.</li>
+        <li>Member interfaces must have compatible configurations.</li>
+        <li>Use verification commands to confirm channel and member-link status.</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        EtherChannel improves aggregate link capacity and provides link-level
+        redundancy between network devices. Understanding its negotiation
+        protocols, configuration requirements and verification commands is
+        important when designing and troubleshooting switched networks.
+    </p>
+
+    <p><a href="../index.html">← Back to Home</a></p>
+
+</main>
+
+<footer>
+    <p>© 2026 Network &amp; Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
