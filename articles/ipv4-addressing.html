@@ -1,0 +1,968 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn IPv4 addressing from the fundamentals: 32-bit addresses, octets, subnet masks, CIDR notation, private and public IP addresses, and subnetting examples.">
+    <meta name="keywords" content="IPv4, IP addressing, subnet mask, CIDR, private IP address, public IP address, subnetting, networking">
+    <title>IPv4 Addressing Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+            ☰
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="ipv4-article">
+
+    <div class="ipv4-breadcrumb">
+        <a href="../index.html">Home</a> /
+        <a href="../index.html#networking">Networking</a> /
+        <span>IPv4 Addressing</span>
+    </div>
+
+    <header class="ipv4-header">
+        <span class="ipv4-category">NETWORKING FUNDAMENTALS</span>
+        <h1>IPv4 Addressing Explained: A Complete Beginner's Guide</h1>
+        <p class="ipv4-subtitle">
+            Understand how IPv4 addresses identify devices, how subnet masks
+            divide networks, and how CIDR notation makes modern IP addressing work.
+        </p>
+        <div class="ipv4-meta">
+            <span>Beginner to Intermediate</span>
+            <span>•</span>
+            <span>Networking</span>
+        </div>
+    </header>
+
+    <div class="ipv4-callout">
+        <strong>What you will learn</strong>
+        <p>
+            By the end of this guide, you should be able to read an IPv4 address,
+            recognise private and public address ranges, interpret a subnet mask,
+            understand CIDR notation, and calculate the network and broadcast
+            addresses in a basic subnet.
+        </p>
+    </div>
+
+    <nav class="ipv4-toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#introduction">What is an IPv4 address?</a></li>
+            <li><a href="#structure">The structure of an IPv4 address</a></li>
+            <li><a href="#binary">Understanding binary and octets</a></li>
+            <li><a href="#network-host">Network portion and host portion</a></li>
+            <li><a href="#subnet-mask">What is a subnet mask?</a></li>
+            <li><a href="#cidr">CIDR notation explained</a></li>
+            <li><a href="#private-public">Private vs. public IP addresses</a></li>
+            <li><a href="#special-addresses">Special IPv4 addresses</a></li>
+            <li><a href="#address-classes">Historical IPv4 address classes</a></li>
+            <li><a href="#subnet-example">Practical subnetting example</a></li>
+            <li><a href="#configuration">How to view your IPv4 address</a></li>
+            <li><a href="#common-mistakes">Common IPv4 addressing mistakes</a></li>
+            <li><a href="#faq">Frequently asked questions</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ol>
+    </nav>
+
+    <article class="ipv4-content">
+
+        <section id="introduction">
+            <h2>1. What Is an IPv4 Address?</h2>
+
+            <p>
+                An <strong>IPv4 address (Internet Protocol version 4 address)</strong>
+                is a numerical identifier assigned to a network interface. It is
+                used by devices to identify the source and destination of packets
+                when communicating across an IP network.
+            </p>
+
+            <p>
+                Think of an IP address as a network-level address that helps routers
+                determine where packets should be delivered. Your laptop, smartphone,
+                server, and router interfaces may all use IP addresses to communicate.
+            </p>
+
+            <p>
+                IPv4 is one of the most widely deployed versions of the Internet
+                Protocol. It uses a <strong>32-bit addressing system</strong>,
+                which provides a theoretical total of 2<sup>32</sup> possible
+                address values.
+            </p>
+
+            <div class="ipv4-example">
+                <span class="ipv4-example-label">Example IPv4 address</span>
+                <strong>192.168.1.10</strong>
+            </div>
+
+            <p>
+                This is an example of a private IPv4 address commonly used inside
+                home and office networks.
+            </p>
+        </section>
+
+        <section id="structure">
+            <h2>2. The Structure of an IPv4 Address</h2>
+
+            <p>
+                An IPv4 address contains 32 bits. These bits are divided into
+                four groups of eight bits each. Each eight-bit group is called
+                an <strong>octet</strong>.
+            </p>
+
+            <p>
+                In normal networking configurations, IPv4 addresses are written
+                in dotted-decimal notation. The four decimal numbers are separated
+                by periods.
+            </p>
+
+            <div class="ipv4-visual">
+                <div class="ipv4-octets">
+                    <div><strong>192</strong><small>Octet 1</small></div>
+                    <div><strong>168</strong><small>Octet 2</small></div>
+                    <div><strong>1</strong><small>Octet 3</small></div>
+                    <div><strong>10</strong><small>Octet 4</small></div>
+                </div>
+                <p class="ipv4-visual-caption">192 . 168 . 1 . 10</p>
+                <p class="ipv4-small-note">4 octets × 8 bits = 32 bits</p>
+            </div>
+
+            <p>
+                Each octet can represent a decimal value from 0 to 255.
+                This is because eight binary bits can represent 256 different
+                combinations, ranging from 00000000 to 11111111.
+            </p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Total length</td><td>32 bits</td></tr>
+                        <tr><td>Number of octets</td><td>4</td></tr>
+                        <tr><td>Bits per octet</td><td>8 bits</td></tr>
+                        <tr><td>Minimum octet value</td><td>0</td></tr>
+                        <tr><td>Maximum octet value</td><td>255</td></tr>
+                        <tr><td>Written format</td><td>Dotted-decimal notation</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="binary">
+            <h2>3. Understanding Binary and Octets</h2>
+
+            <p>
+                Computers process information using binary values: 0 and 1.
+                To understand IPv4 addressing and subnetting, it is useful to
+                understand how eight binary bits represent a decimal number.
+            </p>
+
+            <p>
+                Each position in an eight-bit octet has a place value.
+                From left to right, these values are 128, 64, 32, 16, 8, 4, 2, and 1.
+            </p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table ipv4-binary-table">
+                    <thead>
+                        <tr>
+                            <th>Bit position</th>
+                            <th>1</th><th>2</th><th>3</th><th>4</th>
+                            <th>5</th><th>6</th><th>7</th><th>8</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Place value</th>
+                            <td>128</td><td>64</td><td>32</td><td>16</td>
+                            <td>8</td><td>4</td><td>2</td><td>1</td>
+                        </tr>
+                        <tr>
+                            <th>Binary digit</th>
+                            <td>1</td><td>1</td><td>0</td><td>0</td>
+                            <td>0</td><td>0</td><td>0</td><td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                In this example, the binary number
+                <strong>11000000</strong> is converted into decimal by adding
+                the place values where the bit is 1:
+            </p>
+
+            <div class="ipv4-formula">
+                128 + 64 = 192
+            </div>
+
+            <p>
+                Therefore, the binary octet 11000000 represents the decimal
+                number 192.
+            </p>
+
+            <h3>Complete IPv4 binary example</h3>
+
+            <p>Consider the IPv4 address 192.168.1.10:</p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>Decimal</th>
+                            <th>Binary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>192</td><td><code>11000000</code></td></tr>
+                        <tr><td>168</td><td><code>10101000</code></td></tr>
+                        <tr><td>1</td><td><code>00000001</code></td></tr>
+                        <tr><td>10</td><td><code>00001010</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                When combined, these four octets form the complete 32-bit
+                IPv4 address.
+            </p>
+        </section>
+
+        <section id="network-host">
+            <h2>4. Network Portion and Host Portion</h2>
+
+            <p>
+                An IPv4 address is logically divided into two parts:
+                the <strong>network portion</strong> and the
+                <strong>host portion</strong>.
+            </p>
+
+            <ul>
+                <li>
+                    <strong>Network portion:</strong> Identifies the IP network
+                    to which an address belongs.
+                </li>
+                <li>
+                    <strong>Host portion:</strong> Identifies an interface
+                    within that network.
+                </li>
+            </ul>
+
+            <p>
+                The subnet mask or prefix length determines where the network
+                portion ends and the host portion begins.
+            </p>
+
+            <div class="ipv4-callout">
+                <strong>Important concept</strong>
+                <p>
+                    The same IPv4 address can be interpreted differently
+                    depending on its subnet mask. An IP address alone does
+                    not tell you the complete network boundary.
+                </p>
+            </div>
+
+            <p>For example:</p>
+
+            <div class="ipv4-example">
+                <span class="ipv4-example-label">IP address and subnet mask</span>
+                <strong>192.168.1.10 / 255.255.255.0</strong>
+            </div>
+
+            <p>
+                With a /24 prefix, the first 24 bits identify the network.
+                The remaining 8 bits identify the host portion.
+            </p>
+
+            <ul>
+                <li>Network address: 192.168.1.0</li>
+                <li>Example host address: 192.168.1.10</li>
+                <li>Broadcast address: 192.168.1.255</li>
+            </ul>
+        </section>
+
+        <section id="subnet-mask">
+            <h2>5. What Is a Subnet Mask?</h2>
+
+            <p>
+                A <strong>subnet mask</strong> is a 32-bit value used to
+                distinguish the network bits from the host bits in an IPv4
+                address.
+            </p>
+
+            <p>
+                In binary, the network portion of a conventional subnet mask
+                consists of consecutive 1s, followed by consecutive 0s for
+                the host portion.
+            </p>
+
+            <h3>Common subnet masks</h3>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>CIDR prefix</th>
+                            <th>Subnet mask</th>
+                            <th>Host bits</th>
+                            <th>Traditional usable hosts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>/8</td><td>255.0.0.0</td><td>24</td><td>16,777,214</td></tr>
+                        <tr><td>/16</td><td>255.255.0.0</td><td>16</td><td>65,534</td></tr>
+                        <tr><td>/24</td><td>255.255.255.0</td><td>8</td><td>254</td></tr>
+                        <tr><td>/25</td><td>255.255.255.128</td><td>7</td><td>126</td></tr>
+                        <tr><td>/26</td><td>255.255.255.192</td><td>6</td><td>62</td></tr>
+                        <tr><td>/27</td><td>255.255.255.224</td><td>5</td><td>30</td></tr>
+                        <tr><td>/28</td><td>255.255.255.240</td><td>4</td><td>14</td></tr>
+                        <tr><td>/29</td><td>255.255.255.248</td><td>3</td><td>6</td></tr>
+                        <tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="ipv4-small-note">
+                The traditional usable-host figures assume an ordinary IPv4
+                subnet where the network and broadcast addresses are reserved.
+                Special cases such as /31 point-to-point links and /32 host
+                routes have different uses.
+            </p>
+
+            <h3>How does a subnet mask work?</h3>
+
+            <p>
+                Consider the address 192.168.1.10 with the subnet mask
+                255.255.255.0.
+            </p>
+
+            <div class="ipv4-code-example">
+                <p><strong>IP address</strong></p>
+                <code>11000000.10101000.00000001.00001010</code>
+                <p><strong>Subnet mask</strong></p>
+                <code>11111111.11111111.11111111.00000000</code>
+                <p><strong>Network address</strong></p>
+                <code>11000000.10101000.00000001.00000000</code>
+            </div>
+
+            <p>
+                The network address is calculated by performing a bitwise
+                AND operation between the IP address and the subnet mask.
+                This operation retains the bits that are 1 in both values.
+            </p>
+        </section>
+
+        <section id="cidr">
+            <h2>6. CIDR Notation Explained</h2>
+
+            <p>
+                <strong>CIDR</strong> stands for Classless Inter-Domain Routing.
+                It provides a flexible way to represent IPv4 network prefixes.
+                Instead of relying on the old fixed address classes, CIDR
+                specifies exactly how many leading bits belong to the network.
+            </p>
+
+            <p>
+                CIDR notation places a forward slash after an IPv4 address,
+                followed by a number between 0 and 32.
+            </p>
+
+            <div class="ipv4-example">
+                <span class="ipv4-example-label">CIDR example</span>
+                <strong>192.168.1.10/24</strong>
+            </div>
+
+            <p>
+                The number <strong>/24</strong> means that the first 24 bits
+                are the network prefix. The remaining 8 bits are available
+                for the host portion.
+            </p>
+
+            <h3>Understanding prefix lengths</h3>
+
+            <ul>
+                <li><strong>/8:</strong> 8 network bits and 24 host bits.</li>
+                <li><strong>/16:</strong> 16 network bits and 16 host bits.</li>
+                <li><strong>/24:</strong> 24 network bits and 8 host bits.</li>
+                <li><strong>/26:</strong> 26 network bits and 6 host bits.</li>
+                <li><strong>/30:</strong> 30 network bits and 2 host bits.</li>
+            </ul>
+
+            <p>
+                A larger prefix length means more bits are used for the
+                network portion and fewer bits remain for host addresses.
+            </p>
+
+            <p>
+                CIDR is important in modern routing because it supports
+                flexible address allocation and route aggregation. It
+                replaced the limitations of the old class-based approach.
+            </p>
+        </section>
+
+        <section id="private-public">
+            <h2>7. Private vs. Public IP Addresses</h2>
+
+            <p>
+                IPv4 addresses are commonly discussed as private or public
+                addresses. The difference is important when designing
+                home, office, and enterprise networks.
+            </p>
+
+            <h3>Private IPv4 addresses</h3>
+
+            <p>
+                Private IPv4 addresses are reserved for use inside private
+                networks. They are not globally reachable as ordinary
+                public Internet destinations.
+            </p>
+
+            <p>The three private IPv4 ranges defined by RFC 1918 are:</p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>Private range</th>
+                            <th>CIDR</th>
+                            <th>Number of addresses</th>
+                            <th>Common description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10.0.0.0 – 10.255.255.255</td>
+                            <td>10.0.0.0/8</td>
+                            <td>16,777,216</td>
+                            <td>Large private range</td>
+                        </tr>
+                        <tr>
+                            <td>172.16.0.0 – 172.31.255.255</td>
+                            <td>172.16.0.0/12</td>
+                            <td>1,048,576</td>
+                            <td>Medium private range</td>
+                        </tr>
+                        <tr>
+                            <td>192.168.0.0 – 192.168.255.255</td>
+                            <td>192.168.0.0/16</td>
+                            <td>65,536</td>
+                            <td>Common home and small-office range</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                For example, a home router may assign addresses such as
+                192.168.1.10 and 192.168.1.11 to devices on the local network.
+            </p>
+
+            <h3>Public IPv4 addresses</h3>
+
+            <p>
+                Public IPv4 addresses are globally unique addresses that can
+                be routed across the public Internet, subject to routing
+                policies and other network controls.
+            </p>
+
+            <p>
+                An Internet Service Provider (ISP) may assign a public IPv4
+                address to a customer's router. The router can then use
+                Network Address Translation (NAT) to allow multiple private
+                network devices to share that public address.
+            </p>
+
+            <div class="ipv4-callout">
+                <strong>Remember</strong>
+                <p>
+                    Private addressing and NAT are related, but they are not
+                    the same thing. Private addresses identify devices inside
+                    a private network; NAT translates addresses between
+                    addressing domains.
+                </p>
+            </div>
+        </section>
+
+        <section id="special-addresses">
+            <h2>8. Special IPv4 Addresses</h2>
+
+            <p>
+                Not every IPv4 address is available for ordinary host
+                assignment. Some address blocks have specific purposes.
+            </p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>Address or range</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>127.0.0.0/8</td>
+                            <td>Loopback addresses; 127.0.0.1 is commonly used to refer to the local host.</td>
+                        </tr>
+                        <tr>
+                            <td>169.254.0.0/16</td>
+                            <td>IPv4 link-local addressing.</td>
+                        </tr>
+                        <tr>
+                            <td>0.0.0.0</td>
+                            <td>Unspecified address in contexts where no specific address is available.</td>
+                        </tr>
+                        <tr>
+                            <td>255.255.255.255</td>
+                            <td>Limited broadcast address.</td>
+                        </tr>
+                        <tr>
+                            <td>224.0.0.0/4</td>
+                            <td>IPv4 multicast address space.</td>
+                        </tr>
+                        <tr>
+                            <td>100.64.0.0/10</td>
+                            <td>Shared address space, commonly associated with carrier-grade NAT.</td>
+                        </tr>
+                        <tr>
+                            <td>192.0.2.0/24</td>
+                            <td>Documentation and examples (TEST-NET-1).</td>
+                        </tr>
+                        <tr>
+                            <td>198.51.100.0/24</td>
+                            <td>Documentation and examples (TEST-NET-2).</td>
+                        </tr>
+                        <tr>
+                            <td>203.0.113.0/24</td>
+                            <td>Documentation and examples (TEST-NET-3).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The three TEST-NET ranges are useful in tutorials and
+                documentation because they are reserved for examples.
+                They should not be treated as ordinary public host addresses.
+            </p>
+        </section>
+
+        <section id="address-classes">
+            <h2>9. Historical IPv4 Address Classes</h2>
+
+            <p>
+                Early IPv4 addressing used a class-based system. The address
+                space was divided into Classes A, B, C, D, and E.
+            </p>
+
+            <p>
+                This approach is now historical for normal network allocation.
+                Modern networks use CIDR and explicit prefix lengths instead.
+                However, understanding the classes can help when reading
+                older networking material and preparing for technical interviews.
+            </p>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Historical first-octet range</th>
+                            <th>Historical default mask</th>
+                            <th>Original general purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>A</td><td>1–126</td><td>255.0.0.0 (/8)</td><td>Large networks</td></tr>
+                        <tr><td>B</td><td>128–191</td><td>255.255.0.0 (/16)</td><td>Medium networks</td></tr>
+                        <tr><td>C</td><td>192–223</td><td>255.255.255.0 (/24)</td><td>Smaller networks</td></tr>
+                        <tr><td>D</td><td>224–239</td><td>Not applicable</td><td>Multicast</td></tr>
+                        <tr><td>E</td><td>240–255</td><td>Not applicable</td><td>Reserved and experimental use</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The range 127.0.0.0/8 is reserved for loopback, so it is not
+                an ordinary Class A network assignment. The historical
+                class ranges are not a substitute for checking the actual
+                prefix of an address.
+            </p>
+
+            <div class="ipv4-callout">
+                <strong>Important for modern networking</strong>
+                <p>
+                    Do not assume that an address beginning with 192
+                    automatically uses a /24 mask, or that an address
+                    beginning with 10 automatically uses /8. The configured
+                    prefix determines the network boundary.
+                </p>
+            </div>
+        </section>
+
+        <section id="subnet-example">
+            <h2>10. Practical Subnetting Example</h2>
+
+            <p>
+                Let's calculate the network details for the following
+                IPv4 address:
+            </p>
+
+            <div class="ipv4-example">
+                <span class="ipv4-example-label">Given address</span>
+                <strong>192.168.10.34/27</strong>
+            </div>
+
+            <h3>Step 1: Identify the subnet mask</h3>
+
+            <p>
+                A /27 prefix means 27 bits are used for the network portion.
+                The corresponding subnet mask is:
+            </p>
+
+            <div class="ipv4-formula">
+                255.255.255.224
+            </div>
+
+            <h3>Step 2: Calculate the block size</h3>
+
+            <p>
+                The interesting octet is the fourth octet because the
+                subnet mask changes there.
+            </p>
+
+            <p>Block size = 256 − 224</p>
+
+            <div class="ipv4-formula">
+                Block size = 32
+            </div>
+
+            <p>
+                The subnet ranges in the last octet therefore increase
+                in blocks of 32:
+            </p>
+
+            <div class="ipv4-range">
+                <span>0–31</span>
+                <span>32–63</span>
+                <span>64–95</span>
+                <span>96–127</span>
+                <span>128–159</span>
+                <span>160–191</span>
+                <span>192–223</span>
+                <span>224–255</span>
+            </div>
+
+            <h3>Step 3: Find the network address</h3>
+
+            <p>
+                The host address ends in 34. Since 34 falls inside the
+                range 32–63, the network address is:
+            </p>
+
+            <div class="ipv4-formula">
+                192.168.10.32
+            </div>
+
+            <h3>Step 4: Find the broadcast address</h3>
+
+            <p>
+                The last address in the range 32–63 is the broadcast address:
+            </p>
+
+            <div class="ipv4-formula">
+                192.168.10.63
+            </div>
+
+            <h3>Step 5: Find the usable host range</h3>
+
+            <p>
+                In this ordinary /27 subnet, the network address and
+                broadcast address are not assigned to individual hosts.
+                The usable host range is:
+            </p>
+
+            <div class="ipv4-formula">
+                192.168.10.33 – 192.168.10.62
+            </div>
+
+            <h3>Step 6: Calculate the number of usable hosts</h3>
+
+            <p>
+                There are 5 host bits because 32 − 27 = 5.
+                The total number of addresses is 2<sup>5</sup> = 32.
+                Subtract the network and broadcast addresses:
+            </p>
+
+            <div class="ipv4-formula">
+                32 − 2 = 30 usable host addresses
+            </div>
+
+            <h3>Final result</h3>
+
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <tbody>
+                        <tr><th>Given IP address</th><td>192.168.10.34/27</td></tr>
+                        <tr><th>Subnet mask</th><td>255.255.255.224</td></tr>
+                        <tr><th>Network address</th><td>192.168.10.32</td></tr>
+                        <tr><th>First usable host</th><td>192.168.10.33</td></tr>
+                        <tr><th>Last usable host</th><td>192.168.10.62</td></tr>
+                        <tr><th>Broadcast address</th><td>192.168.10.63</td></tr>
+                        <tr><th>Total addresses</th><td>32</td></tr>
+                        <tr><th>Usable host addresses</th><td>30</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                This is a foundational subnetting calculation. With practice,
+                you will be able to perform these calculations quickly when
+                configuring routers, switches, VLANs, and enterprise networks.
+            </p>
+        </section>
+
+        <section id="configuration">
+            <h2>11. How to View Your IPv4 Address</h2>
+
+            <p>
+                You can inspect the IPv4 configuration of your own computer
+                using built-in command-line tools.
+            </p>
+
+            <h3>On Windows</h3>
+
+            <p>Open Command Prompt and run:</p>
+
+            <div class="ipv4-code-example">
+                <code>ipconfig</code>
+            </div>
+
+            <p>
+                To see more detailed network configuration information, run:
+            </p>
+
+            <div class="ipv4-code-example">
+                <code>ipconfig /all</code>
+            </div>
+
+            <p>
+                Look for the active network adapter and its IPv4 Address,
+                Subnet Mask, and Default Gateway fields.
+            </p>
+
+            <h3>On Linux</h3>
+
+            <p>Open a terminal and run:</p>
+
+            <div class="ipv4-code-example">
+                <code>ip address</code>
+            </div>
+
+            <p>
+                You can also use the shorter form:
+            </p>
+
+            <div class="ipv4-code-example">
+                <code>ip -4 addr</code>
+            </div>
+
+            <p>
+                These commands display IPv4 addresses assigned to the
+                machine's network interfaces. You may see multiple
+                interfaces, including loopback, Ethernet, and Wi-Fi.
+            </p>
+        </section>
+
+        <section id="common-mistakes">
+            <h2>12. Common IPv4 Addressing Mistakes</h2>
+
+            <ol>
+                <li>
+                    <strong>Confusing an IP address with a subnet mask.</strong>
+                    An IP address identifies an interface, while the prefix
+                    or subnet mask defines the network boundary.
+                </li>
+                <li>
+                    <strong>Assuming every 192.168 address uses /24.</strong>
+                    The prefix can vary. Always check the configured mask.
+                </li>
+                <li>
+                    <strong>Confusing private addresses with public addresses.</strong>
+                    Private addresses are intended for internal networks and
+                    are not globally reachable as ordinary Internet destinations.
+                </li>
+                <li>
+                    <strong>Forgetting the network and broadcast addresses.</strong>
+                    In a conventional IPv4 subnet, these are not assigned
+                    to ordinary hosts.
+                </li>
+                <li>
+                    <strong>Thinking address classes are how modern networks
+                    are allocated.</strong>
+                    Modern IPv4 networks use classless prefix notation (CIDR).
+                </li>
+                <li>
+                    <strong>Ignoring the subnet mask during troubleshooting.</strong>
+                    Two devices with apparently similar IP addresses may
+                    still be configured for different subnets.
+                </li>
+            </ol>
+        </section>
+
+        <section id="faq">
+            <h2>13. Frequently Asked Questions</h2>
+
+            <div class="ipv4-faq">
+                <h3>1. How many bits are in an IPv4 address?</h3>
+                <p>
+                    An IPv4 address contains 32 bits, divided into four
+                    octets of 8 bits each.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>2. Why does an IPv4 octet range from 0 to 255?</h3>
+                <p>
+                    An octet contains eight bits. Eight bits provide
+                    2<sup>8</sup>, or 256, possible values. Those values
+                    range from 0 through 255.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>3. What is the difference between IPv4 and IPv6?</h3>
+                <p>
+                    IPv4 uses 32-bit addresses, while IPv6 uses 128-bit
+                    addresses. IPv6 provides a vastly larger address space
+                    and a different addressing format.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>4. What does /24 mean in an IP address?</h3>
+                <p>
+                    It means the first 24 bits form the network prefix.
+                    The remaining 8 bits form the host portion.
+                    Its subnet mask is 255.255.255.0.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>5. Is 192.168.1.1 a public or private IP address?</h3>
+                <p>
+                    It is a private IPv4 address because it belongs to
+                    the RFC 1918 range 192.168.0.0/16.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>6. What is the purpose of a default gateway?</h3>
+                <p>
+                    A default gateway is the router or next-hop device a
+                    host uses to send packets to destinations outside its
+                    local subnet, when no more specific route applies.
+                </p>
+            </div>
+
+            <div class="ipv4-faq">
+                <h3>7. Are IPv4 address classes still used?</h3>
+                <p>
+                    Class A, B, and C are historical concepts. Modern
+                    address allocation and routing use CIDR prefixes.
+                    Class D and E terminology may still appear when
+                    discussing multicast and reserved address space.
+                </p>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>14. Conclusion</h2>
+
+            <p>
+                IPv4 addressing is one of the most important foundations
+                of computer networking. Understanding its 32-bit structure,
+                octets, network and host portions, subnet masks, and CIDR
+                notation will make it easier to understand routing and
+                network design.
+            </p>
+
+            <p>
+                The best way to strengthen your understanding is to practise
+                reading IP configurations and calculating subnets. Try
+                configuring different IPv4 addresses and subnet masks in
+                Cisco Packet Tracer, then test connectivity between devices.
+            </p>
+
+            <div class="ipv4-next-article">
+                <span>Continue learning</span>
+                <h3>Next: Introduction to OSPF</h3>
+                <p>
+                    Learn how routers exchange routing information and
+                    discover paths through an IP network.
+                </p>
+                <a href="ospf-introduction.html">Read the OSPF introduction →</a>
+            </div>
+        </section>
+
+        <section class="ipv4-references">
+            <h2>References and Further Reading</h2>
+            <ul>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc791"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 791 — Internet Protocol
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc1918"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 1918 — Address Allocation for Private Internets
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.rfc-editor.org/rfc/rfc4632"
+                       target="_blank" rel="noopener noreferrer">
+                        RFC 4632 — Classless Inter-domain Routing (CIDR)
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml"
+                       target="_blank" rel="noopener noreferrer">
+                        IANA — IPv4 Special-Purpose Address Registry
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+    </article>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; <span id="year"></span> Network & Linux Academy. All rights reserved.</p>
+    <p>Practical knowledge for networking and Linux learners.</p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
