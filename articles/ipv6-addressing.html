@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn IPv6 addressing, address structure, hexadecimal notation, address types, SLAAC, DHCPv6 and Cisco configuration.">
+    <title>IPv6 Addressing Explained | Network & Linux Academy</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <a href="../index.html" class="logo">Network & Linux Academy</a>
+        <button id="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="navigation" class="navigation">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#networking">Networking</a></li>
+            <li><a href="../index.html#linux">Linux</a></li>
+            <li><a href="../index.html#labs">Practical Labs</a></li>
+            <li><a href="../index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="ipv6-article">
+
+    <h1>IPv6 Addressing Explained</h1>
+
+    <p>
+        Internet Protocol version 6 (IPv6) is the successor to IPv4.
+        It was developed to address the limitations of IPv4,
+        particularly the shortage of globally unique IPv4 addresses.
+    </p>
+
+    <p>
+        IPv6 uses 128-bit addresses, compared with the 32-bit
+        addresses used by IPv4.
+    </p>
+
+    <h2>1. Why Was IPv6 Introduced?</h2>
+
+    <p>IPv4 has several limitations:</p>
+
+    <ul>
+        <li>Limited address space.</li>
+        <li>Increasing demand for internet-connected devices.</li>
+        <li>Greater reliance on address translation techniques.</li>
+        <li>Need for improvements in network-layer functionality.</li>
+    </ul>
+
+    <p>
+        IPv6 provides a much larger address space and supports
+        features such as stateless address autoconfiguration.
+    </p>
+
+    <h2>2. IPv4 vs IPv6</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>IPv4</th>
+                <th>IPv6</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Address size</td>
+                <td>32 bits</td>
+                <td>128 bits</td>
+            </tr>
+            <tr>
+                <td>Notation</td>
+                <td>Decimal</td>
+                <td>Hexadecimal</td>
+            </tr>
+            <tr>
+                <td>Address example</td>
+                <td>192.168.1.1</td>
+                <td>2001:db8::1</td>
+            </tr>
+            <tr>
+                <td>Broadcast</td>
+                <td>Supported</td>
+                <td>Not used</td>
+            </tr>
+            <tr>
+                <td>Address resolution</td>
+                <td>ARP</td>
+                <td>Neighbor Discovery Protocol</td>
+            </tr>
+            <tr>
+                <td>Header checksum</td>
+                <td>Present</td>
+                <td>Not present</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. IPv6 Address Structure</h2>
+
+    <p>
+        An IPv6 address consists of 128 bits, divided into eight
+        groups of 16 bits.
+    </p>
+
+    <p>Example:</p>
+
+    <pre><code>2001:0DB8:0000:0000:0000:0000:0000:0001</code></pre>
+
+    <p>
+        Each group contains four hexadecimal digits and is separated
+        by a colon.
+    </p>
+
+    <h2>4. IPv6 Address Compression</h2>
+
+    <p>
+        IPv6 supports two important rules that make addresses
+        easier to write.
+    </p>
+
+    <h3>Rule 1: Remove Leading Zeros</h3>
+
+    <p>
+        Leading zeros within an individual group can be omitted.
+    </p>
+
+    <pre><code>2001:0DB8:0000:0000:0000:0000:0000:0001
+
+Becomes:
+
+2001:DB8:0:0:0:0:0:1</code></pre>
+
+    <h3>Rule 2: Replace Consecutive Zero Groups</h3>
+
+    <p>
+        One consecutive sequence of all-zero groups can be replaced
+        with a double colon (::).
+    </p>
+
+    <pre><code>2001:DB8:0:0:0:0:0:1
+
+Becomes:
+
+2001:DB8::1</code></pre>
+
+    <div class="ipv6-note">
+        <strong>Important:</strong> The double-colon notation can
+        appear only once in an IPv6 address. Using it more than once
+        would make the original number of zero groups ambiguous.
+    </div>
+
+    <h2>5. Types of IPv6 Addresses</h2>
+
+    <h3>Global Unicast Address</h3>
+
+    <p>
+        Global Unicast Addresses are globally routable IPv6 addresses.
+        They are generally allocated from the 2000::/3 address space.
+    </p>
+
+    <p>Example:</p>
+
+    <pre><code>2001:DB8:100::10/64</code></pre>
+
+    <p>
+        The documentation prefix 2001:DB8::/32 is reserved for
+        examples and documentation, not normal public deployment.
+    </p>
+
+    <h3>Link-Local Address</h3>
+
+    <p>
+        Link-local addresses are used for communication within
+        a local network link. They are not routed between links.
+    </p>
+
+    <pre><code>FE80::/10</code></pre>
+
+    <h3>Unique Local Address</h3>
+
+    <p>
+        Unique Local Addresses are intended for private internal
+        communication and are not globally routed on the public internet.
+    </p>
+
+    <pre><code>FC00::/7</code></pre>
+
+    <h3>Multicast Address</h3>
+
+    <p>
+        Multicast addresses identify a group of interfaces.
+        A packet sent to a multicast address is delivered to
+        participating members of that group.
+    </p>
+
+    <pre><code>FF00::/8</code></pre>
+
+    <h2>6. SLAAC (Stateless Address Autoconfiguration)</h2>
+
+    <p>
+        SLAAC allows IPv6 devices to configure their own addresses
+        using information advertised by routers.
+    </p>
+
+    <ol>
+        <li>The router sends Router Advertisement messages.</li>
+        <li>The advertisement provides network prefix information.</li>
+        <li>The host forms an IPv6 address using the prefix and an interface identifier.</li>
+        <li>The host performs Duplicate Address Detection.</li>
+    </ol>
+
+    <p>
+        SLAAC reduces the need for manual IPv6 address configuration.
+    </p>
+
+    <h2>7. DHCPv6</h2>
+
+    <p>
+        DHCPv6 is a protocol that provides IPv6 configuration
+        information to network devices.
+    </p>
+
+    <p>There are two common approaches:</p>
+
+    <ul>
+        <li><strong>Stateful DHCPv6:</strong> The DHCPv6 server assigns IPv6 addresses and maintains allocation information.</li>
+        <li><strong>Stateless DHCPv6:</strong> Hosts obtain addresses through SLAAC and use DHCPv6 for additional configuration information.</li>
+    </ul>
+
+    <h2>8. Cisco IPv6 Configuration</h2>
+
+    <h3>Enable IPv6 Routing</h3>
+
+    <pre><code>enable
+configure terminal
+
+ipv6 unicast-routing</code></pre>
+
+    <h3>Configure an IPv6 Interface</h3>
+
+    <pre><code>interface gigabitEthernet 0/0
+
+ipv6 address 2001:DB8:10::1/64
+
+no shutdown
+
+exit</code></pre>
+
+    <h3>Configure a Link-Local Address Manually</h3>
+
+    <pre><code>interface gigabitEthernet 0/0
+
+ipv6 address FE80::1 link-local
+
+exit</code></pre>
+
+    <h2>9. IPv6 Verification Commands</h2>
+
+    <pre><code>show ipv6 interface brief
+
+show ipv6 interface
+
+show ipv6 route
+
+show ipv6 neighbors
+
+ping 2001:DB8:10::2</code></pre>
+
+    <h2>10. Common IPv6 Troubleshooting Problems</h2>
+
+    <ul>
+        <li>Incorrect IPv6 address or prefix length.</li>
+        <li>Interface administratively shut down.</li>
+        <li>Missing IPv6 routing configuration.</li>
+        <li>Incorrect default gateway or router advertisement configuration.</li>
+        <li>Duplicate IPv6 address.</li>
+        <li>Neighbor Discovery problems.</li>
+        <li>Incorrect routing information.</li>
+    </ul>
+
+    <h2>11. Practical Packet Tracer Lab</h2>
+
+    <p>Build a small IPv6 network containing:</p>
+
+    <ul>
+        <li>Two routers.</li>
+        <li>Two switches.</li>
+        <li>Two PCs connected to separate networks.</li>
+    </ul>
+
+    <p>Complete these tasks:</p>
+
+    <ol>
+        <li>Assign IPv6 addresses to router interfaces.</li>
+        <li>Enable IPv6 routing.</li>
+        <li>Configure IPv6 routing between the routers.</li>
+        <li>Configure IPv6 addresses on both PCs.</li>
+        <li>Test connectivity using ping.</li>
+        <li>Inspect IPv6 routing and neighbor tables.</li>
+    </ol>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        IPv6 provides a significantly larger address space than IPv4
+        and introduces features that support modern IP networks.
+        Understanding address structure, address types, SLAAC,
+        DHCPv6 and routing is essential for network engineers.
+    </p>
+
+    <p><a href="../index.html">← Back to Home</a></p>
+
+</main>
+
+<footer>
+    <p>© 2026 Network & Linux Academy. All rights reserved.</p>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
