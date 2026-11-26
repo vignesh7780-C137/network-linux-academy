@@ -8,6 +8,7 @@ An independent technology-learning website focused on clear, structured computer
 - **Styles:** `style.css`
 - **Search and navigation:** `script.js`
 - **Tutorials:** `articles/`
+- **Downloadable resources:** `resources.html`
 - **Favicon:** `favicon.svg`
 
 ## Current content
@@ -68,6 +69,7 @@ The published address will be shown in the Pages settings.
 - Networking tutorial library: available
 - Homepage search: implemented
 - Responsive layout: implemented; continue testing across devices
+- Resource library landing page: available; downloadable products in development
 - Linux tutorial library: planned
 - Practical lab library: planned
 
