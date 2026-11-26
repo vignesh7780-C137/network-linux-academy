@@ -92,7 +92,8 @@
             <li><a href="#private-public">Private vs. public IP addresses</a></li>
             <li><a href="#special-addresses">Special IPv4 addresses</a></li>
             <li><a href="#address-classes">Historical IPv4 address classes</a></li>
-            <li><a href="#subnet-example">Practical subnetting example</a></li>
+            <li><a href="#subnet-example">Practical subnetting example</a>
+            <li><a href="#same-subnet">How to check whether two devices are in the same subnet</a></li>
             <li><a href="#configuration">How to view your IPv4 address</a></li>
             <li><a href="#common-mistakes">Common IPv4 addressing mistakes</a></li>
             <li><a href="#faq">Frequently asked questions</a></li>
@@ -760,6 +761,70 @@
                 you will be able to perform these calculations quickly when
                 configuring routers, switches, VLANs, and enterprise networks.
             </p>
+
+            <h3 id="same-subnet">How to Check Whether Two Devices Are in the Same Subnet</h3>
+
+            <p>
+                Two devices can communicate directly at Layer 2 only when
+                they are on the same local network segment or VLAN and their
+                IP configuration places them in the same IP subnet. To check
+                the IP subnet, apply the same subnet mask to each IP address
+                and compare the resulting network addresses.
+            </p>
+
+            <p><strong>Example: both devices use /27</strong></p>
+            <div class="ipv4-table-wrap">
+                <table class="ipv4-table">
+                    <thead>
+                        <tr><th>Device</th><th>IP address</th><th>Network address</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>PC-A</td><td>192.168.10.34/27</td><td>192.168.10.32</td></tr>
+                        <tr><td>PC-B</td><td>192.168.10.62/27</td><td>192.168.10.32</td></tr>
+                        <tr><td>PC-C</td><td>192.168.10.65/27</td><td>192.168.10.64</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                PC-A and PC-B calculate to the same network address,
+                192.168.10.32/27. PC-C belongs to 192.168.10.64/27,
+                so it is in a different subnet. Communication between
+                different subnets requires Layer 3 routing.
+            </p>
+
+            <div class="ipv4-callout">
+                <strong>Important distinction</strong>
+                <p>
+                    Sharing an IP subnet does not guarantee connectivity.
+                    The devices must also have working link connectivity,
+                    compatible VLAN placement, valid host configuration,
+                    and no filtering that blocks the traffic.
+                </p>
+            </div>
+
+            <h3>Quick subnetting practice</h3>
+            <p>
+                Try calculating the network address, broadcast address,
+                usable range, and number of usable hosts for
+                <strong>192.168.5.77/26</strong>.
+            </p>
+            <details>
+                <summary><strong>Reveal the worked answer</strong></summary>
+                <p>
+                    A /26 mask is 255.255.255.192. The block size is
+                    256 − 192 = 64, so the fourth-octet ranges are
+                    0–63, 64–127, 128–191, and 192–255.
+                    Since 77 falls in 64–127:
+                </p>
+                <ul>
+                    <li>Network address: 192.168.5.64</li>
+                    <li>First usable host: 192.168.5.65</li>
+                    <li>Last usable host: 192.168.5.126</li>
+                    <li>Broadcast address: 192.168.5.127</li>
+                    <li>Usable host addresses: 2<sup>6</sup> − 2 = 62</li>
+                </ul>
+            </details>
         </section>
 
         <section id="configuration">
