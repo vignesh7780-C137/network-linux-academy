@@ -25,6 +25,13 @@ if (yearElement) {
 
 const articles = [
   {
+    title: "Linux Users and Groups Explained",
+    url: "articles/linux-users-and-groups.html",
+    category: "Linux System Administration",
+    description: "Learn Linux user accounts, UIDs, GIDs, account files, password management, groups, sudo, and secure account administration.",
+    keywords: "Linux users groups UID GID useradd usermod userdel groupadd passwd shadow sudo visudo getent account administration permissions"
+  },
+  {
     title: "Linux Command Line Basics",
     url: "articles/linux-command-line-basics.html",
     category: "Linux Fundamentals",
