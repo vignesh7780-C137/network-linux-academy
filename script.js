@@ -25,6 +25,13 @@ if (yearElement) {
 
 const articles = [
   {
+    title: "Linux Command Line Basics",
+    url: "articles/linux-command-line-basics.html",
+    category: "Linux Fundamentals",
+    description: "Learn terminal navigation, file management, essential commands, system information, and basic permissions.",
+    keywords: "Linux command line terminal shell Bash filesystem pwd ls cd mkdir touch cp mv rm cat less grep find chmod permissions sudo system administration"
+  },
+  {
     title: "Access Control Lists (ACLs) Explained",
     url: "articles/access-control-lists.html",
     category: "Network Security",
