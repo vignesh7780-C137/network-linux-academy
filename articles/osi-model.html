@@ -83,6 +83,8 @@
       <a href="#data-link">2. Data Link</a>
       <a href="#physical">1. Physical</a>
       <a href="#comparison">Comparison</a>
+      <a href="#encapsulation">Encapsulation</a>
+      <a href="#troubleshooting">Troubleshooting</a>
       <a href="#example">Real-world Example</a>
       <a href="#faq">FAQs</a>
     </aside>
@@ -455,8 +457,82 @@
         </div>
       </section>
 
+      <section id="encapsulation">
+        <h2>11. Encapsulation and Decapsulation</h2>
+
+        <p>
+          Encapsulation is the process of adding protocol information
+          as data moves down the network stack on the sending device.
+          Each layer uses its own control information to deliver the
+          data to the next stage.
+        </p>
+
+        <ol>
+          <li><strong>Application layers:</strong> Create the application data.</li>
+          <li><strong>Transport:</strong> Adds a transport header containing information such as source and destination port numbers. The result is commonly called a TCP segment or UDP datagram.</li>
+          <li><strong>Network:</strong> Adds an IP header with source and destination IP addresses. This forms an IP packet.</li>
+          <li><strong>Data Link:</strong> Adds a link-layer header and trailer as required by the technology. An Ethernet frame includes source and destination MAC addresses and an error-detection field.</li>
+          <li><strong>Physical:</strong> Transmits the frame as bits/signals over the medium.</li>
+        </ol>
+
+        <p>
+          At the receiving device, decapsulation happens in reverse:
+          each layer processes and removes the information relevant
+          to it, then passes the remaining payload upward.
+        </p>
+
+        <div class="info-box">
+          <strong>Remember:</strong> IP addresses identify endpoints across
+          networks, while Ethernet MAC addresses are used to deliver a
+          frame across a local link. When a packet crosses a router,
+          the Layer 2 frame is replaced for the next link; the IP packet
+          is forwarded onward (although fields such as TTL or Hop Limit change).
+        </div>
+
+        <h3>Protocol data units (PDUs)</h3>
+        <p>
+          The common names for data at different layers are:
+          application data, TCP segment or UDP datagram, IP packet,
+          data-link frame, and physical bits. Terminology can vary
+          between protocols and teaching references.
+        </p>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>12. Using the OSI Model for Troubleshooting</h2>
+
+        <p>
+          The OSI model is especially useful when diagnosing a network
+          problem. Instead of guessing, work through the layers and
+          test the relevant function at each stage.
+        </p>
+
+        <ul>
+          <li><strong>Layer 1 — Physical:</strong> Check power, link lights, cable condition, wireless signal and interface status.</li>
+          <li><strong>Layer 2 — Data Link:</strong> Check VLAN assignment, switch port state, MAC learning and trunk configuration.</li>
+          <li><strong>Layer 3 — Network:</strong> Check IP address, subnet mask, default gateway, routing table and reachability to remote networks.</li>
+          <li><strong>Layer 4 — Transport:</strong> Check whether the required TCP or UDP port is reachable and whether a firewall is filtering traffic.</li>
+          <li><strong>Layers 5–7:</strong> Check application sessions, name resolution, certificates, application settings and server-side errors.</li>
+        </ul>
+
+        <p>
+          For example, if a computer can reach its default gateway
+          but cannot open a particular website, the physical link
+          and basic local connectivity may be working. You would
+          then investigate DNS, routing beyond the local network,
+          transport connectivity and the application itself.
+        </p>
+
+        <div class="info-box">
+          The OSI model is a troubleshooting guide, not a rigid
+          sequence of isolated tests. Real protocols often span
+          multiple OSI layers, so use evidence from tools such as
+          ping, traceroute, ipconfig or ip, and packet captures.
+        </div>
+      </section>
+
       <section id="example">
-        <h2>11. Real-World Example: Opening a Website</h2>
+        <h2>13. Real-World Example: Opening a Website</h2>
 
         <p>
           Imagine that you open a website using your
@@ -481,7 +557,7 @@
       </section>
 
       <section id="faq">
-        <h2>12. Frequently Asked Questions</h2>
+        <h2>14. Frequently Asked Questions</h2>
 
         <h3>Why is the OSI model important?</h3>
         <p>
@@ -507,6 +583,21 @@
           in Ethernet and other link-layer technologies.
         </p>
 
+        <h3>What is encapsulation in networking?</h3>
+        <p>
+          Encapsulation is the addition of protocol headers and,
+          where applicable, trailers as data moves down the sending
+          device's network stack. The receiving device performs
+          decapsulation.
+        </p>
+
+        <h3>Do MAC addresses travel end-to-end across the Internet?</h3>
+        <p>
+          No. Link-layer addresses are used on an individual network
+          link. Routers remove the incoming link-layer frame and
+          forward the IP packet in a new frame for the next link.
+        </p>
+
         <h3>Is the OSI model used directly by the Internet?</h3>
         <p>
           The OSI model is primarily a conceptual reference.
@@ -521,8 +612,8 @@
           The OSI model is one of the foundational concepts
           in computer networking. Understanding its seven
           layers provides a useful starting point for
-          learning switching, routing, protocols and
-          network troubleshooting.
+          learning switching, routing, protocols, encapsulation
+          and systematic network troubleshooting.
         </p>
 
         <p>
