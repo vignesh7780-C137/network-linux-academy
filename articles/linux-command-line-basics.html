@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn Linux command line basics: navigate the filesystem, manage files and directories, inspect system information, understand permissions, and practise essential terminal commands.">
+  <link rel="canonical" href="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-command-line-basics.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Network &amp; Linux Academy">
+  <meta property="og:title" content="Linux Command Line Basics | Network &amp; Linux Academy">
+  <meta property="og:description" content="A practical beginner's guide to Linux terminal commands, filesystems, permissions, and everyday administration.">
+  <meta property="og:url" content="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-command-line-basics.html">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Linux Command Line Basics",
+    "description": "A practical beginner's guide to Linux terminal commands, filesystems, permissions, and everyday administration.",
+    "mainEntityOfPage": "https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-command-line-basics.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Network & Linux Academy",
+      "url": "https://vignesh7780-c137.github.io/network-linux-academy/"
+    }
+  }
+  </script>
+  <meta name="keywords" content="Linux, Linux commands, terminal, shell, filesystem, pwd, ls, cd, mkdir, cp, mv, rm, chmod, permissions, beginner Linux">
+  <title>Linux Command Line Basics | Network &amp; Linux Academy</title>
+  <link rel="stylesheet" href="../style.css?v=3">
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">Network &amp; Linux Academy</a>
+    <button id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navigation" class="navigation">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#networking">Networking</a></li>
+      <li><a href="../index.html#linux" aria-current="page">Linux</a></li>
+      <li><a href="../index.html#labs">Practical Labs</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="article-container">
+  <header class="article-header">
+    <p class="eyebrow">LINUX / BEGINNER FUNDAMENTALS</p>
+    <h1>Linux Command Line Basics: A Practical Beginner's Guide</h1>
+    <p class="article-subtitle">Learn how to work confidently in a Linux terminal: move around the filesystem, manage files, inspect your system, and understand basic permissions.</p>
+    <div class="article-meta">
+      <span>Beginner Level</span>
+      <span>Linux Administration</span>
+      <span>12–15 min read</span>
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <aside class="table-of-contents">
+      <h3>On This Page</h3>
+      <a href="#introduction">Introduction</a>
+      <a href="#terminal">Terminal and shell</a>
+      <a href="#filesystem">Linux filesystem</a>
+      <a href="#navigation">Navigation commands</a>
+      <a href="#files">Manage files and folders</a>
+      <a href="#view-files">Read and search files</a>
+      <a href="#system">System information</a>
+      <a href="#permissions">File permissions</a>
+      <a href="#network">Useful network commands</a>
+      <a href="#practice">Hands-on practice</a>
+      <a href="#faq">FAQs</a>
+    </aside>
+
+    <article class="article-content">
+      <section id="introduction">
+        <h2>1. Introduction to the Linux Command Line</h2>
+        <p>Linux is widely used on servers, network appliances, cloud platforms, and development systems. Administrators often manage these systems through a command-line interface (CLI), where they enter commands to inspect and control the operating system.</p>
+        <p>The command line may look unfamiliar at first, but most daily tasks use a relatively small set of commands. The goal of this guide is to help you understand what those commands do, not simply memorize them.</p>
+        <div class="info-box"><strong>Where to practise:</strong> Use a Linux virtual machine or a Linux environment you control. The examples below are intended for a personal learning system, not an unfamiliar production server.</div>
+      </section>
+
+      <section id="terminal">
+        <h2>2. The Terminal and the Shell</h2>
+        <p>A <strong>terminal</strong> is the interface where you type and view text. A <strong>shell</strong> is the program that interprets the commands you enter. Bash is a common shell on Linux systems, although other shells are available.</p>
+        <p>When you open a terminal, you may see a prompt similar to this:</p>
+        <div class="info-box"><code>learner@linux-lab:~$</code><br>The prompt commonly shows the username, computer name, current directory, and a symbol indicating whether the shell is running with ordinary-user or elevated privileges.</div>
+        <p>Enter a command and press <strong>Enter</strong>. The shell interprets it and displays output or an error message. Linux commands are generally case-sensitive: <code>Documents</code> and <code>documents</code> can be different names.</p>
+        <h3>Get help</h3>
+        <ul>
+          <li><code>man ls</code> — open the manual page for <code>ls</code>.</li>
+          <li><code>ls --help</code> — display a short help summary where supported.</li>
+          <li><code>history</code> — display commands entered earlier in the current shell history.</li>
+          <li><code>clear</code> — clear the visible terminal screen.</li>
+        </ul>
+      </section>
+
+      <section id="filesystem">
+        <h2>3. Understanding the Linux Filesystem</h2>
+        <p>Linux organizes files and directories in a single directory tree. The top of this tree is the root directory, written as <code>/</code>. This is different from the administrator account named <code>root</code>.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Directory</th><th>Typical purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>/</code></td><td>Top of the filesystem hierarchy</td></tr>
+              <tr><td><code>/home</code></td><td>Personal directories for ordinary users</td></tr>
+              <tr><td><code>/etc</code></td><td>System-wide configuration files</td></tr>
+              <tr><td><code>/var</code></td><td>Variable data such as logs and caches</td></tr>
+              <tr><td><code>/tmp</code></td><td>Temporary files</td></tr>
+              <tr><td><code>/usr</code></td><td>Many user-space programs and shared resources</td></tr>
+              <tr><td><code>/bin</code> and <code>/sbin</code></td><td>Essential command locations; on many modern distributions these may link into <code>/usr</code></td></tr>
+              <tr><td><code>/dev</code></td><td>Device files exposed to the system</td></tr>
+              <tr><td><code>/boot</code></td><td>Files needed to start the system</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Two path styles are important:</p>
+        <ul>
+          <li><strong>Absolute path:</strong> starts at <code>/</code>, such as <code>/home/learner/Documents</code>.</li>
+          <li><strong>Relative path:</strong> starts from your current directory, such as <code>Documents/notes.txt</code>.</li>
+        </ul>
+        <div class="info-box"><strong>Special path symbols:</strong> <code>.</code> means the current directory, <code>..</code> means the parent directory, and <code>~</code> usually represents your home directory.</div>
+      </section>
+
+      <section id="navigation">
+        <h2>4. Navigate Directories</h2>
+        <p>Start with three commands used constantly by Linux administrators:</p>
+        <ul>
+          <li><code>pwd</code> — print the current working directory.</li>
+          <li><code>ls</code> — list files and directories.</li>
+          <li><code>cd</code> — change the current directory.</li>
+        </ul>
+        <h3>Useful examples</h3>
+        <div class="info-box">
+          <p><code>pwd</code> — show where you are.</p>
+          <p><code>ls -l</code> — show a detailed listing.</p>
+          <p><code>ls -la</code> — include hidden entries.</p>
+          <p><code>cd /etc</code> — move to the system configuration directory.</p>
+          <p><code>cd ..</code> — move one directory up.</p>
+          <p><code>cd ~</code> — return to your home directory.</p>
+          <p><code>cd -</code> — return to the previous working directory.</p>
+        </div>
+        <p>In Linux, names beginning with a dot, such as <code>.bashrc</code>, are hidden from a normal <code>ls</code> listing. Use <code>ls -a</code> to display them.</p>
+      </section>
+
+      <section id="files">
+        <h2>5. Create, Copy, Move, and Remove Files</h2>
+        <p>These commands help you organize your work and manage files from the terminal.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Command</th><th>Purpose</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><code>mkdir</code></td><td>Create a directory</td><td><code>mkdir practice</code></td></tr>
+              <tr><td><code>touch</code></td><td>Create an empty file or update its timestamp</td><td><code>touch notes.txt</code></td></tr>
+              <tr><td><code>cp</code></td><td>Copy a file</td><td><code>cp notes.txt backup.txt</code></td></tr>
+              <tr><td><code>mv</code></td><td>Move or rename a file</td><td><code>mv notes.txt linux-notes.txt</code></td></tr>
+              <tr><td><code>rm</code></td><td>Remove a file</td><td><code>rm backup.txt</code></td></tr>
+              <tr><td><code>rmdir</code></td><td>Remove an empty directory</td><td><code>rmdir old-folder</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Build a safe practice folder</h3>
+        <p>Run these commands from your home directory to create a small workspace:</p>
+        <div class="info-box">
+          <p><code>mkdir -p ~/linux-practice/notes</code></p>
+          <p><code>cd ~/linux-practice</code></p>
+          <p><code>touch notes/first-session.txt</code></p>
+          <p><code>cp notes/first-session.txt notes/first-session-copy.txt</code></p>
+          <p><code>mv notes/first-session-copy.txt notes/backup.txt</code></p>
+          <p><code>ls -l notes</code></p>
+        </div>
+        <div class="info-box"><strong>Be careful with deletion:</strong> <code>rm</code> normally removes files without sending them to a graphical recycle bin. Check the path before pressing Enter. Avoid experimenting with recursive or forced deletion options, especially with elevated privileges.</div>
+      </section>
+
+      <section id="view-files">
+        <h2>6. Read and Search Text Files</h2>
+        <p>Linux administrators frequently inspect configuration files and logs. These commands help you read text without needing a graphical editor.</p>
+        <ul>
+          <li><code>cat file.txt</code> — print the file contents.</li>
+          <li><code>less file.txt</code> — read a long file page by page; press <code>q</code> to quit.</li>
+          <li><code>head file.txt</code> — display the first lines.</li>
+          <li><code>tail file.txt</code> — display the last lines.</li>
+          <li><code>tail -f app.log</code> — follow new lines added to a log file; press <code>Ctrl+C</code> to stop.</li>
+          <li><code>grep "error" app.log</code> — search for matching text.</li>
+          <li><code>find ~/linux-practice -name "*.txt"</code> — find text files beneath the practice directory.</li>
+        </ul>
+        <p>For example, <code>grep -i "failed" auth.log</code> searches for the word regardless of letter case. You need appropriate read permission to inspect a file.</p>
+      </section>
+
+      <section id="system">
+        <h2>7. Check System Information</h2>
+        <p>Before troubleshooting a Linux machine, identify the system and check its current resource usage.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Command</th><th>What it shows</th></tr></thead>
+            <tbody>
+              <tr><td><code>whoami</code></td><td>Your current username</td></tr>
+              <tr><td><code>hostname</code></td><td>The system's host name</td></tr>
+              <tr><td><code>uname -a</code></td><td>Kernel and system information</td></tr>
+              <tr><td><code>cat /etc/os-release</code></td><td>Linux distribution identification</td></tr>
+              <tr><td><code>uptime</code></td><td>How long the system has been running and load averages</td></tr>
+              <tr><td><code>df -h</code></td><td>Filesystem disk space in readable units</td></tr>
+              <tr><td><code>free -h</code></td><td>Memory and swap usage</td></tr>
+              <tr><td><code>ps aux</code></td><td>A snapshot of running processes</td></tr>
+              <tr><td><code>top</code></td><td>Live process and resource information</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>These commands are useful starting points when a server appears slow, a disk is nearly full, or you need to identify which Linux distribution is installed.</p>
+      </section>
+
+      <section id="permissions">
+        <h2>8. Understand Linux File Permissions</h2>
+        <p>Linux permissions control who can read, modify, or execute a file. A detailed listing such as <code>ls -l</code> may show a permission string like this:</p>
+        <div class="info-box"><code>-rwxr-xr--</code><br>The first character indicates the file type. The remaining nine characters are grouped into permissions for the owner, group, and others.</div>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Symbol</th><th>Meaning for a regular file</th><th>Numeric value</th></tr></thead>
+            <tbody>
+              <tr><td><code>r</code></td><td>Read the file</td><td>4</td></tr>
+              <tr><td><code>w</code></td><td>Modify the file</td><td>2</td></tr>
+              <tr><td><code>x</code></td><td>Execute the file</td><td>1</td></tr>
+              <tr><td><code>-</code></td><td>Permission not granted</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The <code>chmod</code> command changes permissions. For example, <code>chmod 640 notes.txt</code> gives the owner read/write permission, the group read permission, and others no permission. The three digits correspond to owner, group, and others.</p>
+        <p>You can also use symbolic permissions: <code>chmod u+x script.sh</code> adds execute permission for the file owner.</p>
+        <p>Ownership is managed with <code>chown</code>, which normally requires administrator privileges. Do not change ownership or permissions on system files unless you understand why it is necessary.</p>
+        <div class="info-box"><strong>Directory permissions differ:</strong> read allows listing names, write allows creating or removing entries (subject to other controls), and execute allows traversing/searching the directory.</div>
+      </section>
+
+      <section id="network">
+        <h2>9. Useful Linux Network Commands</h2>
+        <p>Linux is common in network administration, so it is useful to know a few commands for inspecting network configuration and connectivity.</p>
+        <ul>
+          <li><code>ip addr</code> — display network interfaces and IP addresses.</li>
+          <li><code>ip route</code> — display the routing table.</li>
+          <li><code>ping -c 4 1.1.1.1</code> — send four ICMP echo requests to test reachability.</li>
+          <li><code>ss -tuln</code> — display listening TCP and UDP sockets.</li>
+          <li><code>hostname -I</code> — display assigned IP addresses on many Linux distributions.</li>
+        </ul>
+        <p>A successful ping does not prove that every application service is working, and a failed ping does not always mean the destination is offline. Firewalls and network policies may block ICMP.</p>
+      </section>
+
+      <section id="practice">
+        <h2>10. Hands-on Practice: Your First Linux Workspace</h2>
+        <p>Use your own Linux virtual machine and complete these tasks. Try each one before looking at the suggested command.</p>
+        <ol>
+          <li>Display your current directory. <strong>Hint:</strong> use <code>pwd</code>.</li>
+          <li>Go to your home directory and create a folder named <code>network-lab</code>. <strong>Hint:</strong> use <code>cd</code> and <code>mkdir</code>.</li>
+          <li>Inside it, create a file named <code>lab-notes.txt</code>. <strong>Hint:</strong> use <code>touch</code>.</li>
+          <li>Copy the file to <code>lab-notes-backup.txt</code>. <strong>Hint:</strong> use <code>cp</code>.</li>
+          <li>Display both files in a detailed listing. <strong>Hint:</strong> use <code>ls -l</code>.</li>
+          <li>Check your Linux distribution and IP configuration. <strong>Hint:</strong> inspect <code>/etc/os-release</code> and use <code>ip addr</code>.</li>
+          <li>Set the original file's permissions to owner read/write and group read. <strong>Hint:</strong> use <code>chmod 640 lab-notes.txt</code>.</li>
+        </ol>
+        <div class="info-box"><strong>Practice objective:</strong> You should be able to explain what each command changes, identify your current directory, and recognize basic file permissions. Repeat the exercise until you can complete it without copying the examples.</div>
+      </section>
+
+      <section id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Do I need to memorize every Linux command?</h3>
+        <p>No. Learn the commands you use often and become comfortable reading manual pages and help output. Knowing how to find reliable help is an important administration skill.</p>
+        <h3>Is the terminal the same as the shell?</h3>
+        <p>No. The terminal provides the text interface; the shell interprets commands entered through it.</p>
+        <h3>Should I use sudo for every command?</h3>
+        <p>No. Use ordinary user privileges for routine work. Use <code>sudo</code> only when a task genuinely requires administrator permissions and you understand the command.</p>
+        <h3>Are Linux commands identical on every distribution?</h3>
+        <p>Many core commands are shared, but package managers, service tools, default paths, and some options can vary between distributions.</p>
+      </section>
+
+      <section class="article-conclusion">
+        <h2>Conclusion</h2>
+        <p>The Linux command line becomes easier with regular practice. Start with navigation, file management, text inspection, system information, and permissions. These fundamentals will prepare you for later topics such as users and groups, package management, services, SSH, firewall configuration, and Linux network administration.</p>
+        <a class="back-link" href="../index.html#linux">← Explore Linux tutorials</a>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Network &amp; Linux Academy.</p>
+  <p>Learn. Configure. Understand.</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms &amp; Conditions</a>
+  </nav>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>
