@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Understand Linux users and groups, account files, user management commands, sudo access, passwords, and secure account administration with practical examples.">
+  <link rel="canonical" href="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-users-and-groups.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Network &amp; Linux Academy">
+  <meta property="og:title" content="Linux Users and Groups Explained | Network &amp; Linux Academy">
+  <meta property="og:description" content="Learn Linux user accounts, groups, permissions, sudo, and practical account administration.">
+  <meta property="og:url" content="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-users-and-groups.html">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Linux Users and Groups Explained",
+    "description": "A practical guide to Linux user accounts, groups, permissions, sudo, and account administration.",
+    "mainEntityOfPage": "https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-users-and-groups.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Network & Linux Academy",
+      "url": "https://vignesh7780-c137.github.io/network-linux-academy/"
+    }
+  }
+  </script>
+  <meta name="keywords" content="Linux users, Linux groups, useradd, usermod, userdel, groupadd, passwd, sudo, /etc/passwd, /etc/shadow, administration">
+  <title>Linux Users and Groups Explained | Network &amp; Linux Academy</title>
+  <link rel="stylesheet" href="../style.css?v=3">
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">Network &amp; Linux Academy</a>
+    <button id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navigation" class="navigation">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#networking">Networking</a></li>
+      <li><a href="../index.html#linux" aria-current="page">Linux</a></li>
+      <li><a href="../index.html#labs">Practical Labs</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="article-container">
+  <header class="article-header">
+    <p class="eyebrow">LINUX / SYSTEM ADMINISTRATION</p>
+    <h1>Linux Users and Groups: A Practical Administration Guide</h1>
+    <p class="article-subtitle">Understand how Linux identifies users, organizes groups, controls account access, and grants administrative privileges safely.</p>
+    <div class="article-meta">
+      <span>Beginner to Intermediate</span>
+      <span>Linux Administration</span>
+      <span>12–15 min read</span>
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <aside class="table-of-contents">
+      <h3>On This Page</h3>
+      <a href="#introduction">Introduction</a>
+      <a href="#identity">Users, UIDs and GIDs</a>
+      <a href="#account-files">Account configuration files</a>
+      <a href="#inspect">Inspect users and groups</a>
+      <a href="#create-user">Create user accounts</a>
+      <a href="#passwords">Password management</a>
+      <a href="#groups">Manage groups</a>
+      <a href="#sudo">Administrative access and sudo</a>
+      <a href="#home-shell">Home directories and shells</a>
+      <a href="#remove">Disable and remove accounts</a>
+      <a href="#practice">Hands-on lab</a>
+      <a href="#security">Security checklist</a>
+      <a href="#faq">FAQs</a>
+    </aside>
+
+    <article class="article-content">
+      <section id="introduction">
+        <h2>1. Introduction to Linux User and Group Management</h2>
+        <p>Linux is a multi-user operating system. Multiple people and services can use the same machine while receiving different permissions. The operating system uses user accounts and groups to decide who can access files, run programs, and perform administrative tasks.</p>
+        <p>For a system administrator, account management is a core security responsibility. Each person should use an individual account, receive only the access required for their role, and have access removed when it is no longer needed.</p>
+        <div class="info-box"><strong>Lab safety:</strong> Practise these commands in a Linux virtual machine that you control. Some commands require administrator privileges and can change real account access. Do not experiment on a shared or production server.</div>
+      </section>
+
+      <section id="identity">
+        <h2>2. Users, UIDs and GIDs</h2>
+        <p>A <strong>user account</strong> represents an identity on the Linux system. Linux internally identifies each account with a numeric User ID (UID), while a Group ID (GID) identifies a group.</p>
+        <ul>
+          <li><strong>Username:</strong> a readable account name, such as <code>alex</code>.</li>
+          <li><strong>UID:</strong> the numeric identifier assigned to the user.</li>
+          <li><strong>Primary group:</strong> the main group associated with the account.</li>
+          <li><strong>Supplementary groups:</strong> additional groups that provide extra access.</li>
+          <li><strong>System accounts:</strong> accounts commonly used by services and operating-system components rather than interactive people.</li>
+        </ul>
+        <p>Many Linux distributions reserve low UID ranges for system accounts and use higher values for ordinary users. Exact ranges depend on the distribution's configuration.</p>
+        <div class="info-box"><strong>Important distinction:</strong> The account named <code>root</code> normally has UID <code>0</code> and has extensive system privileges. A username is not what makes an account powerful; its UID and granted permissions determine its effective identity and access.</div>
+      </section>
+
+      <section id="account-files">
+        <h2>3. Important Linux Account Files</h2>
+        <p>Linux stores local account and group information in several files. Administrators should know what each file is for, but should use account-management commands rather than manually editing these files in ordinary situations.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>/etc/passwd</code></td><td>Account names, UIDs, GIDs, home directories and login shells.</td></tr>
+              <tr><td><code>/etc/shadow</code></td><td>Password hashes and password-aging information; normally restricted to privileged access.</td></tr>
+              <tr><td><code>/etc/group</code></td><td>Local group names, GIDs and supplementary group membership.</td></tr>
+              <tr><td><code>/etc/gshadow</code></td><td>Protected group administration information on systems that use it.</td></tr>
+              <tr><td><code>/etc/skel</code></td><td>Template files copied into newly created home directories by common account tools.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A typical <code>/etc/passwd</code> entry contains seven colon-separated fields:</p>
+        <div class="info-box"><code>alex:x:1001:1001:Alex User:/home/alex:/bin/bash</code></div>
+        <ol>
+          <li><code>alex</code> — username.</li>
+          <li><code>x</code> — indicates that the password information is stored separately, commonly in <code>/etc/shadow</code>.</li>
+          <li><code>1001</code> — UID.</li>
+          <li><code>1001</code> — primary GID.</li>
+          <li><code>Alex User</code> — optional descriptive field.</li>
+          <li><code>/home/alex</code> — home directory.</li>
+          <li><code>/bin/bash</code> — login shell.</li>
+        </ol>
+        <div class="info-box"><strong>Security note:</strong> Do not copy, publish, or casually modify password hashes. Protect <code>/etc/shadow</code> and use supported account tools for changes.</div>
+      </section>
+
+      <section id="inspect">
+        <h2>4. Inspect Existing Users and Groups</h2>
+        <p>Before changing an account, inspect its current identity and group membership.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>whoami</code></td><td>Show the effective username.</td></tr>
+              <tr><td><code>id</code></td><td>Show your UID, primary GID and supplementary groups.</td></tr>
+              <tr><td><code>id alex</code></td><td>Inspect the identity of user alex.</td></tr>
+              <tr><td><code>getent passwd</code></td><td>Display account records from configured identity sources.</td></tr>
+              <tr><td><code>getent group</code></td><td>Display group records.</td></tr>
+              <tr><td><code>groups alex</code></td><td>Show groups associated with alex.</td></tr>
+              <tr><td><code>who</code></td><td>Show users currently logged in.</td></tr>
+              <tr><td><code>last</code></td><td>Show recorded login history when the system maintains it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><code>getent</code> is useful because it queries the system's configured name-service sources. On centrally managed systems, account information may come from a directory service rather than only local files.</p>
+      </section>
+
+      <section id="create-user">
+        <h2>5. Create and Configure a User</h2>
+        <p>The <code>useradd</code> command creates an account. On many distributions, <code>adduser</code> is also available as a friendlier interactive tool or wrapper. Options and defaults can vary, so consult the manual page for your distribution.</p>
+        <div class="info-box">
+          <p><code>sudo useradd -m -s /bin/bash learner1</code></p>
+          <p><code>sudo passwd learner1</code></p>
+          <p><code>id learner1</code></p>
+        </div>
+        <p>In this example:</p>
+        <ul>
+          <li><code>sudo</code> runs the account-management command with elevated privileges.</li>
+          <li><code>useradd</code> creates the account.</li>
+          <li><code>-m</code> requests creation of a home directory.</li>
+          <li><code>-s /bin/bash</code> selects Bash as the login shell.</li>
+          <li><code>passwd</code> sets or changes the account password interactively.</li>
+        </ul>
+        <p>Use a unique username and follow your organization's password and identity policies. Never place a real password directly into a command that may be saved in shell history.</p>
+      </section>
+
+      <section id="passwords">
+        <h2>6. Password and Account Expiry Management</h2>
+        <p>The <code>passwd</code> command changes passwords and can lock or unlock password authentication for an account, depending on the options used. Password aging can be inspected and configured with <code>chage</code>.</p>
+        <div class="info-box">
+          <p><code>sudo passwd learner1</code> — interactively change the password.</p>
+          <p><code>sudo passwd -l learner1</code> — lock the account's password authentication.</p>
+          <p><code>sudo passwd -u learner1</code> — unlock password authentication when appropriate.</p>
+          <p><code>sudo chage -l learner1</code> — inspect password aging information.</p>
+        </div>
+        <p>Locking a password is not always the same as fully disabling an account. Existing sessions, SSH keys, other authentication methods, and scheduled processes may remain usable. For offboarding, review all access paths rather than relying on one command.</p>
+      </section>
+
+      <section id="groups">
+        <h2>7. Create Groups and Manage Membership</h2>
+        <p>Groups make it easier to assign permissions to several users at once. For example, a team group can be granted access to a shared project directory without changing each user's individual account identity.</p>
+        <div class="info-box">
+          <p><code>sudo groupadd netadmins</code> — create a group.</p>
+          <p><code>sudo usermod -aG netadmins learner1</code> — add learner1 to the supplementary group.</p>
+          <p><code>groups learner1</code> — inspect group membership.</p>
+          <p><code>getent group netadmins</code> — inspect the group record.</p>
+        </div>
+        <p><strong>Why use <code>-aG</code>?</strong> The <code>-a</code> option appends the group while <code>-G</code> specifies supplementary groups. Omitting <code>-a</code> when using <code>-G</code> can replace the user's existing supplementary group list. Always verify membership after making a change.</p>
+        <p>A user may need to start a new login session before updated group membership is reflected in their processes.</p>
+      </section>
+
+      <section id="sudo">
+        <h2>8. Administrative Access and sudo</h2>
+        <p>Linux separates ordinary user activity from privileged system administration. The <code>sudo</code> command allows an authorized user to run a particular command with elevated privileges, subject to the system's policy.</p>
+        <ul>
+          <li>Use an ordinary account for daily work.</li>
+          <li>Use <code>sudo</code> only for tasks that require elevated privileges.</li>
+          <li>Review the exact command before confirming it.</li>
+          <li>Follow the distribution's approved method for granting administrative access.</li>
+        </ul>
+        <p>Some distributions use a group named <code>sudo</code>; others commonly use <code>wheel</code>. Membership alone does not guarantee access unless the sudo policy is configured to grant it.</p>
+        <div class="info-box"><strong>Safe configuration:</strong> Use <code>visudo</code> to edit sudo policy because it checks syntax before saving. Prefer a carefully scoped rule in a file under <code>/etc/sudoers.d/</code> when appropriate. Never grant unrestricted administrative access without a clear need.</div>
+      </section>
+
+      <section id="home-shell">
+        <h2>9. Home Directories and Login Shells</h2>
+        <p>A home directory is a user's personal working area. It commonly stores documents, configuration files and application data. The login shell is the command interpreter started for an interactive login.</p>
+        <div class="info-box">
+          <p><code>getent passwd learner1</code> — inspect the account's configured home directory and shell.</p>
+          <p><code>sudo usermod -d /home/learner1 -m learner1</code> — set a home directory and request moving existing contents.</p>
+          <p><code>sudo usermod -s /bin/bash learner1</code> — change the login shell.</p>
+        </div>
+        <p>Not every account should have an interactive shell. Service accounts may use a non-login shell such as <code>/usr/sbin/nologin</code> where supported and appropriate. Check the path available on your distribution before configuring it.</p>
+      </section>
+
+      <section id="remove">
+        <h2>10. Disable or Remove an Account</h2>
+        <p>When a user no longer needs access, administrators should follow an offboarding process. First identify ownership of files, running services, scheduled jobs, SSH keys and other credentials. Preserve data according to organizational policy.</p>
+        <div class="info-box">
+          <p><code>sudo passwd -l learner1</code> — lock password authentication.</p>
+          <p><code>sudo userdel learner1</code> — remove the account entry without requesting home-directory removal.</p>
+          <p><code>sudo userdel -r learner1</code> — request removal of the account and its home directory and mail spool, where applicable.</p>
+        </div>
+        <div class="info-box"><strong>Warning:</strong> Account deletion can remove data and disrupt services. Do not run <code>userdel -r</code> until you have confirmed backups, file ownership, service dependencies and retention requirements. On managed systems, follow the central identity provider's offboarding procedure.</div>
+      </section>
+
+      <section id="practice">
+        <h2>11. Hands-on Lab: Create a User and Group</h2>
+        <p>Perform this exercise in a disposable Linux virtual machine where you have administrator access. The commands create a test account and group.</p>
+        <ol>
+          <li>Create a group named <code>labteam</code>.</li>
+          <li>Create a user named <code>labuser</code> with a home directory and Bash shell.</li>
+          <li>Set a password interactively.</li>
+          <li>Add the user to the <code>labteam</code> supplementary group.</li>
+          <li>Check the user's UID, primary GID and supplementary groups.</li>
+          <li>Inspect the account record using <code>getent passwd labuser</code>.</li>
+          <li>Inspect the group record using <code>getent group labteam</code>.</li>
+        </ol>
+        <h3>Suggested command sequence</h3>
+        <div class="info-box">
+          <p><code>sudo groupadd labteam</code></p>
+          <p><code>sudo useradd -m -s /bin/bash labuser</code></p>
+          <p><code>sudo passwd labuser</code></p>
+          <p><code>sudo usermod -aG labteam labuser</code></p>
+          <p><code>id labuser</code></p>
+          <p><code>getent passwd labuser</code></p>
+          <p><code>getent group labteam</code></p>
+        </div>
+        <p>After completing the lab, explain the difference between a UID and a GID, why <code>-aG</code> is used, and why group membership may require a new login session to take effect.</p>
+      </section>
+
+      <section id="security">
+        <h2>12. Linux Account Security Checklist</h2>
+        <ul>
+          <li>Give each person an individual account; avoid shared human logins.</li>
+          <li>Grant only the groups and privileges required for the person's role.</li>
+          <li>Use <code>sudo</code> according to a reviewed policy rather than sharing the root password.</li>
+          <li>Protect <code>/etc/shadow</code> and other sensitive account data.</li>
+          <li>Review inactive accounts and remove access when it is no longer required.</li>
+          <li>Check SSH keys and other authentication methods during offboarding.</li>
+          <li>Keep a record of administrative changes and follow organizational policy.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <h3>What is the difference between a user and a group?</h3>
+        <p>A user represents an account identity. A group is a collection used to manage shared access to files and resources.</p>
+        <h3>What is the difference between UID and GID?</h3>
+        <p>UID identifies a user; GID identifies a group. Linux uses these numeric identifiers when checking ownership and permissions.</p>
+        <h3>Does locking a password completely disable an account?</h3>
+        <p>Not necessarily. Other authentication methods or existing sessions may remain active. Review all access paths when disabling an account.</p>
+        <h3>Why should I use usermod -aG instead of usermod -G?</h3>
+        <p>The append option preserves existing supplementary group membership while adding the new group. Without it, the supplementary group list may be replaced.</p>
+      </section>
+
+      <section class="article-conclusion">
+        <h2>Conclusion</h2>
+        <p>User and group management is central to Linux security. Understanding UIDs, GIDs, account files, group membership and sudo helps administrators control access consistently. Practise these tasks in a virtual machine before applying them to real servers.</p>
+        <a class="back-link" href="../index.html#linux">← Explore Linux tutorials</a>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Network &amp; Linux Academy.</p>
+  <p>Learn. Configure. Understand.</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms &amp; Conditions</a>
+  </nav>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>
