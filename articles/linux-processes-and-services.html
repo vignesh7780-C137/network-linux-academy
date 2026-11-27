@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn how to inspect Linux processes, manage foreground and background jobs, control systemd services, read logs and troubleshoot service failures with practical labs.">
+  <link rel="canonical" href="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-processes-and-services.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Network &amp; Linux Academy">
+  <meta property="og:title" content="Linux Processes and Services: A Practical Guide | Network &amp; Linux Academy">
+  <meta property="og:description" content="Understand Linux processes, signals, systemd services, journal logs and service troubleshooting.">
+  <meta property="og:url" content="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-processes-and-services.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="keywords" content="Linux processes, ps, top, htop, pgrep, kill, signals, systemd, systemctl, services, journalctl, Linux administration">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Linux Processes and Services: A Practical Guide",
+    "description": "A practical guide to inspecting Linux processes, managing systemd services, reading logs and troubleshooting.",
+    "mainEntityOfPage": "https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-processes-and-services.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Network & Linux Academy",
+      "url": "https://vignesh7780-c137.github.io/network-linux-academy/"
+    }
+  }
+  </script>
+  <title>Linux Processes and Services: A Practical Guide | Network &amp; Linux Academy</title>
+  <link rel="stylesheet" href="../style.css?v=3">
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">Network &amp; Linux Academy</a>
+    <button id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navigation" class="navigation">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#networking">Networking</a></li>
+      <li><a href="../index.html#linux" aria-current="page">Linux</a></li>
+      <li><a href="../index.html#labs">Practical Labs</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="article-container">
+  <header class="article-header">
+    <p class="eyebrow">LINUX / SYSTEM ADMINISTRATION</p>
+    <h1>Linux Processes and Services: A Practical Guide</h1>
+    <p class="article-subtitle">Learn how Linux runs programs, how administrators inspect and control processes, and how systemd manages background services.</p>
+    <div class="article-meta">
+      <span>Beginner to Intermediate</span>
+      <span>Linux Administration</span>
+      <span>12–15 min read</span>
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <aside class="table-of-contents">
+      <h3>On This Page</h3>
+      <a href="#introduction">Introduction</a>
+      <a href="#processes">What is a process?</a>
+      <a href="#inspect">Inspect processes</a>
+      <a href="#control">Control processes</a>
+      <a href="#jobs">Foreground and background jobs</a>
+      <a href="#systemd">Introduction to systemd</a>
+      <a href="#systemctl">Manage services with systemctl</a>
+      <a href="#logs">Read service logs</a>
+      <a href="#troubleshoot">Troubleshooting workflow</a>
+      <a href="#lab">Hands-on lab</a>
+      <a href="#security">Administration checklist</a>
+      <a href="#faq">FAQs</a>
+    </aside>
+
+    <article class="article-content">
+      <section id="introduction">
+        <h2>1. Introduction</h2>
+        <p>When you open a terminal, run a command, connect to a server or start a web application, Linux creates and manages processes. Many important programs continue running in the background without an administrator interacting with them directly. These long-running programs are commonly managed as services.</p>
+        <p>System administrators need to identify resource-heavy processes, stop unresponsive applications safely, ensure required services start at boot, and investigate failures through logs.</p>
+        <div class="info-box"><strong>Lab safety:</strong> Practise in a Linux virtual machine. Do not terminate unfamiliar processes or change services on a production system without understanding their purpose and impact.</div>
+      </section>
+
+      <section id="processes">
+        <h2>2. What Is a Linux Process?</h2>
+        <p>A process is an instance of a running program. Each process has a Process ID (PID), an owner, a state and resource usage such as CPU time and memory. A process may create child processes, forming a parent-child relationship.</p>
+        <ul>
+          <li><strong>PID:</strong> unique process identifier while that process exists.</li>
+          <li><strong>PPID:</strong> parent process ID.</li>
+          <li><strong>UID:</strong> user identity under which the process runs.</li>
+          <li><strong>TTY:</strong> associated terminal, if any.</li>
+          <li><strong>State:</strong> indicates whether a process is running, sleeping, stopped or in another state.</li>
+        </ul>
+        <p>Common process states shown by tools include running, interruptible sleep, uninterruptible sleep, stopped and zombie. A zombie is an exited process whose parent has not yet collected its exit status; it is not a process that is still executing normally.</p>
+        <p>Linux exposes process information through the <code>/proc</code> virtual filesystem. For example, <code>/proc/1</code> contains information about the process with PID 1 on the current system.</p>
+      </section>
+
+      <section id="inspect">
+        <h2>3. Inspect Running Processes</h2>
+        <p>Start by learning to observe the system before attempting to change anything.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>ps</code></td><td>Show processes associated with the current terminal.</td></tr>
+              <tr><td><code>ps aux</code></td><td>Show a detailed snapshot of processes across the system.</td></tr>
+              <tr><td><code>ps -ef</code></td><td>Display processes in a full-format listing.</td></tr>
+              <tr><td><code>ps -p 1234 -f</code></td><td>Inspect a particular PID (replace 1234).</td></tr>
+              <tr><td><code>top</code></td><td>Display live process and resource information.</td></tr>
+              <tr><td><code>pgrep sshd</code></td><td>Find process IDs matching a process name.</td></tr>
+              <tr><td><code>pidof sshd</code></td><td>Find PIDs for a program when supported.</td></tr>
+              <tr><td><code>free -h</code></td><td>Summarize memory usage.</td></tr>
+              <tr><td><code>uptime</code></td><td>Show uptime and system load averages.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>In <code>top</code>, observe CPU and memory usage, process IDs, owners and load averages. Press <code>q</code> to quit. Some distributions provide <code>htop</code>, an interactive alternative that may need to be installed separately.</p>
+        <div class="info-box"><strong>Tip:</strong> <code>ps aux</code> and <code>ps -ef</code> are two common formats. Their columns and option styles differ; do not assume the output is identical.</div>
+      </section>
+
+      <section id="control">
+        <h2>4. Control Processes and Signals</h2>
+        <p>Linux uses signals to communicate with processes. The <code>kill</code> command sends a signal to a PID; despite its name, it does not always terminate a process.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Signal</th><th>Meaning</th><th>Typical use</th></tr></thead>
+            <tbody>
+              <tr><td><code>SIGTERM (15)</code></td><td>Request a process to terminate.</td><td>Preferred first attempt for a process you need to stop.</td></tr>
+              <tr><td><code>SIGKILL (9)</code></td><td>Force termination; cannot be caught or ignored.</td><td>Last resort when a process will not exit normally.</td></tr>
+              <tr><td><code>SIGHUP (1)</code></td><td>Hangup signal, with behavior defined by the application.</td><td>Some daemons use it to reload configuration.</td></tr>
+              <tr><td><code>SIGINT (2)</code></td><td>Interrupt from the keyboard.</td><td>Often generated by Ctrl+C in a terminal.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info-box">
+          <p><code>kill -TERM 1234</code> — request graceful termination of PID 1234.</p>
+          <p><code>kill -KILL 1234</code> — force termination only if necessary.</p>
+          <p><code>pgrep -a nginx</code> — find matching processes and show their command lines.</p>
+        </div>
+        <p>Always verify the PID and command before sending a signal. Avoid using broad commands such as <code>killall</code> or force-killing processes without confirming what they do. A service-managed process is usually better controlled through its service manager rather than by killing its PID directly.</p>
+      </section>
+
+      <section id="jobs">
+        <h2>5. Foreground and Background Jobs</h2>
+        <p>A command launched from a terminal normally runs in the foreground, keeping that shell occupied until it completes. Add <code>&amp;</code> to start a command in the background.</p>
+        <div class="info-box">
+          <p><code>sleep 300</code> — run in the foreground.</p>
+          <p><code>sleep 300 &amp;</code> — start in the background.</p>
+          <p><code>jobs</code> — list jobs started by the current shell.</p>
+          <p><code>Ctrl+Z</code> — suspend the foreground job.</p>
+          <p><code>bg</code> — continue a suspended job in the background.</p>
+          <p><code>fg</code> — bring a background job to the foreground.</p>
+        </div>
+        <p>Shell jobs are tied to the shell session. Closing a terminal can affect them. For long-running production workloads, use a service manager such as systemd, a terminal multiplexer, or another suitable process supervisor instead of relying on a shell background job.</p>
+      </section>
+
+      <section id="systemd">
+        <h2>6. Introduction to systemd</h2>
+        <p><code>systemd</code> is an init system and service manager used by many modern Linux distributions. It starts and supervises system components and can manage services, mounts, timers, sockets and other unit types.</p>
+        <p>A <strong>unit</strong> is a resource managed by systemd. A service unit typically describes how a background program is started, stopped and supervised. Unit files may be supplied by packages or created by administrators.</p>
+        <ul>
+          <li><strong>Active:</strong> describes the unit's current high-level state.</li>
+          <li><strong>Enabled:</strong> indicates that the unit is configured to start automatically through its installation links.</li>
+          <li><strong>Disabled:</strong> means it is not enabled for automatic startup in that way.</li>
+          <li><strong>Failed:</strong> indicates that systemd recorded a failure state.</li>
+        </ul>
+        <div class="info-box"><strong>Important:</strong> Enabled does not mean currently running, and running does not necessarily mean enabled at boot. Runtime state and boot-start configuration are separate concepts.</div>
+      </section>
+
+      <section id="systemctl">
+        <h2>7. Manage Services with systemctl</h2>
+        <p>The <code>systemctl</code> command is the main command-line tool for inspecting and controlling systemd units.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>systemctl status ssh</code></td><td>Inspect the SSH service (service name varies by distribution).</td></tr>
+              <tr><td><code>systemctl start nginx</code></td><td>Start a service now.</td></tr>
+              <tr><td><code>systemctl stop nginx</code></td><td>Stop a service now.</td></tr>
+              <tr><td><code>systemctl restart nginx</code></td><td>Stop and start a service.</td></tr>
+              <tr><td><code>systemctl reload nginx</code></td><td>Ask a service to reload configuration, if it supports reload.</td></tr>
+              <tr><td><code>systemctl enable nginx</code></td><td>Configure the service to start automatically at boot.</td></tr>
+              <tr><td><code>systemctl disable nginx</code></td><td>Remove that automatic-start configuration.</td></tr>
+              <tr><td><code>systemctl enable --now nginx</code></td><td>Enable and start the service.</td></tr>
+              <tr><td><code>systemctl is-active nginx</code></td><td>Check whether the service is active.</td></tr>
+              <tr><td><code>systemctl is-enabled nginx</code></td><td>Check whether it is enabled.</td></tr>
+              <tr><td><code>systemctl list-units --type=service</code></td><td>List service units currently loaded.</td></tr>
+              <tr><td><code>systemctl list-unit-files --type=service</code></td><td>List installed service unit files and their enablement states.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Use the correct service name for your distribution. For example, the OpenSSH server unit is commonly named <code>ssh</code> on Debian/Ubuntu and <code>sshd</code> on Fedora/RHEL-family systems. A service may not be installed by default.</p>
+        <p>After editing a systemd unit file, run <code>sudo systemctl daemon-reload</code> so systemd rereads unit definitions. This command does not itself restart the application; restart the affected service separately when required.</p>
+      </section>
+
+      <section id="logs">
+        <h2>8. Read Service Logs with journalctl</h2>
+        <p>On systems using systemd's journal, <code>journalctl</code> helps administrators investigate startup errors, crashes and other service events.</p>
+        <div class="info-box">
+          <p><code>journalctl -u nginx</code> — show journal entries for a service.</p>
+          <p><code>journalctl -u nginx -b</code> — show entries from the current boot.</p>
+          <p><code>journalctl -u nginx -f</code> — follow new entries as they arrive.</p>
+          <p><code>journalctl -p err -b</code> — show error-priority entries from this boot.</p>
+          <p><code>journalctl --since "1 hour ago"</code> — filter entries by time.</p>
+        </div>
+        <p>Use <code>q</code> to exit the journal pager. Access to some logs may require elevated privileges or membership in an appropriate system group. Journal persistence and retention depend on system configuration.</p>
+      </section>
+
+      <section id="troubleshoot">
+        <h2>9. A Practical Service Troubleshooting Workflow</h2>
+        <ol>
+          <li><strong>Check the state:</strong> run <code>systemctl status service-name</code>.</li>
+          <li><strong>Read recent logs:</strong> use <code>journalctl -u service-name -b</code>.</li>
+          <li><strong>Check the process:</strong> use <code>pgrep -a process-name</code> or <code>ps</code>.</li>
+          <li><strong>Check resources:</strong> inspect CPU and memory with <code>top</code> and <code>free -h</code>.</li>
+          <li><strong>Check configuration:</strong> use the application's own configuration-test command where available.</li>
+          <li><strong>Check dependencies and ports:</strong> confirm required files, permissions, network access and listening ports.</li>
+          <li><strong>Make one controlled change:</strong> restart or reload only after identifying a likely cause.</li>
+          <li><strong>Verify:</strong> check service status, logs and application behavior again.</li>
+        </ol>
+        <p>A service that exits immediately may have a configuration error, missing file, permission problem, occupied port or unavailable dependency. The log message is usually more useful than repeatedly restarting the service.</p>
+      </section>
+
+      <section id="lab">
+        <h2>10. Hands-on Lab: Inspect and Manage a Service</h2>
+        <p>Use a disposable Debian/Ubuntu or Fedora/RHEL-family virtual machine with systemd. This lab uses Nginx as an example web service. Install it only if you are comfortable adding packages to your lab VM.</p>
+        <h3>Debian or Ubuntu</h3>
+        <div class="info-box">
+          <p><code>sudo apt update</code></p>
+          <p><code>sudo apt install nginx</code></p>
+        </div>
+        <h3>Fedora or RHEL-family systems</h3>
+        <div class="info-box">
+          <p><code>sudo dnf install nginx</code></p>
+        </div>
+        <h3>Manage and verify the service</h3>
+        <div class="info-box">
+          <p><code>sudo systemctl enable --now nginx</code></p>
+          <p><code>systemctl status nginx</code></p>
+          <p><code>systemctl is-active nginx</code></p>
+          <p><code>ps -ef | grep '[n]ginx'</code></p>
+          <p><code>sudo journalctl -u nginx -b --no-pager</code></p>
+          <p><code>curl -I http://localhost</code></p>
+          <p><code>sudo systemctl restart nginx</code></p>
+          <p><code>systemctl status nginx</code></p>
+        </div>
+        <p>Answer these questions after the lab:</p>
+        <ol>
+          <li>What is the difference between a PID and a PPID?</li>
+          <li>How is a process different from a systemd service?</li>
+          <li>What is the difference between <code>start</code> and <code>enable</code>?</li>
+          <li>Why should you inspect logs before repeatedly restarting a failed service?</li>
+          <li>What does <code>journalctl -u nginx -b</code> show?</li>
+        </ol>
+        <p>When finished, you can stop the service with <code>sudo systemctl stop nginx</code>. Disable boot startup with <code>sudo systemctl disable nginx</code> if you no longer want it to start automatically. Uninstall it only if you no longer need it.</p>
+      </section>
+
+      <section id="security">
+        <h2>11. Linux Process and Service Administration Checklist</h2>
+        <ul>
+          <li>Identify a process and verify its PID before sending signals.</li>
+          <li>Prefer graceful termination with SIGTERM before considering SIGKILL.</li>
+          <li>Use systemctl to manage services supervised by systemd.</li>
+          <li>Enable only services required by the system's role.</li>
+          <li>Review service logs and configuration before making changes.</li>
+          <li>Run services with the least privileges they need.</li>
+          <li>Keep packages and service configurations maintained according to policy.</li>
+          <li>Test service changes in a lab before applying them to production.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <h3>What is the difference between a process and a service?</h3>
+        <p>A process is a running instance of a program. A service is a background function or application that is commonly managed by a service manager such as systemd. A service is implemented by one or more processes.</p>
+        <h3>Does systemctl start also enable a service at boot?</h3>
+        <p>No. Start changes the current runtime state. Enable configures automatic startup through systemd's unit relationships. Use <code>systemctl enable --now</code> when both actions are intended.</p>
+        <h3>Should I always use kill -9?</h3>
+        <p>No. SIGKILL prevents the process from handling the termination request or performing normal cleanup. Try a graceful SIGTERM first and investigate why the process does not exit.</p>
+        <h3>What is the difference between restart and reload?</h3>
+        <p>Restart stops and starts the service. Reload asks the application to reread its configuration without a full stop/start, when the application and its unit support that operation.</p>
+      </section>
+
+      <section class="article-conclusion">
+        <h2>Conclusion</h2>
+        <p>Understanding processes and services is essential for Linux system administration. With <code>ps</code>, <code>top</code>, signals, <code>systemctl</code> and <code>journalctl</code>, administrators can inspect workloads, manage background services and investigate failures methodically. Practise in a virtual machine before making changes to real systems.</p>
+        <a class="back-link" href="../index.html#linux">← Explore Linux tutorials</a>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Network &amp; Linux Academy.</p>
+  <p>Learn. Configure. Understand.</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms &amp; Conditions</a>
+  </nav>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>
