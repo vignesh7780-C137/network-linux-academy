@@ -25,6 +25,13 @@ if (yearElement) {
 
 const articles = [
   {
+    title: "Linux Package Management",
+    url: "articles/linux-package-management.html",
+    category: "Linux Software Administration",
+    description: "Learn Linux package managers, repositories, dependencies, APT, DNF, dpkg and RPM, and safe software maintenance.",
+    keywords: "Linux package management APT apt update install remove upgrade DNF yum RPM dpkg deb packages repositories dependencies software administration"
+  },
+  {
     title: "Linux Users and Groups Explained",
     url: "articles/linux-users-and-groups.html",
     category: "Linux System Administration",
