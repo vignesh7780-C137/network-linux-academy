@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn Linux package management with APT, DNF, RPM and dpkg. Install, update, search, verify and remove software safely with practical examples.">
+  <link rel="canonical" href="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-package-management.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Network &amp; Linux Academy">
+  <meta property="og:title" content="Linux Package Management: APT, DNF and RPM">
+  <meta property="og:description" content="A practical guide to installing, updating, searching and removing Linux software using APT, DNF, dpkg and RPM.">
+  <meta property="og:url" content="https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-package-management.html">
+  <meta name="twitter:card" content="summary">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Linux Package Management: A Practical Guide to APT, DNF and RPM",
+    "description": "Learn Linux package managers, repositories, dependencies and safe software administration.",
+    "mainEntityOfPage": "https://vignesh7780-c137.github.io/network-linux-academy/articles/linux-package-management.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Network & Linux Academy",
+      "url": "https://vignesh7780-c137.github.io/network-linux-academy/"
+    }
+  }
+  </script>
+  <meta name="keywords" content="Linux package management, APT, DNF, YUM, RPM, dpkg, install packages, update Linux, repositories, dependencies">
+  <title>Linux Package Management: APT, DNF and RPM | Network &amp; Linux Academy</title>
+  <link rel="stylesheet" href="../style.css?v=3">
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <a href="../index.html" class="logo">Network &amp; Linux Academy</a>
+    <button id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navigation" class="navigation">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#networking">Networking</a></li>
+      <li><a href="../index.html#linux" aria-current="page">Linux</a></li>
+      <li><a href="../index.html#labs">Practical Labs</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="article-container">
+  <header class="article-header">
+    <p class="eyebrow">LINUX / SOFTWARE ADMINISTRATION</p>
+    <h1>Linux Package Management: A Practical Guide to APT, DNF and RPM</h1>
+    <p class="article-subtitle">Learn how Linux installs, updates, verifies and removes software while handling dependencies and trusted repositories.</p>
+    <div class="article-meta">
+      <span>Beginner to Intermediate</span>
+      <span>Linux Administration</span>
+      <span>12–15 min read</span>
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <aside class="table-of-contents">
+      <h3>On This Page</h3>
+      <a href="#introduction">Introduction</a>
+      <a href="#concepts">Packages and repositories</a>
+      <a href="#families">Linux package families</a>
+      <a href="#apt">APT on Debian and Ubuntu</a>
+      <a href="#dnf">DNF on Fedora and RHEL</a>
+      <a href="#dpkg-rpm">dpkg and RPM tools</a>
+      <a href="#maintenance">Updates and maintenance</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#practice">Hands-on lab</a>
+      <a href="#security">Security best practices</a>
+      <a href="#faq">FAQs</a>
+    </aside>
+
+    <article class="article-content">
+      <section id="introduction">
+        <h2>1. Introduction to Linux Package Management</h2>
+        <p>Linux software is commonly distributed as packages. A package contains an application or component together with metadata such as its version, architecture, dependencies and installation instructions. A package manager helps administrators install software, keep it updated and remove it consistently.</p>
+        <p>Instead of downloading random program files and copying them into system directories, administrators normally use the package manager provided by their distribution. This makes software maintenance more predictable and helps track which files belong to which packages.</p>
+        <div class="info-box"><strong>Lab safety:</strong> Practise in a Linux virtual machine that you control. Installing, removing and upgrading packages changes the operating system. Read the proposed transaction before confirming it, especially on a production server.</div>
+      </section>
+
+      <section id="concepts">
+        <h2>2. Packages, Repositories and Dependencies</h2>
+        <h3>What is a package?</h3>
+        <p>A package is a structured software bundle. It usually includes program files, configuration defaults, metadata and sometimes scripts that run during installation or removal.</p>
+        <h3>What is a repository?</h3>
+        <p>A repository is a software source maintained by a distribution or another trusted provider. Package managers retrieve package indexes and software from configured repositories. Repositories may be official distribution mirrors, an organization's internal mirror or a vendor's supported repository.</p>
+        <h3>What are dependencies?</h3>
+        <p>An application may rely on shared libraries or other programs. These requirements are called dependencies. A package manager resolves dependencies and proposes the additional packages needed to complete an installation.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>Package</td><td>A managed software bundle with metadata.</td></tr>
+              <tr><td>Repository</td><td>A configured source of packages and package metadata.</td></tr>
+              <tr><td>Dependency</td><td>Another package or component required by software.</td></tr>
+              <tr><td>Package index / metadata</td><td>Information used to locate package versions and dependencies.</td></tr>
+              <tr><td>Package manager</td><td>The tool that resolves, installs, upgrades and removes packages.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="families">
+        <h2>3. Common Linux Package Families</h2>
+        <p>Different Linux distributions use different package formats and higher-level package managers. The two major families you will commonly encounter are Debian-based and Red Hat-based systems.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Distribution family</th><th>Common distributions</th><th>Package format</th><th>High-level manager</th></tr></thead>
+            <tbody>
+              <tr><td>Debian</td><td>Debian, Ubuntu, Linux Mint</td><td><code>.deb</code></td><td><code>apt</code></td></tr>
+              <tr><td>Red Hat</td><td>RHEL, Rocky Linux, AlmaLinux, Fedora</td><td><code>.rpm</code></td><td><code>dnf</code> (older systems may use <code>yum</code>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>APT and DNF are high-level tools: they work with repositories and resolve dependencies. <code>dpkg</code> and <code>rpm</code> are lower-level tools that work directly with local package files and installed package records.</p>
+        <div class="info-box"><strong>Remember:</strong> APT does not install RPM packages, and DNF does not install Debian packages. First identify the distribution, then use its supported package tools.</div>
+      </section>
+
+      <section id="apt">
+        <h2>4. APT on Debian and Ubuntu</h2>
+        <p>APT (Advanced Package Tool) is commonly used on Debian-based distributions. Most administrative operations require <code>sudo</code>.</p>
+        <h3>Refresh package information</h3>
+        <div class="info-box"><code>sudo apt update</code></div>
+        <p>This downloads the latest package index information from configured repositories. It does not itself upgrade the installed applications.</p>
+        <h3>Search for and inspect software</h3>
+        <div class="info-box">
+          <p><code>apt search nginx</code> — search package names and descriptions.</p>
+          <p><code>apt show nginx</code> — display package details.</p>
+          <p><code>apt list --installed</code> — list installed packages.</p>
+        </div>
+        <h3>Install and remove a package</h3>
+        <div class="info-box">
+          <p><code>sudo apt install nginx</code> — install Nginx and required dependencies.</p>
+          <p><code>sudo apt remove nginx</code> — remove the package but generally leave system configuration files.</p>
+          <p><code>sudo apt purge nginx</code> — remove the package and its package-managed system configuration files.</p>
+          <p><code>sudo apt autoremove</code> — offer to remove automatically installed packages that are no longer required.</p>
+        </div>
+        <p>Review the list of packages APT proposes to install or remove before accepting. Purging configuration can remove settings you may want to keep.</p>
+        <h3>Upgrade installed packages</h3>
+        <div class="info-box">
+          <p><code>sudo apt upgrade</code> — upgrade installed packages where the operation does not require removing packages.</p>
+          <p><code>sudo apt full-upgrade</code> — perform a broader upgrade that may install or remove packages to complete dependency changes.</p>
+        </div>
+        <p>On a server, plan upgrades and review the proposed changes rather than running them automatically without checking impact.</p>
+      </section>
+
+      <section id="dnf">
+        <h2>5. DNF on Fedora and Red Hat-Based Systems</h2>
+        <p>DNF is the package manager used by current Fedora and many modern Red Hat-based distributions. Some older enterprise systems use YUM or provide a compatible <code>yum</code> command.</p>
+        <h3>Search and inspect packages</h3>
+        <div class="info-box">
+          <p><code>dnf search nginx</code> — search available packages.</p>
+          <p><code>dnf info nginx</code> — inspect package information.</p>
+          <p><code>dnf list installed</code> — list installed packages.</p>
+          <p><code>dnf repolist</code> — display enabled repositories.</p>
+        </div>
+        <h3>Install and remove software</h3>
+        <div class="info-box">
+          <p><code>sudo dnf install nginx</code> — install a package and resolve dependencies.</p>
+          <p><code>sudo dnf remove nginx</code> — remove the package.</p>
+          <p><code>sudo dnf autoremove</code> — remove packages that were installed as dependencies and are no longer needed, where supported.</p>
+        </div>
+        <h3>Update the system</h3>
+        <div class="info-box">
+          <p><code>sudo dnf check-update</code> — check whether updates are available. Some versions return a non-zero status when updates are found; this is not necessarily an error.</p>
+          <p><code>sudo dnf upgrade</code> — apply available package updates.</p>
+          <p><code>sudo dnf history</code> — review package transaction history.</p>
+        </div>
+        <p>DNF normally shows a transaction summary before making changes. Check which packages will be installed, upgraded or removed before confirming.</p>
+      </section>
+
+      <section id="dpkg-rpm">
+        <h2>6. Understanding dpkg and RPM</h2>
+        <p><code>dpkg</code> and <code>rpm</code> are lower-level package tools. They are useful for inspecting installed packages and working with local package files, but they do not provide the same repository-based dependency resolution as APT or DNF.</p>
+        <h3>Debian package tool: dpkg</h3>
+        <div class="info-box">
+          <p><code>dpkg -l</code> — list package records.</p>
+          <p><code>dpkg -s nginx</code> — inspect an installed package.</p>
+          <p><code>dpkg -L nginx</code> — list files installed by a package.</p>
+          <p><code>sudo dpkg -i ./example.deb</code> — install a local Debian package file.</p>
+        </div>
+        <p>If a local package installation reports missing dependencies, use APT to resolve them where appropriate, for example <code>sudo apt --fix-broken install</code>. Review the proposed changes before proceeding.</p>
+        <h3>RPM package tool</h3>
+        <div class="info-box">
+          <p><code>rpm -qa</code> — list installed RPM packages.</p>
+          <p><code>rpm -qi nginx</code> — display information about an installed package.</p>
+          <p><code>rpm -ql nginx</code> — list files belonging to an installed package.</p>
+          <p><code>rpm -qf /usr/bin/ssh</code> — identify the package that owns a file, if it is package-managed.</p>
+          <p><code>sudo rpm -Uvh ./example.rpm</code> — install or upgrade a local RPM package file.</p>
+        </div>
+        <p>For ordinary software installation on an RPM-based system, prefer DNF because it can resolve dependencies from configured repositories.</p>
+      </section>
+
+      <section id="maintenance">
+        <h2>7. Updates, Maintenance and Package Verification</h2>
+        <p>Package maintenance is more than installing new software. Administrators should understand what is installed, where it came from and whether an update may affect a service.</p>
+        <ul>
+          <li><strong>Inventory:</strong> use <code>apt list --installed</code>, <code>dnf list installed</code>, <code>dpkg -l</code> or <code>rpm -qa</code> to review installed software.</li>
+          <li><strong>Repository review:</strong> inspect configured sources and disable repositories that are no longer trusted or required.</li>
+          <li><strong>Change planning:</strong> check release notes and compatibility before major version upgrades.</li>
+          <li><strong>Backups:</strong> back up important configuration and data before changes that could affect a service.</li>
+          <li><strong>Service checks:</strong> after updating a server package, verify the related service and application.</li>
+        </ul>
+        <p>Package verification commands can help identify changes to files managed by a package. For example, <code>rpm -V package-name</code> checks installed files against RPM metadata. Verification output must be interpreted carefully: a reported difference is a clue to investigate, not automatically proof of compromise.</p>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>8. Common Package Management Problems</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Problem</th><th>What to check</th></tr></thead>
+            <tbody>
+              <tr><td>Package cannot be found</td><td>Check the package name, repository configuration and refreshed package metadata.</td></tr>
+              <tr><td>Repository is unreachable</td><td>Check network connectivity, DNS resolution, proxy settings and repository status.</td></tr>
+              <tr><td>Dependency conflict</td><td>Read the package manager's transaction details; avoid forcing incompatible versions.</td></tr>
+              <tr><td>Another package operation is running</td><td>Wait for the active package operation to finish. Do not delete lock files or terminate package processes blindly.</td></tr>
+              <tr><td>Insufficient disk space</td><td>Check available space with <code>df -h</code> and investigate package caches or logs carefully.</td></tr>
+              <tr><td>Service fails after an update</td><td>Check service status and logs, review configuration changes and consult release notes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Useful diagnostic commands include <code>df -h</code> for filesystem space, <code>systemctl status service-name</code> for a service and <code>journalctl -u service-name</code> for its systemd journal entries.</p>
+      </section>
+
+      <section id="practice">
+        <h2>9. Hands-On Lab: Install and Inspect a Package</h2>
+        <p>Use a disposable virtual machine or a personal Linux lab. Choose only the command set that matches your distribution.</p>
+        <h3>Lab A: Debian or Ubuntu</h3>
+        <div class="info-box">
+          <p><code>cat /etc/os-release</code></p>
+          <p><code>sudo apt update</code></p>
+          <p><code>apt search tree</code></p>
+          <p><code>apt show tree</code></p>
+          <p><code>sudo apt install tree</code></p>
+          <p><code>tree --version</code></p>
+          <p><code>dpkg -L tree</code></p>
+          <p><code>sudo apt remove tree</code></p>
+        </div>
+        <h3>Lab B: Fedora or another DNF-based system</h3>
+        <div class="info-box">
+          <p><code>cat /etc/os-release</code></p>
+          <p><code>dnf repolist</code></p>
+          <p><code>dnf search tree</code></p>
+          <p><code>dnf info tree</code></p>
+          <p><code>sudo dnf install tree</code></p>
+          <p><code>tree --version</code></p>
+          <p><code>rpm -qi tree</code></p>
+          <p><code>sudo dnf remove tree</code></p>
+        </div>
+        <h3>Lab questions</h3>
+        <ol>
+          <li>Which Linux distribution and version is running in your VM?</li>
+          <li>Which package manager does it use?</li>
+          <li>What is the difference between refreshing package metadata and upgrading installed packages?</li>
+          <li>What dependencies were installed alongside the test package?</li>
+          <li>How did you confirm that the package was installed and later removed?</li>
+        </ol>
+        <div class="info-box"><strong>Expected outcome:</strong> You should be able to identify your distribution, search for a package, inspect its metadata, install it, verify it and remove it using the correct package manager.</div>
+      </section>
+
+      <section id="security">
+        <h2>10. Security Best Practices</h2>
+        <ul>
+          <li>Use official distribution repositories or repositories from vendors you explicitly trust.</li>
+          <li>Do not disable package signature verification to make an installation succeed.</li>
+          <li>Avoid piping unknown internet scripts directly into a root shell.</li>
+          <li>Read proposed install, upgrade and removal transactions before confirming.</li>
+          <li>Keep production systems updated through a planned maintenance process.</li>
+          <li>Back up important data and configuration before major package changes.</li>
+          <li>Use the distribution's package manager instead of manually replacing system-managed files.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>11. Frequently Asked Questions</h2>
+        <h3>Is APT the same as dpkg?</h3>
+        <p>No. APT is a higher-level package manager that works with repositories and resolves dependencies. dpkg works directly with Debian package files and the local package database.</p>
+        <h3>Are DNF and YUM the same?</h3>
+        <p>They are related tools in the Red Hat package-management ecosystem. DNF is the modern successor to YUM, and some systems provide a <code>yum</code> command for compatibility.</p>
+        <h3>Does apt update upgrade my software?</h3>
+        <p>No. <code>apt update</code> refreshes package metadata. Use an upgrade command to apply available updates.</p>
+        <h3>Should I download a .deb or .rpm file from any website?</h3>
+        <p>No. Prefer trusted distribution repositories or official vendor sources, and verify package authenticity and compatibility before installation.</p>
+        <h3>Which package manager should I learn first?</h3>
+        <p>Learn the package manager used by your current distribution, then understand the equivalent workflow in the other major family. Network and Linux administrators commonly encounter both.</p>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© <span id="year"></span> Network &amp; Linux Academy. Learn. Configure. Understand.</p>
+  <div class="footer-links">
+    <a href="../privacy-policy.html">Privacy Policy</a>
+    <a href="../terms.html">Terms</a>
+    <a href="../contact.html">Contact</a>
+  </div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>
