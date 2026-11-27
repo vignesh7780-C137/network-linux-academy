@@ -32,6 +32,13 @@ const articles = [
     keywords: "Linux package management APT apt update install remove upgrade DNF yum RPM dpkg deb packages repositories dependencies software administration"
   },
   {
+    title: "Linux Processes and Services",
+    url: "articles/linux-processes-and-services.html",
+    category: "Linux System Administration",
+    description: "Learn to inspect Linux processes, manage systemd services, read journal logs and troubleshoot service failures.",
+    keywords: "Linux processes services process management PID PPID ps aux top htop pgrep pidof kill SIGTERM SIGKILL jobs systemd systemctl daemon reload enable start stop restart journalctl logs troubleshooting"
+  },
+  {
     title: "Linux Users and Groups Explained",
     url: "articles/linux-users-and-groups.html",
     category: "Linux System Administration",
